@@ -50,7 +50,7 @@ const SelectTrigger = ({
             {...props}
         >
             {children}
-            <SelectPrimitive.Icon render={<ChevronDownIcon className="size-4 shrink-0 text-muted-foreground transition-transform duration-200 group-data-[state=open]/trigger:rotate-180" />}></SelectPrimitive.Icon>
+            <SelectPrimitive.Icon asChild><ChevronDownIcon className="size-4 shrink-0 text-muted-foreground transition-transform duration-200 group-data-[state=open]/trigger:rotate-180" /></SelectPrimitive.Icon>
         </SelectPrimitive.Trigger>
     );
 };

@@ -87,7 +87,7 @@ const DialogHeader = ({
         >
             <div className="flex flex-col gap-1">{children}</div>
             {showCloseButton && (
-                <DialogPrimitive.Close data-slot="dialog-close" render={<Button variant="ghost" size="icon-sm" className="shrink-0" />}><XIcon /><span className="sr-only">Close</span></DialogPrimitive.Close>
+                <DialogPrimitive.Close data-slot="dialog-close" asChild><Button variant="ghost" size="icon-sm" className="shrink-0"><XIcon /><span className="sr-only">Close</span></Button></DialogPrimitive.Close>
             )}
         </div>
     );

@@ -73,7 +73,7 @@ const SheetContent = ({
             >
                 {children}
                 {showCloseButton && (
-                    <SheetPrimitive.Close data-slot="sheet-close" render={<Button variant="ghost" className="absolute end-3 top-3" size="icon-sm" />}><XIcon /><span className="sr-only">Close</span></SheetPrimitive.Close>
+                    <SheetPrimitive.Close data-slot="sheet-close" asChild><Button variant="ghost" className="absolute end-3 top-3" size="icon-sm"><XIcon /><span className="sr-only">Close</span></Button></SheetPrimitive.Close>
                 )}
             </SheetPrimitive.Content>
         </SheetPortal>
