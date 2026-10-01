@@ -1,0 +1,22 @@
+export const meta = {
+  title: "Building an arcade with zero model files",
+  summary: "TODO: placeholder post about procedural 3D with React Three Fiber.",
+  date: "2026-09-20",
+  tags: ["three.js", "r3f"],
+  minutes: 4,
+}
+
+> **TODO:** placeholder post.
+
+Every object in the arcade is built from boxes, cylinders and planes. The room is lit by one warm
+hemisphere light and a single directional "sun" with soft shadows, which keeps the scene cheap and the
+colors readable.
+
+```tsx
+<mesh castShadow>
+  <boxGeometry args={[1, 2, 0.8]} />
+  <meshStandardMaterial color="#e45e4d" roughness={0.45} />
+</mesh>
+```
+
+Labels are drawn on a 2D canvas and uploaded as a texture, so Persian text shapes correctly for free.

@@ -1,0 +1,33 @@
+"use client"
+
+import { useEffect, useState } from "react"
+import { useDictionary } from "@/components/DictionaryProvider"
+import Progress from "@/components/ui/Progress"
+
+/** Boot splash while the three.js chunk downloads and the first frame renders. */
+export default function Loader() {
+  const { dict } = useDictionary()
+  const [value, setValue] = useState(8)
+  // Assets are procedural, so there is nothing to measure: fake a quick ramp.
+  useEffect(() => {
+    const id = setInterval(
+      () => setValue((v) => Math.min(92, v + (100 - v) * 0.12)),
+      120
+    )
+    return () => clearInterval(id)
+  }, [])
+  return (
+    <div
+      role="status"
+      className="paper fixed inset-0 z-30 flex flex-col items-center justify-center gap-5"
+    >
+      <p className="text-3xl font-bold">{dict.site.name}</p>
+      <Progress
+        value={value}
+        className="h-1.5 w-64 bg-muted"
+        aria-label={dict.hub.loading}
+      />
+      <p className="text-sm text-muted-foreground">{dict.hub.loading}</p>
+    </div>
+  )
+}

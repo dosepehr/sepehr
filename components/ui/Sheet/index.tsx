@@ -49,7 +49,7 @@ const SheetWrapper = ({
                 {footer && (
                     <SheetFooter>
                         {footer}
-                        <SheetClose render={<Button variant="outline" />}>Cancel</SheetClose>
+                        <SheetClose asChild><Button variant="outline">Cancel</Button></SheetClose>
                     </SheetFooter>
                 )}
             </SheetContent>

@@ -101,13 +101,13 @@ const MultiComboBox: React.FC<MultiComboBoxProps> = ({
             )}
 
             <Popover open={open} onOpenChange={handleOpenChange} modal={false}>
-                <PopoverTrigger render={<button id={triggerId} type="button" role="combobox" disabled={disabled || isPending || isError} aria-expanded={open} aria-controls={listboxId} aria-invalid={isInvalid || undefined} className={cn(
+                <PopoverTrigger asChild><button id={triggerId} type="button" role="combobox" disabled={disabled || isPending || isError} aria-expanded={open} aria-controls={listboxId} aria-invalid={isInvalid || undefined} className={cn(
                                             'group/trigger flex h-9 w-full items-center justify-between gap-2 rounded-md border bg-transparent px-3 py-1 text-sm shadow-xs transition-[color,box-shadow,border] outline-none select-none',
                                             'border-input/50 hover:enabled:not-aria-invalid:border-primary',
                                             'aria-expanded:not-aria-invalid:border-primary aria-expanded:not-aria-invalid:ring-3 aria-expanded:not-aria-invalid:ring-primary/50',
                                             'disabled:cursor-not-allowed disabled:opacity-50',
                                             'aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/50 aria-invalid:hover:border-destructive',
-                                        )} />}><span
+                                        )}><span
                                             className={cn(
                                                 'flex-1 truncate text-start',
                                                 selected.length > 0
@@ -121,7 +121,7 @@ const MultiComboBox: React.FC<MultiComboBoxProps> = ({
                                                 'size-4 shrink-0 text-muted-foreground transition-transform duration-200',
                                                 open && 'rotate-180',
                                             )}
-                                        /></PopoverTrigger>
+                                        /></button></PopoverTrigger>
 
                 <PopoverContent
                     className="popover-content-width-full rounded-lg border-0 p-0 shadow-md ring-1 ring-foreground/10"

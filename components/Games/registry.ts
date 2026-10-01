@@ -1,0 +1,38 @@
+import type { GameId } from "@/lib/store/scores"
+import type { Tone } from "@/lib/tone"
+import BugBlaster from "./BugBlaster"
+import type { BaseState, GameDef, GameOptions } from "./engine/types"
+import NeonDrive from "./NeonDrive"
+import TechCatcher from "./TechCatcher"
+
+export type GameEntry = {
+  def: GameDef<BaseState>
+  options?: GameOptions
+  /** 3D games render in the arcade canvas and are hidden in Lite. */
+  is3d?: boolean
+  /** Decorative accent (never text color). */
+  tone: Tone
+}
+
+export const GAMES: Record<GameId, GameEntry> = {
+  "tech-catcher": {
+    def: TechCatcher as unknown as GameDef<BaseState>,
+    tone: "teal",
+  },
+  "bug-blaster": {
+    def: BugBlaster as unknown as GameDef<BaseState>,
+    tone: "indigo",
+  },
+  "neon-drive": {
+    def: NeonDrive as unknown as GameDef<BaseState>,
+    is3d: true,
+    tone: "coral",
+  },
+  "friday-night": {
+    def: BugBlaster as unknown as GameDef<BaseState>,
+    options: { hard: true },
+    tone: "amber",
+  },
+}
+
+export const GAME_IDS = Object.keys(GAMES) as GameId[]

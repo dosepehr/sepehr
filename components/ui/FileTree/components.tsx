@@ -26,12 +26,12 @@ const FolderNode = ({
 
     return (
         <Collapsible open={open} onOpenChange={setOpen}>
-            <CollapsibleTrigger render={<button style={{ paddingLeft: `${indent + 4}px` }} className="group flex w-full items-center gap-1.5 rounded-md py-1 pr-2 text-sm text-foreground hover:bg-muted" />}><ChevronRightIcon className="size-3.5 shrink-0 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-90" />{item.icon ??
+            <CollapsibleTrigger asChild><button style={{ paddingLeft: `${indent + 4}px` }} className="group flex w-full items-center gap-1.5 rounded-md py-1 pr-2 text-sm text-foreground hover:bg-muted"><ChevronRightIcon className="size-3.5 shrink-0 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-90" />{item.icon ??
                                     (open ? (
                                         <FolderOpenIcon className="size-3.5 shrink-0 text-muted-foreground" />
                                     ) : (
                                         <FolderIcon className="size-3.5 shrink-0 text-muted-foreground" />
-                                    ))}<span className="truncate">{item.name}</span></CollapsibleTrigger>
+                                    ))}<span className="truncate">{item.name}</span></button></CollapsibleTrigger>
             <CollapsibleContent>
                 <div className="flex flex-col">
                     {item.items.map((child, i) => (
