@@ -3,7 +3,8 @@ import type { GameId } from "./scores"
 import { createStore } from "./createStore"
 
 export type PerfTier = "high" | "medium" | "low"
-export type Palette = "synthwave" | "vaporwave"
+/** "golden" is the Konami-code "golden hour" tint over the active theme. */
+export type Palette = "normal" | "golden"
 export type PanelId =
   "project" | "blog" | "about" | "skills" | "contact" | "resume" | "games"
 
@@ -14,7 +15,7 @@ type StageState = {
   panel: PanelId | null
   /** Slug of the project whose cabinet is focused. */
   projectSlug: string | null
-  /** A 2D game covering the canvas, or Neon Drive replacing the room. */
+  /** A 2D game covering the canvas, or Sunny Drive (neon-drive) replacing the room. */
   game: GameId | null
   terminalOpen: boolean
   tier: PerfTier
@@ -42,7 +43,7 @@ export const useStage = createStore<StageState>(
     game: null,
     terminalOpen: false,
     tier: "medium",
-    palette: "synthwave",
+    palette: "normal",
     hovered: null,
     focusOn: (focus, panel = null, projectSlug = null) =>
       set({ focus, panel, projectSlug }, false, `focus/${focus}`),

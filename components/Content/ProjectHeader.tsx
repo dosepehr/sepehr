@@ -1,5 +1,6 @@
 import type { Project } from "@/lib/content/types"
 import type { Dictionary } from "@/lib/i18n/dictionary"
+import { toneVar } from "@/lib/tone"
 
 export default function ProjectHeader({
   project,
@@ -10,13 +11,13 @@ export default function ProjectHeader({
 }) {
   return (
     <div
-      className="flex flex-col gap-4 rounded-lg bg-card/70 p-5"
-      style={{ color: project.color }}
+      className="flex flex-col gap-4 rounded-lg border border-border border-s-4 bg-muted/50 p-5"
+      style={{ borderInlineStartColor: toneVar(project.tone) }}
     >
-      <p className="text-sm text-card-foreground/90">{project.summary}</p>
+      <p className="text-sm text-card-foreground">{project.summary}</p>
       <dl className="grid gap-3 text-sm text-card-foreground sm:grid-cols-2">
         <div>
-          <dt className="text-muted-foreground">{project.role}</dt>
+          <dt className="font-medium">{project.role}</dt>
           <dd className="font-mono text-xs text-muted-foreground" dir="ltr">
             {project.date.slice(0, 7)}
           </dd>
@@ -43,7 +44,7 @@ export default function ProjectHeader({
                 href={link.href}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex min-h-9 items-center rounded-md px-3 text-sm neon-border hover:bg-white/5"
+                className="inline-flex min-h-9 items-center rounded-md border border-border bg-card px-3 text-sm text-primary-text hover:bg-muted"
               >
                 {link.label}
               </a>

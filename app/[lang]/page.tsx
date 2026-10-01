@@ -57,17 +57,17 @@ export default async function Home({ params }: Props) {
     knowsAbout: profile.skills.map((s) => s.name),
   }
 
-  // Server-rendered first paint (and what crawlers see): hero over a CSS neon grid.
+  // Server-rendered first paint (and what crawlers see): hero on a plain warm background.
   const hero = (
     <main
       id="main"
-      className="flex min-h-svh flex-col items-center justify-center gap-4 neon-grid px-4 text-center"
+      className="paper flex min-h-svh flex-col items-center justify-center gap-4 px-4 text-center"
     >
-      <h1 className="animate-flicker font-display text-5xl tracking-[0.25em] text-neon-pink uppercase text-glow sm:text-7xl">
+      <h1 className="text-5xl font-bold sm:text-7xl">
         {dict.site.name}
       </h1>
-      <p className="text-lg text-neon-cyan">{dict.site.role}</p>
-      <p className="max-w-md text-foreground/90">{dict.site.tagline}</p>
+      <p className="text-lg font-medium text-primary-text">{dict.site.role}</p>
+      <p className="max-w-md text-foreground">{dict.site.tagline}</p>
       <p className="font-mono text-sm text-muted-foreground">
         {dict.hub.loading}
       </p>

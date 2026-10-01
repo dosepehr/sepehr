@@ -3,13 +3,13 @@
 import { PerformanceMonitor } from "@react-three/drei"
 import { Canvas } from "@react-three/fiber"
 import { Suspense, useState } from "react"
+import * as THREE from "three"
 import { GAMES } from "@/components/Games/registry"
 import { useStage, type PerfTier } from "@/lib/store/stage"
 import type { ArcadeData } from "./arcade.types"
 import CameraRig from "./CameraRig"
-import Effects from "./Effects"
+import DriveScene from "./DriveScene"
 import { HOTSPOTS } from "./hotspots"
-import NeonDriveScene from "./NeonDriveScene"
 import { usePalette } from "./palette"
 import Room, { WALL_SLOTS } from "./Room"
 
@@ -55,7 +55,13 @@ export default function Scene({
     <Canvas
       dpr={DPR[tier]}
       frameloop={covered ? "never" : "always"}
-      gl={{ antialias: tier !== "low", powerPreference: "high-performance" }}
+      shadows={tier !== "low"}
+      gl={{
+        antialias: tier !== "low",
+        powerPreference: "high-performance",
+        // Neutral keeps wall, wood and cabinet colors true (ACES washes them out).
+        toneMapping: THREE.NeutralToneMapping,
+      }}
       camera={{
         position: HOTSPOTS.overview.position,
         fov: 50,
@@ -79,14 +85,13 @@ export default function Scene({
       )}
       <Suspense fallback={null}>
         {driving ? (
-          <NeonDriveScene />
+          <DriveScene />
         ) : (
           <>
             <Room data={data} />
             <CameraRig projectSlugs={projectSlugs} gameSlots={WALL_SLOTS} />
           </>
         )}
-        <Effects />
       </Suspense>
     </Canvas>
   )

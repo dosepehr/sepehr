@@ -2,6 +2,7 @@
 
 import { X } from "lucide-react"
 import { useRouter, usePathname } from "next/navigation"
+import { useTheme } from "next-themes"
 import { useEffect, useRef, useState, type KeyboardEvent } from "react"
 import { useDictionary } from "@/components/DictionaryProvider"
 import type { NavTarget } from "@/components/Arcade/actions"
@@ -32,6 +33,7 @@ export default function Terminal({
   const router = useRouter()
   const pathname = usePathname()
   const discover = useDiscover()
+  const { resolvedTheme, setTheme } = useTheme()
   const [lines, setLines] = useState<Line[]>([{ kind: "out", text: t.welcome }])
   const [value, setValue] = useState("")
   const [history, setHistory] = useState<string[]>([])
@@ -89,9 +91,18 @@ export default function Terminal({
         }
         break
       }
-      case "theme":
-        out.push({ kind: "out", text: t.theme })
+      case "theme": {
+        const requested = args[0]
+        const next =
+          requested === "light" || requested === "dark"
+            ? requested
+            : resolvedTheme === "dark"
+              ? "light"
+              : "dark"
+        setTheme(next)
+        out.push({ kind: "out", text: t.theme.replace("{theme}", next) })
         break
+      }
       case "clear":
         setLines([])
         setValue("")
@@ -149,22 +160,22 @@ export default function Terminal({
       aria-label={t.title}
       dir="ltr"
       lang={lang}
-      className="scanlines fixed inset-x-4 bottom-4 z-40 mx-auto flex max-h-[60svh] max-w-2xl flex-col overflow-hidden rounded-lg bg-[#04120b]/95 font-mono text-sm text-[#5dff9d] shadow-[0_0_40px_rgba(93,255,157,0.25)] neon-border"
+      className="fixed inset-x-4 bottom-4 z-40 mx-auto flex max-h-[60svh] max-w-2xl flex-col overflow-hidden rounded-lg border border-border bg-card font-mono text-sm text-card-foreground shadow-2xl"
     >
-      <header className="relative z-10 flex items-center justify-between border-b border-[#5dff9d]/30 px-3 py-1.5">
-        <span className="text-glow">{t.title}</span>
+      <header className="flex items-center justify-between border-b border-border px-3 py-1.5">
+        <span className="font-semibold">{t.title}</span>
         <button
           type="button"
           onClick={onClose}
           aria-label={dict.games.exit}
-          className="inline-flex size-9 items-center justify-center rounded hover:bg-white/10"
+          className="inline-flex size-9 items-center justify-center rounded hover:bg-muted"
         >
           <X className="size-4" />
         </button>
       </header>
       <div
         ref={log}
-        className="relative z-10 flex-1 overflow-y-auto px-3 py-2"
+        className="flex-1 overflow-y-auto px-3 py-2"
         aria-live="polite"
       >
         {lines.map((line, i) => (
@@ -172,9 +183,9 @@ export default function Terminal({
             key={i}
             className={
               line.kind === "err"
-                ? "whitespace-pre-wrap text-[#ff7a7a]"
+                ? "whitespace-pre-wrap text-destructive-text"
                 : line.kind === "in"
-                  ? "whitespace-pre-wrap text-[#b5ffd1]"
+                  ? "whitespace-pre-wrap text-primary-text"
                   : "whitespace-pre-wrap"
             }
             dir="auto"
@@ -183,8 +194,10 @@ export default function Terminal({
           </pre>
         ))}
       </div>
-      <label className="relative z-10 flex items-center gap-2 border-t border-[#5dff9d]/30 px-3 py-2">
-        <span aria-hidden>$</span>
+      <label className="flex items-center gap-2 border-t border-border px-3 py-2">
+        <span aria-hidden className="text-primary-text">
+          $
+        </span>
         <span className="sr-only">{t.placeholder}</span>
         <input
           ref={input}
@@ -195,7 +208,7 @@ export default function Terminal({
           autoCapitalize="off"
           autoComplete="off"
           spellCheck={false}
-          className="flex-1 bg-transparent text-[#b5ffd1] caret-[#5dff9d] outline-none placeholder:text-[#5dff9d]/60"
+          className="flex-1 bg-transparent text-foreground caret-primary outline-none placeholder:text-muted-foreground"
         />
       </label>
     </section>

@@ -1,60 +1,78 @@
 "use client"
 
-import { MeshReflectorMaterial } from "@react-three/drei"
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import * as THREE from "three"
-import { useStage } from "@/lib/store/stage"
 import { usePalette } from "./palette"
-import { gridFragment, gridVertex } from "./shaders"
+
+/** Deterministic pseudo-random so the boards look the same on every load. */
+function rng(seed: number) {
+  let s = seed
+  return () => (s = (s * 16807) % 2147483647) / 2147483647
+}
+
+/** Procedural wood boards: low-contrast grain, seams and staggered butt joints. */
+function usePlankTexture(base: string, seam: string) {
+  const texture = useMemo(() => {
+    const size = 1024
+    const canvas = document.createElement("canvas")
+    canvas.width = canvas.height = size
+    const ctx = canvas.getContext("2d")!
+    const rand = rng(7)
+    const boards = 16
+    const h = size / boards
+
+    ctx.fillStyle = base
+    ctx.fillRect(0, 0, size, size)
+    for (let i = 0; i < boards; i++) {
+      const y = i * h
+      // Each board is a touch lighter or darker than its neighbours.
+      const shade = (rand() - 0.5) * 0.1
+      ctx.fillStyle =
+        shade > 0 ? `rgba(255,255,255,${shade})` : `rgba(0,0,0,${-shade})`
+      ctx.fillRect(0, y, size, h)
+      // Faint grain.
+      ctx.strokeStyle = "rgba(70,45,20,0.07)"
+      ctx.lineWidth = 1
+      for (let k = 0; k < 10; k++) {
+        const gy = y + rand() * h
+        ctx.beginPath()
+        ctx.moveTo(0, gy)
+        ctx.bezierCurveTo(
+          size * 0.3,
+          gy + (rand() - 0.5) * 5,
+          size * 0.65,
+          gy + (rand() - 0.5) * 5,
+          size,
+          gy + (rand() - 0.5) * 3
+        )
+        ctx.stroke()
+      }
+      // Seams between boards, and one staggered butt joint per board.
+      ctx.fillStyle = seam
+      ctx.fillRect(0, y, size, 2)
+      ctx.fillRect(rand() * size, y, 2, h)
+    }
+
+    const tex = new THREE.CanvasTexture(canvas)
+    tex.colorSpace = THREE.SRGBColorSpace
+    tex.wrapS = tex.wrapT = THREE.RepeatWrapping
+    tex.repeat.set(3, 3)
+    tex.anisotropy = 8
+    return tex
+  }, [base, seam])
+
+  useEffect(() => () => texture.dispose(), [texture])
+  return texture
+}
 
 export default function Floor() {
   const palette = usePalette()
-  const tier = useStage((s) => s.tier)
-  const uniforms = useMemo(
-    () => ({
-      uColor: { value: new THREE.Color() },
-      uScroll: { value: 0 },
-      uSize: { value: 1 },
-      uFade: { value: 16 },
-    }),
-    []
-  )
-  uniforms.uColor.value.set(palette.pink)
+  const map = usePlankTexture(palette.floor, palette.plank)
 
   return (
-    <group>
-      <mesh rotation-x={-Math.PI / 2} position-y={-0.001}>
-        <planeGeometry args={[18, 16]} />
-        {tier === "high" ? (
-          <MeshReflectorMaterial
-            color={palette.floor}
-            resolution={512}
-            blur={[300, 60]}
-            mixBlur={1}
-            mixStrength={6}
-            roughness={0.9}
-            metalness={0.4}
-            mirror={0.5}
-          />
-        ) : (
-          <meshStandardMaterial
-            color={palette.floor}
-            roughness={0.6}
-            metalness={0.3}
-          />
-        )}
-      </mesh>
-      <mesh rotation-x={-Math.PI / 2} position={[0, 0.002, 0.5]}>
-        <planeGeometry args={[18, 16]} />
-        <shaderMaterial
-          vertexShader={gridVertex}
-          fragmentShader={gridFragment}
-          uniforms={uniforms}
-          transparent
-          depthWrite={false}
-          toneMapped={false}
-        />
-      </mesh>
-    </group>
+    <mesh rotation-x={-Math.PI / 2} receiveShadow>
+      <planeGeometry args={[18, 16]} />
+      <meshStandardMaterial map={map} roughness={0.7} metalness={0} />
+    </mesh>
   )
 }

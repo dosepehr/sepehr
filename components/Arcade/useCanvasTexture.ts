@@ -10,13 +10,15 @@ export type LabelOptions = {
   color?: string
   background?: string
   /** CSS custom property holding the font family (set by next/font on <html>). */
-  fontVar?: "--font-display" | "--font-fa" | "--font-mono"
+  fontVar?: "--font-sans" | "--font-fa" | "--font-mono"
   weight?: number
   dir?: "ltr" | "rtl"
   align?: CanvasTextAlign
-  glow?: boolean
   lineHeight?: number
 }
+
+/** Backing-store scale: labels stay crisp when the camera moves in. */
+const SCALE = 2
 
 function fontFamily(fontVar: string) {
   const value = getComputedStyle(document.documentElement)
@@ -35,23 +37,22 @@ export function useCanvasTexture(text: string, options: LabelOptions = {}) {
     width = 512,
     height = 128,
     fontSize = 64,
-    color = "#ff2d95",
+    color = "#261d16",
     background = "transparent",
-    fontVar = "--font-display",
+    fontVar = "--font-sans",
     weight = 700,
     dir = "ltr",
     align = "center",
-    glow = true,
     lineHeight = 1.25,
   } = options
 
   const texture = useMemo(() => {
     const canvas = document.createElement("canvas")
-    canvas.width = width
-    canvas.height = height
+    canvas.width = width * SCALE
+    canvas.height = height * SCALE
     const tex = new THREE.CanvasTexture(canvas)
     tex.colorSpace = THREE.SRGBColorSpace
-    tex.anisotropy = 4
+    tex.anisotropy = 8
     return tex
   }, [width, height])
 
@@ -61,6 +62,7 @@ export function useCanvasTexture(text: string, options: LabelOptions = {}) {
       if (cancelled) return
       const canvas = texture.image as HTMLCanvasElement
       const ctx = canvas.getContext("2d")!
+      ctx.setTransform(SCALE, 0, 0, SCALE, 0, 0)
       ctx.clearRect(0, 0, width, height)
       if (background !== "transparent") {
         ctx.fillStyle = background
@@ -71,10 +73,6 @@ export function useCanvasTexture(text: string, options: LabelOptions = {}) {
       ctx.textBaseline = "middle"
       ctx.font = `${weight} ${fontSize}px ${fontFamily(fontVar)}`
       ctx.fillStyle = color
-      if (glow) {
-        ctx.shadowColor = color
-        ctx.shadowBlur = fontSize / 4
-      }
       const lines = text.split("\n")
       const x =
         align === "center"
@@ -107,7 +105,6 @@ export function useCanvasTexture(text: string, options: LabelOptions = {}) {
     weight,
     dir,
     align,
-    glow,
     lineHeight,
   ])
 

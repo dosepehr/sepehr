@@ -1,4 +1,4 @@
-import { drawBackdrop, glowRect, glowText, NEON } from "../engine/draw"
+import { drawBackdrop, drawText, SCREEN } from "../engine/draw"
 import type { GameDef } from "../engine/types"
 import {
   H,
@@ -15,42 +15,36 @@ const TechCatcher: GameDef<TechCatcherState> = {
   height: H,
   init,
   step,
-  render(ctx, state, time) {
-    drawBackdrop(ctx, W, H, time)
+  render(ctx, state) {
+    drawBackdrop(ctx, W, H)
     for (const item of state.items) {
       ctx.save()
       ctx.beginPath()
-      ctx.arc(item.x, item.y, 16, 0, Math.PI * 2)
+      ctx.arc(item.x, item.y, 17, 0, Math.PI * 2)
       ctx.fillStyle = item.bug
-        ? "rgba(255,92,92,0.15)"
-        : "rgba(34,229,255,0.12)"
+        ? "rgba(255,138,120,0.18)"
+        : "rgba(95,212,204,0.16)"
       ctx.fill()
       ctx.restore()
-      glowText(
+      drawText(
         ctx,
         item.bug ? `✖ ${item.label}` : item.label,
         item.x,
         item.y,
-        item.bug ? NEON.red : NEON.cyan,
-        12
+        item.bug ? SCREEN.coral : SCREEN.teal,
+        14
       )
     }
-    glowRect(
-      ctx,
-      state.playerX - PLAYER_W / 2,
-      PLAYER_Y - 6,
-      PLAYER_W,
-      12,
-      NEON.pink
-    )
+    ctx.fillStyle = SCREEN.white
+    ctx.fillRect(state.playerX - PLAYER_W / 2, PLAYER_Y - 6, PLAYER_W, 12)
     if (state.combo > 1)
-      glowText(
+      drawText(
         ctx,
         `x${state.combo}`,
         state.playerX,
-        PLAYER_Y + 20,
-        NEON.yellow,
-        11
+        PLAYER_Y + 22,
+        SCREEN.amber,
+        13
       )
   },
 }

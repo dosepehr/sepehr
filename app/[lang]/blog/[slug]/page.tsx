@@ -44,14 +44,17 @@ export default async function PostPage({ params }: Props) {
     <PageShell lang={lang} dict={dict} title={post.title}>
       <p className="text-sm text-muted-foreground">
         <time dateTime={post.date}>{fmt.format(new Date(post.date))}</time> ·{" "}
-        {post.minutes} {dict.blog.minutes}
+        {new Intl.NumberFormat(lang === "fa" ? "fa-IR" : "en-US").format(
+          post.minutes
+        )}{" "}
+        {dict.blog.minutes}
       </p>
       <article className="mt-4 max-w-3xl">
         <Content />
       </article>
       <Link
         href={`/${lang}/blog`}
-        className="mt-8 inline-flex min-h-11 items-center text-neon-cyan underline underline-offset-4"
+        className="mt-8 inline-flex min-h-11 items-center text-primary-text underline underline-offset-4"
       >
         {dict.blog.back}
       </Link>

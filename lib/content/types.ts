@@ -1,4 +1,5 @@
 import type { GameId } from "@/lib/store/scores"
+import type { Tone } from "@/lib/tone"
 
 export type ProjectMeta = {
   title: string
@@ -7,8 +8,8 @@ export type ProjectMeta = {
   role: string
   stack: string[]
   tags: string[]
-  /** Neon color of the cabinet (CSS color). */
-  color: string
+  /** Accent of the cabinet body and card bar (decorative, never text). */
+  tone: Tone
   links?: { label: string; href: string }[]
   /** Optional game this cabinet also launches. */
   game?: GameId

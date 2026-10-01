@@ -30,7 +30,7 @@ export default function ContactContent({
         <ContactForm />
       </div>
       <aside className="flex flex-col gap-3">
-        <h2 className="font-display text-sm tracking-wide text-neon-cyan">
+        <h2 className="text-sm font-semibold text-foreground">
           {dict.contact.direct}
         </h2>
         <ul className="flex flex-col gap-2">
@@ -40,7 +40,7 @@ export default function ContactContent({
                 href={href}
                 target={href.startsWith("http") ? "_blank" : undefined}
                 rel="me noreferrer"
-                className="inline-flex min-h-11 items-center gap-2 text-sm hover:text-neon-cyan"
+                className="inline-flex min-h-11 items-center gap-2 text-sm text-primary-text underline-offset-4 hover:underline"
                 dir="ltr"
               >
                 <Icon className="size-4" aria-hidden />
@@ -52,7 +52,7 @@ export default function ContactContent({
             <a
               href={`/resume/${lang}.pdf`}
               download
-              className="inline-flex min-h-11 items-center gap-2 rounded-md px-3 text-sm text-neon-yellow neon-border hover:bg-neon-yellow/10"
+              className="inline-flex min-h-11 items-center gap-2 rounded-md border border-border bg-card px-3 text-sm text-primary-text hover:bg-muted"
             >
               <Download className="size-4" aria-hidden />
               {dict.contact.resume}

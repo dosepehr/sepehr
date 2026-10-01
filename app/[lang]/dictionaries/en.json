@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Sepehr · Synthwave Arcade",
-    "description": "Frontend and fullstack developer. Step into a neon arcade of projects, games and secrets."
+    "title": "Sepehr · Arcade Portfolio",
+    "description": "Frontend and fullstack developer. Step into an arcade of projects, games and secrets."
   },
   "site": {
     "name": "Sepehr",
@@ -30,7 +30,7 @@
     "enter3d": "Enter 3D arcade",
     "liteNote": "You're in Lite mode: same content, no WebGL.",
     "escHint": "Esc to step back",
-    "clickHint": "Click a glowing thing",
+    "clickHint": "Click an object to explore",
     "fallback": "The 3D arcade couldn't start on this device, so here's the Lite version."
   },
   "hud": {
@@ -40,7 +40,9 @@
     "secrets": "Secrets",
     "language": "فارسی",
     "menu": "Menu",
-    "openTerminal": "Open terminal"
+    "openTerminal": "Open terminal",
+    "themeToDark": "Switch to dark theme",
+    "themeToLight": "Switch to light theme"
   },
   "projects": {
     "title": "Projects",
@@ -108,8 +110,8 @@
         "controls": "← → to move, Space to fire"
       },
       "neon-drive": {
-        "name": "Neon Drive",
-        "blurb": "Endless synthwave runner. Three lanes, no brakes.",
+        "name": "Sunny Drive",
+        "blurb": "Endless road-trip runner. Three lanes, no brakes.",
         "controls": "← → or A D to switch lanes"
       },
       "friday-night": {
@@ -125,13 +127,34 @@
     "found": "Secret found!",
     "allFound": "All secrets found. The secret cabinet is open.",
     "list": {
-      "konami": { "name": "Up up down down", "clue": "Old cheat codes never die." },
-      "out-of-order": { "name": "Percussive maintenance", "clue": "Some machines just need a few taps." },
-      "sudo-hire-me": { "name": "Root access", "clue": "The terminal respects authority." },
-      "golden-coin": { "name": "Golden coin", "clue": "Something shiny hides in the tower." },
-      "leet-score": { "name": "Elite", "clue": "Score like it's 1337." },
-      "console": { "name": "Dev tools", "clue": "Developers read the console." },
-      "neon-cat": { "name": "Roof cat", "clue": "Look up. Way up." }
+      "konami": {
+        "name": "Up up down down",
+        "clue": "Old cheat codes never die."
+      },
+      "out-of-order": {
+        "name": "Percussive maintenance",
+        "clue": "Some machines just need a few taps."
+      },
+      "sudo-hire-me": {
+        "name": "Root access",
+        "clue": "The terminal respects authority."
+      },
+      "golden-coin": {
+        "name": "Golden coin",
+        "clue": "Something shiny hides in the tower."
+      },
+      "leet-score": {
+        "name": "Elite",
+        "clue": "Score like it's 1337."
+      },
+      "console": {
+        "name": "Dev tools",
+        "clue": "Developers read the console."
+      },
+      "neon-cat": {
+        "name": "Roof cat",
+        "clue": "Look up. Way up."
+      }
     }
   },
   "terminal": {
@@ -139,8 +162,8 @@
     "welcome": "Welcome to the arcade shell. Type 'help' for commands.",
     "help": "Commands: help, about, skills, projects, blog, contact, resume, games, lang <en|fa>, theme, clear, exit",
     "notFound": "command not found",
-    "about": "Frontend / fullstack developer who likes fast UIs, typed code and neon.",
-    "theme": "Only one theme here: synthwave, forever.",
+    "about": "Frontend / fullstack developer who likes fast UIs, typed code and a bit of play.",
+    "theme": "Theme set to {theme}.",
     "hireMe": "Permission granted. Opening a direct line…",
     "sudo": "sepehr is not in the sudoers file. This incident will be reported. (Try something more specific.)",
     "placeholder": "type a command"
@@ -159,6 +182,6 @@
     "home": "Back to the arcade"
   },
   "footer": {
-    "built": "Built with Next.js, React Three Fiber and too much neon."
+    "built": "Built with Next.js and React Three Fiber."
   }
 }

@@ -15,55 +15,57 @@ import {
 } from "@/components/ui/Dialog/components"
 import { sfx } from "@/lib/audio/sfx"
 import { useStage, type PanelId } from "@/lib/store/stage"
+import { toneVar, type Tone } from "@/lib/tone"
 
-/** Neon overlay panels opened from hotspots. Content is shared with the 2D pages. */
+/** Overlay panels opened from hotspots. Content is shared with the 2D pages. */
 export default function PanelHost({ data }: { data: ArcadeData }) {
   const { dict, lang } = useDictionary()
   const panel = useStage((s) => s.panel)
   const slug = useStage((s) => s.projectSlug)
   const project = data.projects.find((p) => p.slug === slug)
 
+  // `tone` is the decorative top bar only; text always uses semantic tokens.
   const content: Record<
     PanelId,
-    { title: string; color: string; body: ReactNode; href?: string }
+    { title: string; tone: Tone; body: ReactNode; href?: string }
   > = {
     project: {
       title: project?.title ?? dict.projects.title,
-      color: project?.color ?? "var(--neon-pink)",
+      tone: project?.tone ?? "coral",
       body: slug ? data.projectBodies[slug] : data.panels.projects,
       href: slug ? `/${lang}/projects/${slug}` : `/${lang}/projects`,
     },
     blog: {
       title: dict.blog.title,
-      color: "var(--neon-cyan)",
+      tone: "teal",
       body: data.panels.blog,
       href: `/${lang}/blog`,
     },
     about: {
       title: dict.about.title,
-      color: "var(--neon-purple)",
+      tone: "indigo",
       body: data.panels.about,
       href: `/${lang}/about`,
     },
     skills: {
       title: dict.nav.skills,
-      color: "var(--neon-yellow)",
+      tone: "amber",
       body: <SkillsBoard skills={data.skills} dict={dict} />,
     },
     contact: {
       title: dict.contact.title,
-      color: "var(--neon-pink)",
+      tone: "coral",
       body: data.panels.contact,
       href: `/${lang}/contact`,
     },
     resume: {
       title: dict.nav.resume,
-      color: "var(--neon-yellow)",
+      tone: "amber",
       body: (
         <a
           href={`/resume/${lang}.pdf`}
           download
-          className="inline-flex min-h-11 items-center rounded-md px-4 text-neon-yellow neon-border hover:bg-neon-yellow/10"
+          className="inline-flex min-h-11 w-fit items-center rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
         >
           {dict.contact.resume}
         </a>
@@ -71,7 +73,7 @@ export default function PanelHost({ data }: { data: ArcadeData }) {
     },
     games: {
       title: dict.games.title,
-      color: "var(--neon-cyan)",
+      tone: "teal",
       body: <GamesList include3d />,
     },
   }
@@ -90,23 +92,24 @@ export default function PanelHost({ data }: { data: ArcadeData }) {
       {active && (
         <DialogContent
           aria-describedby={undefined}
-          style={{ color: active.color }}
-          className="scanlines max-w-3xl bg-popover/95 text-popover-foreground neon-border sm:max-w-3xl"
+          className="max-w-3xl border border-border bg-popover text-popover-foreground shadow-2xl sm:max-w-3xl"
         >
-          <DialogHeader className="bg-popover/95">
-            <DialogTitle
-              className="font-display tracking-wide text-glow"
-              style={{ color: active.color }}
-            >
+          <span
+            aria-hidden
+            className="h-1.5 shrink-0 rounded-t-xl"
+            style={{ backgroundColor: toneVar(active.tone) }}
+          />
+          <DialogHeader className="bg-popover">
+            <DialogTitle className="text-xl font-semibold">
               {active.title}
             </DialogTitle>
           </DialogHeader>
-          <DialogBody className="relative z-10 text-popover-foreground">
+          <DialogBody className="text-popover-foreground">
             {active.body}
             {active.href && (
               <Link
                 href={active.href}
-                className="text-sm text-neon-cyan underline underline-offset-4"
+                className="self-start text-sm font-medium text-primary-text underline underline-offset-4"
               >
                 {dict.hub.classicView} →
               </Link>

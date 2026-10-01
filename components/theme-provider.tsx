@@ -3,8 +3,9 @@
 import * as React from "react"
 import { ThemeProvider as NextThemesProvider } from "next-themes"
 
-// The arcade is dark-only. The old `d` hotkey that toggled the theme was
-// removed because it fired during games (WASD).
+// Daylight by default, with a calm dark theme the visitor can switch to
+// (see ThemeToggle). There is intentionally no keyboard shortcut for it:
+// games and the arcade room use letter keys (WASD).
 function ThemeProvider({
   children,
   ...props
@@ -12,8 +13,8 @@ function ThemeProvider({
   return (
     <NextThemesProvider
       attribute="class"
-      forcedTheme="dark"
-      defaultTheme="dark"
+      defaultTheme="light"
+      enableSystem={false}
       disableTransitionOnChange
       {...props}
     >

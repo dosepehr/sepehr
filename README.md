@@ -1,4 +1,4 @@
-# Sepehr · Synthwave Arcade
+# Sepehr · Arcade Portfolio
 
 Portfolio built as a procedural 3D arcade room (Next.js 16, React Three Fiber, Rapier), with a 2D
 "Lite" hub and classic pages for phones, crawlers and anyone who prefers plain HTML.

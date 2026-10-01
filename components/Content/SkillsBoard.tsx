@@ -23,15 +23,15 @@ export default function SkillsBoard({
         return (
           <li
             key={skill.name}
-            className="flex items-center gap-3 rounded-md bg-card/70 px-3 py-2"
+            className="flex items-center gap-3 rounded-md border border-border bg-card px-3 py-2"
           >
-            <span className="w-6 text-neon-yellow">
+            <span className="w-6 text-muted-foreground">
               {String(i + 1).padStart(2, "0")}
             </span>
             <span className="flex-1 text-foreground">{skill.name}</span>
             {caught && (
               <Star
-                className="size-4 fill-neon-yellow text-neon-yellow"
+                className="size-4 fill-warning-text text-warning-text"
                 aria-label={dict.about.unlocked}
               />
             )}
@@ -40,7 +40,7 @@ export default function SkillsBoard({
               aria-hidden
             >
               <span
-                className="block h-full bg-linear-to-r from-neon-purple to-neon-pink"
+                className="block h-full rounded-full bg-primary"
                 style={{ width: `${skill.level}%` }}
               />
             </span>

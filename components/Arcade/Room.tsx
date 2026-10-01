@@ -8,6 +8,8 @@ import { useDiscover } from "@/lib/hooks/useDiscover"
 import { allQuestsFound, useQuests } from "@/lib/store/quests"
 import type { GameId } from "@/lib/store/scores"
 import { useStage } from "@/lib/store/stage"
+import { TONE_HEX } from "@/lib/tone"
+import { GAMES } from "@/components/Games/registry"
 import { launchGame } from "./actions"
 import type { ArcadeData } from "./arcade.types"
 import Cabinet from "./Cabinet"
@@ -17,9 +19,9 @@ import { usePalette } from "./palette"
 import {
   BlogRack,
   CrtDesk,
-  NeonCat,
   Payphone,
   Printer,
+  RoofCat,
   ScoreBoard,
 } from "./Props"
 import Walls from "./Walls"
@@ -37,6 +39,7 @@ export const WALL_SLOTS = [...ROOM_GAMES, "out-of-order", "friday-night"]
 
 export default function Room({ data }: { data: ArcadeData }) {
   const palette = usePalette()
+  const shadows = useStage((s) => s.tier) !== "low"
   const { dict } = useDictionary()
   const discover = useDiscover()
   const secretOpen = useQuests((s) => allQuestsFound(s.found))
@@ -44,27 +47,27 @@ export default function Room({ data }: { data: ArcadeData }) {
   const [booted, setBooted] = useState(false)
   const stage = useStage.getState
 
-  const gameColors: Record<string, string> = {
-    "tech-catcher": palette.cyan,
-    "bug-blaster": palette.purple,
-    "neon-drive": palette.pink,
-    "friday-night": palette.yellow,
-  }
+  const gameColor = (game: GameId) => TONE_HEX[GAMES[game].tone]
 
   return (
     <group>
-      <ambientLight intensity={0.35} color={palette.purple} />
-      <pointLight
-        position={[0, 5, 2]}
-        intensity={25}
-        color={palette.pink}
-        distance={18}
-      />
-      <pointLight
-        position={[-5, 4, -3]}
-        intensity={15}
-        color={palette.cyan}
-        distance={14}
+      {/* Daylight: a warm sky/ground fill plus one soft-shadowed sun. */}
+      <hemisphereLight args={[palette.sky, palette.ground, palette.hemi]} />
+      <directionalLight
+        position={[6, 9, 6]}
+        color={palette.sunColor}
+        intensity={palette.sunIntensity}
+        castShadow={shadows}
+        shadow-mapSize={[2048, 2048]}
+        shadow-camera-left={-12}
+        shadow-camera-right={12}
+        shadow-camera-top={10}
+        shadow-camera-bottom={-10}
+        shadow-camera-near={1}
+        shadow-camera-far={30}
+        shadow-bias={-0.0004}
+        shadow-normalBias={0.03}
+        shadow-radius={4}
       />
 
       <Floor />
@@ -76,7 +79,7 @@ export default function Room({ data }: { data: ArcadeData }) {
           key={project.slug}
           id={`project:${project.slug}`}
           label={project.title}
-          color={project.color}
+          color={TONE_HEX[project.tone]}
           position={[projectX(i, data.projects.length), 0, PROJECT_ROW_Z]}
           onActivate={() =>
             stage().focusOn(`project:${project.slug}`, "project", project.slug)
@@ -90,7 +93,7 @@ export default function Room({ data }: { data: ArcadeData }) {
           key={game}
           id={`game:${game}`}
           label={dict.games.list[game].name}
-          color={gameColors[game]}
+          color={gameColor(game)}
           position={[GAME_WALL_X, 0, gameZ(i)]}
           rotation={Math.PI / 2}
           onActivate={() => launchGame(game)}
@@ -99,7 +102,7 @@ export default function Room({ data }: { data: ArcadeData }) {
       <Cabinet
         id="out-of-order"
         label={booted ? dict.games.list["tech-catcher"].name : "???"}
-        color={booted ? palette.cyan : "#5a4a6a"}
+        color={booted ? TONE_HEX.teal : "#8a8f98"}
         broken={!booted}
         position={[GAME_WALL_X, 0, gameZ(3)]}
         rotation={Math.PI / 2}
@@ -117,7 +120,7 @@ export default function Room({ data }: { data: ArcadeData }) {
         <Cabinet
           id="game:friday-night"
           label={dict.games.list["friday-night"].name}
-          color={palette.yellow}
+          color={gameColor("friday-night")}
           position={[GAME_WALL_X, 0, gameZ(4)]}
           rotation={Math.PI / 2}
           onActivate={() => launchGame("friday-night")}
@@ -141,7 +144,7 @@ export default function Room({ data }: { data: ArcadeData }) {
       />
       <Payphone onActivate={() => stage().focusOn("contact", "contact")} />
       <Printer onActivate={() => stage().focusOn("resume", "resume")} />
-      <NeonCat
+      <RoofCat
         onActivate={() => {
           stage().focusOn("roof")
           discover("neon-cat")
@@ -157,7 +160,7 @@ export default function Room({ data }: { data: ArcadeData }) {
         scale={20}
         far={3}
         blur={2.5}
-        opacity={0.55}
+        opacity={0.35}
         resolution={512}
         frames={1}
       />

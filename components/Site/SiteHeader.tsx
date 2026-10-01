@@ -2,6 +2,7 @@ import Link from "next/link"
 import type { Locale } from "@/lib/i18n/config"
 import type { Dictionary } from "@/lib/i18n/dictionary"
 import LocaleSwitch from "./LocaleSwitch"
+import ThemeToggle from "./ThemeToggle"
 
 export default function SiteHeader({
   lang,
@@ -17,14 +18,14 @@ export default function SiteHeader({
     { href: `/${lang}/contact`, label: dict.nav.contact },
   ]
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-border bg-background">
       <nav
         aria-label="Main"
         className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-4 py-3"
       >
         <Link
           href={`/${lang}`}
-          className="font-display text-lg tracking-widest text-neon-pink uppercase text-glow"
+          className="text-lg font-semibold"
         >
           {dict.site.name}
         </Link>
@@ -33,12 +34,15 @@ export default function SiteHeader({
             <li key={link.href}>
               <Link
                 href={link.href}
-                className="inline-flex h-9 items-center rounded-md px-3 text-foreground/90 hover:bg-muted hover:text-neon-cyan"
+                className="inline-flex h-9 items-center rounded-md px-3 font-medium text-foreground hover:bg-muted"
               >
                 {link.label}
               </Link>
             </li>
           ))}
+          <li>
+            <ThemeToggle className="size-9" />
+          </li>
           <li>
             <LocaleSwitch />
           </li>

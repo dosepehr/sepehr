@@ -8,14 +8,11 @@ export default function Label({
   text,
   size,
   options,
-  intensity = 1,
   ...props
 }: {
   text: string
   size: [number, number]
   options?: LabelOptions
-  /** >1 pushes the label past the bloom threshold. */
-  intensity?: number
 } & ThreeElements["mesh"]) {
   const aspect = size[0] / size[1]
   const height = options?.height ?? 128
@@ -27,13 +24,7 @@ export default function Label({
   return (
     <mesh {...props}>
       <planeGeometry args={size} />
-      <meshBasicMaterial
-        map={map}
-        color={[intensity, intensity, intensity]}
-        transparent
-        toneMapped={false}
-        depthWrite={false}
-      />
+      <meshBasicMaterial map={map} transparent toneMapped={false} depthWrite={false} />
     </mesh>
   )
 }

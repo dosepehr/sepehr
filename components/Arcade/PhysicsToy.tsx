@@ -13,9 +13,10 @@ import { useDictionary } from "@/components/DictionaryProvider"
 import { sfx } from "@/lib/audio/sfx"
 import { useDiscover } from "@/lib/hooks/useDiscover"
 import { useStage } from "@/lib/store/stage"
+import { TONE_HEX } from "@/lib/tone"
 import Hotspot from "./Hotspot"
 import Label from "./Label"
-import { usePalette } from "./palette"
+import { MARQUEE_BG, usePalette } from "./palette"
 
 const ORIGIN = new THREE.Vector3(4.8, 0, 5)
 const TABLE_Y = 0.7
@@ -74,14 +75,12 @@ function Block({
       restitution={0.05}
       mass={golden ? 0.6 : 0.4}
     >
-      <mesh>
+      <mesh castShadow receiveShadow>
         <boxGeometry args={[BLOCK.long, BLOCK.h, BLOCK.w]} />
         <meshStandardMaterial
-          color={golden ? "#c9a227" : "#1a1030"}
-          emissive={golden ? "#ffcc33" : color}
-          emissiveIntensity={golden ? 0.9 : 0.55}
-          metalness={golden ? 0.9 : 0.1}
-          roughness={golden ? 0.25 : 0.6}
+          color={golden ? "#e0b13a" : color}
+          metalness={golden ? 0.6 : 0}
+          roughness={golden ? 0.35 : 0.6}
         />
       </mesh>
       <Label
@@ -89,11 +88,10 @@ function Block({
         size={[0.5, 0.12]}
         position={[0, 0, BLOCK.w / 2 + 0.002]}
         options={{
-          color: golden ? "#fff3b0" : "#ffffff",
+          color: golden ? "#3a2a05" : "#ffffff",
           fontVar: "--font-mono",
           fontSize: 48,
           height: 64,
-          glow: false,
         }}
       />
     </RigidBody>
@@ -101,11 +99,11 @@ function Block({
 }
 
 function Tower({ onCoinMoved }: { onCoinMoved: () => void }) {
-  const palette = usePalette()
   const coin = useRef<RapierRigidBody>(null)
   const start = useRef<THREE.Vector3 | null>(null)
   const done = useRef(false)
-  const colors = [palette.pink, palette.cyan, palette.purple]
+  // Darker tones so the white block labels stay readable.
+  const colors = [TONE_HEX.indigo, TONE_HEX.plum, TONE_HEX.forest]
 
   useFrame(() => {
     if (done.current || !coin.current) return
@@ -190,13 +188,9 @@ export default function PhysicsToy() {
     <group>
       {/* Table (visual) */}
       <group position={ORIGIN.toArray()}>
-        <mesh position={[0, TABLE_Y, 0]}>
+        <mesh position={[0, TABLE_Y, 0]} castShadow receiveShadow>
           <boxGeometry args={[2.2, 0.1, 1.6]} />
-          <meshStandardMaterial
-            color={palette.body}
-            emissive={palette.purple}
-            emissiveIntensity={0.2}
-          />
+          <meshStandardMaterial color={palette.trim} roughness={0.7} />
         </mesh>
         {[-1, 1].flatMap((x) =>
           [-0.7, 0.7].map((z) => (
@@ -212,14 +206,16 @@ export default function PhysicsToy() {
               ? `${dict.nav.physics} · click to fire · R`
               : dict.nav.physics
           }
-          size={[2, 0.24]}
+          size={[2.4, 0.3]}
           position={[0, 2.2, -0.6]}
           options={{
-            color: palette.yellow,
-            fontSize: 44,
-            height: 90,
-            fontVar: lang === "fa" ? "--font-fa" : "--font-display",
+            color: "#ffffff",
+            fontSize: 46,
+            height: 100,
+            fontVar: lang === "fa" ? "--font-fa" : "--font-sans",
+            weight: 700,
             dir: lang === "fa" ? "rtl" : "ltr",
+            background: MARQUEE_BG,
           }}
         />
       </group>
@@ -257,12 +253,9 @@ export default function PhysicsToy() {
             mass={1.5}
             restitution={0.3}
           >
-            <mesh>
+            <mesh castShadow>
               <sphereGeometry args={[0.12, 16, 16]} />
-              <meshBasicMaterial
-                color={new THREE.Color(palette.cyan).multiplyScalar(2)}
-                toneMapped={false}
-              />
+              <meshStandardMaterial color={TONE_HEX.coral} roughness={0.5} />
             </mesh>
           </RigidBody>
         ))}

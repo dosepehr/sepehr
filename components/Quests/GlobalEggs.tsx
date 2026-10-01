@@ -24,10 +24,10 @@ export default function GlobalEggs() {
   const discover = useDiscover()
 
   useEffect(() => {
-    console.log(`%c${ART}`, "color:#ff2d95;font-family:monospace")
+    console.log(`%c${ART}`, "color:#e45e4d;font-family:monospace")
     console.log(
       "%cHey, developer. Type secret() to claim something.",
-      "color:#22e5ff"
+      "color:#008c8d"
     )
     window.secret = () => {
       discover("console")
@@ -45,9 +45,7 @@ export default function GlobalEggs() {
       if (progress === KONAMI.length) {
         progress = 0
         const next =
-          useStage.getState().palette === "vaporwave"
-            ? "synthwave"
-            : "vaporwave"
+          useStage.getState().palette === "golden" ? "normal" : "golden"
         useStage.getState().setPalette(next)
         discover("konami")
       }
@@ -56,10 +54,11 @@ export default function GlobalEggs() {
     return () => window.removeEventListener("keydown", onKey)
   }, [discover])
 
-  // Mirror the palette onto <html> so DOM overlays recolor with the room.
+  // Mirror "golden hour" onto <html> so DOM overlays warm up with the room.
   const palette = useStage((s) => s.palette)
   useEffect(() => {
-    document.documentElement.dataset.palette = palette
+    if (palette === "golden") document.documentElement.dataset.palette = "golden"
+    else delete document.documentElement.dataset.palette
   }, [palette])
 
   return null

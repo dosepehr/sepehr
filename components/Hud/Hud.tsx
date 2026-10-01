@@ -6,10 +6,12 @@ import { go, type NavTarget } from "@/components/Arcade/actions"
 import { useDictionary } from "@/components/DictionaryProvider"
 import QuestTracker from "@/components/Quests/QuestTracker"
 import LocaleSwitch from "@/components/Site/LocaleSwitch"
+import ThemeToggle from "@/components/Site/ThemeToggle"
 import Kbd from "@/components/ui/Kbd"
 import { sfx } from "@/lib/audio/sfx"
 import { cn } from "@/lib/funcs/cn"
 import { usePrefs } from "@/lib/store/prefs"
+import type { GameId } from "@/lib/store/scores"
 import { useStage } from "@/lib/store/stage"
 import SoundToggle from "./SoundToggle"
 
@@ -32,10 +34,23 @@ const isActive = (target: NavTarget, focus: string) =>
       ? focus === "projects" || focus.startsWith("project:")
       : focus === target
 
-export default function Hud() {
+// Every control sits on a solid surface: nothing is text-over-scene, so
+// contrast never depends on what the 3D camera happens to show behind it.
+const surface =
+  "border border-border bg-card text-card-foreground shadow-sm"
+const control =
+  "inline-flex h-11 items-center justify-center rounded-md px-3 text-sm hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
+
+export default function Hud({
+  projectTitles,
+}: {
+  /** slug -> title, for the hover label over project cabinets. */
+  projectTitles: Record<string, string>
+}) {
   const { dict } = useDictionary()
   const focus = useStage((s) => s.focus)
   const game = useStage((s) => s.game)
+  const hovered = useStage((s) => s.hovered)
 
   // Esc steps back (game > terminal > panel > focus). Radix dialogs handle their own Esc.
   useEffect(() => {
@@ -71,37 +86,53 @@ export default function Hud() {
     terminal: dict.nav.terminal,
   }
 
-  const button =
-    "inline-flex h-11 items-center justify-center rounded-md px-3 text-sm hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-ring"
+  // In-scene text is small at overview distance, so name the hovered object here.
+  const hoverLabel = (() => {
+    if (!hovered) return null
+    if (hovered.startsWith("project:")) {
+      return projectTitles[hovered.slice("project:".length)] ?? null
+    }
+    if (hovered.startsWith("game:")) {
+      return dict.games.list[hovered.slice("game:".length) as GameId]?.name
+    }
+    const byId: Record<string, string> = {
+      "out-of-order": dict.games.outOfOrder,
+      desk: dict.nav.about,
+      crt: dict.nav.terminal,
+      skills: dict.nav.skills,
+      blog: dict.nav.blog,
+      contact: dict.nav.contact,
+      resume: dict.nav.resume,
+    }
+    return byId[hovered] ?? null
+  })()
 
   return (
     <div className="pointer-events-none fixed inset-0 z-20 flex flex-col justify-between">
-      <header className="pointer-events-auto flex flex-wrap items-start justify-between gap-3 bg-linear-to-b from-background/80 to-transparent p-4">
-        <div>
-          <h1 className="font-display text-xl tracking-[0.25em] text-neon-pink uppercase text-glow">
+      <header className="pointer-events-auto flex flex-wrap items-start justify-between gap-3 p-4">
+        <div className={cn("rounded-lg px-3 py-2", surface)}>
+          <h1 className="text-lg leading-tight font-semibold">
             {dict.site.name}
           </h1>
-          <p className="text-sm text-neon-cyan">{dict.site.role}</p>
+          <p className="text-sm text-muted-foreground">{dict.site.role}</p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <QuestTracker className="bg-background/60" />
+          <QuestTracker />
           <button
             type="button"
-            className={cn(button, "text-[#5dff9d]")}
+            className={cn(control, surface, "w-11 px-0")}
             onClick={() => go("terminal")}
             aria-label={dict.hud.openTerminal}
             title={dict.hud.openTerminal}
           >
             <TerminalIcon className="size-5" />
           </button>
-          <SoundToggle className={button} />
-          <LocaleSwitch className="h-11 bg-background/60" />
+          <SoundToggle className={cn(control, surface, "w-11 px-0")} />
+          <ThemeToggle className={cn(surface, "hover:bg-muted")} />
+          <LocaleSwitch className="h-11" />
           <button
             type="button"
-            className={cn(
-              button,
-              "gap-2 bg-background/60 text-neon-yellow neon-border"
-            )}
+            className={cn(control, surface, "gap-2")}
             onClick={() => usePrefs.getState().setClassic(true)}
           >
             <Monitor className="size-4" aria-hidden />
@@ -110,8 +141,27 @@ export default function Hud() {
         </div>
       </header>
 
-      <footer className="pointer-events-auto flex flex-col items-center gap-2 bg-linear-to-t from-background/85 to-transparent p-4">
-        <nav aria-label={dict.hud.menu} className="max-w-full overflow-x-auto">
+      {hoverLabel && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 bottom-32 flex justify-center"
+        >
+          <span
+            className={cn(
+              "rounded-full px-4 py-1.5 text-sm font-medium",
+              surface
+            )}
+          >
+            {hoverLabel}
+          </span>
+        </div>
+      )}
+
+      <footer className="pointer-events-auto flex flex-col items-center gap-2 p-4">
+        <nav
+          aria-label={dict.hud.menu}
+          className={cn("max-w-full overflow-x-auto rounded-xl p-1", surface)}
+        >
           <ul className="flex items-center gap-1">
             {NAV.map((target) => (
               <li key={target}>
@@ -123,8 +173,8 @@ export default function Hud() {
                     go(target)
                   }}
                   className={cn(
-                    button,
-                    "whitespace-nowrap text-foreground/90 aria-[current]:bg-neon-pink/15 aria-[current]:text-neon-pink"
+                    control,
+                    "font-medium whitespace-nowrap aria-[current]:bg-primary aria-[current]:text-primary-foreground"
                   )}
                 >
                   {labels[target]}
@@ -133,7 +183,12 @@ export default function Hud() {
             ))}
           </ul>
         </nav>
-        <p className="text-xs text-muted-foreground">
+        <p
+          className={cn(
+            "rounded-md px-3 py-1 text-xs text-muted-foreground",
+            surface
+          )}
+        >
           {dict.hub.clickHint} · <Kbd>Esc</Kbd>{" "}
           {dict.hub.escHint.replace(/^Esc\s*/, "")} · <Kbd>`</Kbd>{" "}
           {dict.nav.terminal}

@@ -5,7 +5,7 @@ import type { ReactNode } from "react"
 import { sfx } from "@/lib/audio/sfx"
 import { useStage } from "@/lib/store/stage"
 
-/** Pointer wrapper: hover glow + pointer cursor, click to activate. */
+/** Pointer wrapper: pointer cursor + hover feedback, click to activate. */
 export default function Hotspot({
   id,
   onActivate,

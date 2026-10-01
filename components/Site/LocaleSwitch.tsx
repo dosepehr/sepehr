@@ -20,7 +20,7 @@ export default function LocaleSwitch({ className }: { className?: string }) {
         document.cookie = `${LOCALE_COOKIE}=${next}; path=/; max-age=31536000; samesite=lax`
       }}
       className={cn(
-        "inline-flex h-9 items-center rounded-md px-3 text-sm text-neon-cyan neon-border hover:bg-neon-cyan/10",
+        "inline-flex h-9 items-center rounded-md border border-border bg-card px-3 text-sm text-card-foreground shadow-sm hover:bg-muted",
         className
       )}
     >

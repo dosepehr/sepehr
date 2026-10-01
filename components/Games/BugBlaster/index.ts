@@ -1,4 +1,4 @@
-import { drawBackdrop, glowRect, glowText, NEON } from "../engine/draw"
+import { drawBackdrop, drawBox, drawText, SCREEN } from "../engine/draw"
 import type { GameDef } from "../engine/types"
 import {
   BOSS_LABEL,
@@ -17,20 +17,20 @@ const BugBlaster: GameDef<BugBlasterState> = {
   init,
   step,
   render(ctx, state, time) {
-    drawBackdrop(ctx, W, H, time)
+    drawBackdrop(ctx, W, H)
     for (const enemy of state.enemies)
-      glowText(ctx, enemy.label, enemy.x, enemy.y, NEON.purple, 13)
+      drawText(ctx, enemy.label, enemy.x, enemy.y, SCREEN.lavender, 15)
     if (state.boss) {
-      glowRect(
+      drawBox(
         ctx,
         state.boss.x - BOSS_W / 2,
         state.boss.y - 15,
         BOSS_W,
         30,
-        NEON.red
+        SCREEN.coral
       )
-      glowText(ctx, BOSS_LABEL, state.boss.x, state.boss.y, NEON.red, 14)
-      ctx.fillStyle = NEON.red
+      drawText(ctx, BOSS_LABEL, state.boss.x, state.boss.y, SCREEN.coral, 15)
+      ctx.fillStyle = SCREEN.coral
       ctx.fillRect(
         20,
         16,
@@ -39,24 +39,20 @@ const BugBlaster: GameDef<BugBlasterState> = {
       )
     }
     for (const shot of state.shots)
-      glowText(ctx, ";", shot.x, shot.y, NEON.cyan, 18)
+      drawText(ctx, ";", shot.x, shot.y, SCREEN.teal, 20)
     for (const shot of state.enemyShots)
-      glowText(ctx, "!", shot.x, shot.y, NEON.yellow, 14)
+      drawText(ctx, "!", shot.x, shot.y, SCREEN.amber, 16)
     const blink = state.invulnerable > 0 && Math.floor(time * 12) % 2 === 0
     if (!blink) {
-      ctx.save()
-      ctx.shadowColor = NEON.pink
-      ctx.shadowBlur = 12
-      ctx.fillStyle = NEON.pink
+      ctx.fillStyle = SCREEN.white
       ctx.beginPath()
       ctx.moveTo(state.playerX, PLAYER_Y - 12)
       ctx.lineTo(state.playerX + 14, PLAYER_Y + 8)
       ctx.lineTo(state.playerX - 14, PLAYER_Y + 8)
       ctx.closePath()
       ctx.fill()
-      ctx.restore()
     }
-    glowText(ctx, `WAVE ${state.wave}`, W - 12, H - 12, NEON.white, 10, "right")
+    drawText(ctx, `WAVE ${state.wave}`, W - 12, H - 12, SCREEN.white, 12, "right")
   },
 }
 

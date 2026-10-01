@@ -20,10 +20,10 @@ export default function PageShell({
   children: ReactNode
 }) {
   return (
-    <div className="flex min-h-svh flex-col neon-grid">
+    <div className="paper flex min-h-svh flex-col">
       <SiteHeader lang={lang} dict={dict} />
       <main id="main" className="mx-auto w-full max-w-5xl flex-1 px-4 py-10">
-        <h1 className="font-display text-3xl tracking-wide text-neon-pink text-glow sm:text-4xl">
+        <h1 className="text-3xl font-bold sm:text-4xl">
           {title}
         </h1>
         {intro && (

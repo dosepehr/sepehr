@@ -199,7 +199,7 @@ export default function GameShell({
   })
 
   const iconButton =
-    "inline-flex size-11 items-center justify-center rounded-md text-foreground hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-ring"
+    "inline-flex size-11 items-center justify-center rounded-md text-foreground hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
 
   return (
     <div
@@ -210,14 +210,11 @@ export default function GameShell({
       aria-label={info.name}
       className={cn(
         "fixed inset-0 z-50 flex flex-col outline-none",
-        entry.is3d ? "bg-transparent" : "bg-background/95 backdrop-blur-sm"
+        entry.is3d ? "bg-transparent" : "bg-background"
       )}
     >
-      <header
-        className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-border bg-background/80 px-3 py-2"
-        style={{ color: entry.color }}
-      >
-        <h2 className="font-display text-xs tracking-widest uppercase text-glow sm:text-sm">
+      <header className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-border bg-card px-3 py-2 text-card-foreground">
+        <h2 className="text-sm font-semibold sm:text-base">
           {info.name}
         </h2>
         <dl
@@ -235,7 +232,7 @@ export default function GameShell({
             <dd>{best}</dd>
           </div>
           {!entry.is3d && (
-            <div className="flex gap-1 text-neon-pink">
+            <div className="flex gap-1 text-destructive-text">
               <dt className="sr-only">{dict.games.lives}</dt>
               <dd ref={livesRef} />
             </div>
@@ -285,8 +282,7 @@ export default function GameShell({
         {!entry.is3d && (
           <canvas
             ref={canvasRef}
-            className="touch-none rounded-md neon-border"
-            style={{ color: entry.color }}
+            className="touch-none rounded-md border border-border shadow-lg"
             onPointerDown={() =>
               (phase === "ready" || phase === "over") && start()
             }
@@ -295,10 +291,9 @@ export default function GameShell({
         {phase !== "playing" && (
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center p-4">
             <div
-              className="pointer-events-auto flex max-w-sm flex-col items-center gap-3 rounded-lg bg-background/90 p-6 text-center neon-border"
-              style={{ color: entry.color }}
+              className="pointer-events-auto flex max-w-sm flex-col items-center gap-3 rounded-lg border border-border bg-card p-6 text-center text-card-foreground shadow-xl"
             >
-              <p className="font-display text-xl text-glow">
+              <p className="text-xl font-semibold">
                 {phase === "over"
                   ? dict.games.gameOver
                   : phase === "paused"
@@ -320,7 +315,7 @@ export default function GameShell({
               <button
                 type="button"
                 onClick={phase === "paused" ? () => setPhase("playing") : start}
-                className="mt-1 inline-flex min-h-11 items-center gap-2 rounded-md px-5 font-display text-sm tracking-wider uppercase neon-border hover:bg-white/10"
+                className="mt-1 inline-flex min-h-11 items-center gap-2 rounded-md bg-primary px-5 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
               >
                 <Play className="size-4" />
                 {phase === "paused"
@@ -343,7 +338,7 @@ export default function GameShell({
           <button
             type="button"
             aria-label="Left"
-            className="size-16 touch-none rounded-full text-neon-cyan neon-border select-none"
+            className="size-16 touch-none rounded-full border border-border bg-card text-foreground shadow-md select-none active:bg-muted"
             {...press("left")}
           >
             <ArrowLeft className="mx-auto size-7" />
@@ -351,7 +346,7 @@ export default function GameShell({
           <button
             type="button"
             aria-label="Right"
-            className="size-16 touch-none rounded-full text-neon-cyan neon-border select-none"
+            className="size-16 touch-none rounded-full border border-border bg-card text-foreground shadow-md select-none active:bg-muted"
             {...press("right")}
           >
             <ArrowRight className="mx-auto size-7" />
@@ -361,7 +356,7 @@ export default function GameShell({
           <button
             type="button"
             aria-label="Fire"
-            className="size-16 touch-none rounded-full text-neon-pink neon-border select-none"
+            className="size-16 touch-none rounded-full border border-border bg-primary text-primary-foreground shadow-md select-none"
             {...press("fire")}
           >
             <Crosshair className="mx-auto size-7" />

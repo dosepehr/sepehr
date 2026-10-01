@@ -9,6 +9,7 @@ import { allQuestsFound, useQuests } from "@/lib/store/quests"
 import type { GameId } from "@/lib/store/scores"
 import { useScores } from "@/lib/store/scores"
 import { useStage } from "@/lib/store/stage"
+import { toneVar } from "@/lib/tone"
 
 export default function GamesList({ include3d }: { include3d: boolean }) {
   const { dict } = useDictionary()
@@ -33,14 +34,14 @@ export default function GamesList({ include3d }: { include3d: boolean }) {
                 sfx.select()
                 useStage.getState().setGame(id)
               }}
-              style={{ color: GAMES[id].color }}
-              className="flex h-full w-full flex-col items-start gap-1 rounded-lg bg-card/70 p-4 text-start neon-border transition-colors hover:bg-white/5"
+              className="flex h-full w-full flex-col items-start gap-1 overflow-hidden rounded-lg border border-border border-s-4 bg-card p-4 text-start text-card-foreground shadow-sm transition-colors hover:bg-muted"
+              style={{ borderInlineStartColor: toneVar(GAMES[id].tone) }}
             >
-              <span className="flex items-center gap-2 font-display text-sm tracking-wide text-glow">
+              <span className="flex items-center gap-2 text-sm font-semibold">
                 <Gamepad2 className="size-4" aria-hidden />
                 {info.name}
               </span>
-              <span className="text-sm text-card-foreground/90">
+              <span className="text-sm text-muted-foreground">
                 {info.blurb}
               </span>
               <span

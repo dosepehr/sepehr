@@ -44,7 +44,7 @@ const profiles: Record<Locale, Profile> = {
         role: "Fullstack Developer",
         period: "2020 – 2023",
         summary:
-          "Placeholder: shipped dashboards, APIs and a few things that glowed.",
+          "Placeholder: shipped dashboards, APIs and a few things people remember.",
       },
     ],
     links,

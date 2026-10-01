@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og"
 
-export const alt = "Sepehr · Synthwave Arcade portfolio"
+export const alt = "Sepehr · Arcade portfolio"
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 
@@ -15,32 +15,23 @@ export default function Image() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        background:
-          "linear-gradient(180deg, #140b2c 0%, #2a0f3a 60%, #ff2d95 160%)",
-        color: "#ff2d95",
-        fontFamily: "monospace",
+        background: "#faf6ee",
+        color: "#261d16",
+        fontFamily: "sans-serif",
       }}
     >
       <div
         style={{
-          width: 260,
-          height: 260,
-          borderRadius: 999,
-          background: "linear-gradient(180deg, #ffe14d, #ff2d95)",
-          marginBottom: 40,
           display: "flex",
+          width: 220,
+          height: 220,
+          borderRadius: 999,
+          background: "#e45e4d",
+          marginBottom: 40,
         }}
       />
-      <div
-        style={{
-          fontSize: 120,
-          letterSpacing: 24,
-          textShadow: "0 0 24px #ff2d95",
-        }}
-      >
-        SEPEHR
-      </div>
-      <div style={{ fontSize: 40, color: "#22e5ff", marginTop: 12 }}>
+      <div style={{ fontSize: 120, fontWeight: 700 }}>Sepehr</div>
+      <div style={{ fontSize: 40, color: "#005b5c", marginTop: 12 }}>
         Frontend / Fullstack Developer
       </div>
     </div>,

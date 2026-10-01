@@ -1,32 +1,17 @@
 // Small procedural shaders. No texture files.
 
-export const gridVertex = /* glsl */ `
+export const screenVertex = /* glsl */ `
 varying vec2 vUv;
-varying vec3 vWorld;
 void main() {
   vUv = uv;
-  vec4 world = modelMatrix * vec4(position, 1.0);
-  vWorld = world.xyz;
-  gl_Position = projectionMatrix * viewMatrix * world;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }
 `
 
-export const gridFragment = /* glsl */ `
-uniform vec3 uColor;
-uniform float uScroll;
-uniform float uSize;
-uniform float uFade;
-varying vec3 vWorld;
-void main() {
-  vec2 coord = vec2(vWorld.x, vWorld.z + uScroll) / uSize;
-  vec2 grid = abs(fract(coord - 0.5) - 0.5) / fwidth(coord);
-  float line = 1.0 - min(min(grid.x, grid.y), 1.0);
-  float fade = 1.0 - smoothstep(uFade * 0.4, uFade, length(vWorld.xz));
-  vec3 color = uColor * line * 2.2 * fade;
-  gl_FragColor = vec4(color, line * fade);
-}
-`
-
+/**
+ * Calm attract-mode screen: a dark glass with a soft tinted disc and a faint
+ * moving highlight. No scanlines, no grid, nothing that flickers.
+ */
 export const attractFragment = /* glsl */ `
 uniform float uTime;
 uniform vec3 uColor;
@@ -34,51 +19,49 @@ uniform float uBoost;
 varying vec2 vUv;
 void main() {
   vec2 uv = vUv;
-  // Scrolling perspective grid in the lower half.
-  float horizon = 0.45;
-  vec3 color = vec3(0.02, 0.0, 0.06);
-  if (uv.y < horizon) {
-    float depth = (horizon - uv.y) / horizon;
-    float z = 1.0 / max(depth, 0.02);
-    float gx = abs(fract((uv.x - 0.5) * z * 2.0) - 0.5);
-    float gz = abs(fract(z * 0.6 - uTime * 0.8) - 0.5);
-    float line = step(gx, 0.04 * z * 0.3) + step(gz, 0.05);
-    color += uColor * min(line, 1.0) * depth * 1.5;
-  } else {
-    // Striped sun.
-    vec2 c = uv - vec2(0.5, 0.62);
-    float sun = smoothstep(0.24, 0.23, length(c * vec2(1.4, 1.0)));
-    float stripes = step(0.5, fract((uv.y - 0.5) * 18.0 + uTime * 0.3)) + step(uv.y, 0.62);
-    color += mix(vec3(1.0, 0.85, 0.2), uColor, uv.y * 1.2 - 0.4) * sun * min(stripes, 1.0);
-  }
-  // Scanlines and vignette.
-  color *= 0.8 + 0.2 * sin(uv.y * 400.0);
-  color *= smoothstep(0.75, 0.2, length(uv - 0.5));
-  gl_FragColor = vec4(color * (1.2 + uBoost), 1.0);
+  vec3 base = mix(vec3(0.06, 0.08, 0.12), uColor * 0.45, (1.0 - uv.y) * 0.55);
+  float d = length((uv - vec2(0.5, 0.56)) * vec2(1.15, 1.0));
+  float disc = smoothstep(0.27, 0.25, d);
+  float pulse = 0.9 + 0.1 * sin(uTime * 1.4);
+  base = mix(base, mix(uColor, vec3(1.0), 0.3), disc * pulse);
+  float band = smoothstep(0.1, 0.0, abs(fract(uv.y * 0.7 - uTime * 0.04) - 0.5) - 0.4);
+  base += band * 0.035;
+  base *= 1.0 - 0.3 * smoothstep(0.45, 0.85, length(uv - 0.5));
+  gl_FragColor = vec4(base * (1.0 + uBoost * 0.3), 1.0);
+  #include <colorspace_fragment>
 }
 `
 
-export const sunFragment = /* glsl */ `
-uniform vec3 uTop;
-uniform vec3 uBottom;
-uniform float uTime;
-varying vec2 vUv;
+/** Scrolling road: asphalt, dashed lane lines and solid edge lines (Sunny Drive). */
+export const roadVertex = /* glsl */ `
+varying vec3 vWorld;
 void main() {
-  vec2 c = vUv - 0.5;
-  float d = length(c);
-  if (d > 0.5) discard;
-  float bands = step(0.5, fract(vUv.y * 14.0 - uTime * 0.15));
-  float gap = vUv.y < 0.5 ? bands : 1.0;
-  if (gap < 0.5) discard;
-  vec3 color = mix(uBottom, uTop, vUv.y);
-  gl_FragColor = vec4(color * 1.6, 1.0);
+  vec4 world = modelMatrix * vec4(position, 1.0);
+  vWorld = world.xyz;
+  gl_Position = projectionMatrix * viewMatrix * world;
 }
 `
 
-export const screenVertex = /* glsl */ `
-varying vec2 vUv;
+export const roadFragment = /* glsl */ `
+uniform vec3 uRoad;
+uniform vec3 uLine;
+uniform float uScroll;
+uniform vec3 uFogColor;
+uniform float uFogNear;
+uniform float uFogFar;
+varying vec3 vWorld;
 void main() {
-  vUv = uv;
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  float x = vWorld.x;
+  float z = vWorld.z + uScroll;
+  float aa = fwidth(x) * 1.2;
+  // Edge lines at x = +-3.2, dashed lane dividers at x = +-1.
+  float edge = 1.0 - smoothstep(0.08, 0.08 + aa, abs(abs(x) - 3.2));
+  float dash = step(0.5, fract(z / 4.0));
+  float lane = (1.0 - smoothstep(0.05, 0.05 + aa, abs(abs(x) - 1.0))) * dash;
+  float inRoad = 1.0 - step(3.6, abs(x));
+  vec3 color = mix(uRoad, uLine, clamp(edge + lane, 0.0, 1.0) * inRoad);
+  color = mix(color, uFogColor, smoothstep(uFogNear, uFogFar, distance(vWorld, cameraPosition)));
+  gl_FragColor = vec4(color, 1.0);
+  #include <colorspace_fragment>
 }
 `

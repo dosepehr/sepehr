@@ -19,17 +19,15 @@ export default function Loader() {
   return (
     <div
       role="status"
-      className="fixed inset-0 z-30 flex flex-col items-center justify-center gap-5 neon-grid"
+      className="paper fixed inset-0 z-30 flex flex-col items-center justify-center gap-5"
     >
-      <p className="animate-flicker font-display text-3xl tracking-[0.3em] text-neon-pink uppercase text-glow">
-        {dict.site.name}
-      </p>
+      <p className="text-3xl font-bold">{dict.site.name}</p>
       <Progress
         value={value}
-        className="h-1.5 w-64 bg-neon-pink/20"
+        className="h-1.5 w-64 bg-muted"
         aria-label={dict.hub.loading}
       />
-      <p className="font-mono text-sm text-neon-cyan">{dict.hub.loading}</p>
+      <p className="text-sm text-muted-foreground">{dict.hub.loading}</p>
     </div>
   )
 }

@@ -19,7 +19,7 @@ export default function SiteFooter({
         <ul className="flex flex-wrap gap-4">
           <li>
             <a
-              className="hover:text-neon-cyan"
+              className="underline-offset-4 hover:text-foreground hover:underline"
               href={`mailto:${profile.links.email}`}
             >
               Email
@@ -27,7 +27,7 @@ export default function SiteFooter({
           </li>
           <li>
             <a
-              className="hover:text-neon-cyan"
+              className="underline-offset-4 hover:text-foreground hover:underline"
               href={profile.links.github}
               rel="me noreferrer"
               target="_blank"
@@ -37,7 +37,7 @@ export default function SiteFooter({
           </li>
           <li>
             <a
-              className="hover:text-neon-cyan"
+              className="underline-offset-4 hover:text-foreground hover:underline"
               href={profile.links.linkedin}
               rel="me noreferrer"
               target="_blank"
@@ -46,7 +46,7 @@ export default function SiteFooter({
             </a>
           </li>
           <li>
-            <Link className="hover:text-neon-cyan" href={`/${lang}`}>
+            <Link className="underline-offset-4 hover:text-foreground hover:underline" href={`/${lang}`}>
               {dict.nav.home}
             </Link>
           </li>

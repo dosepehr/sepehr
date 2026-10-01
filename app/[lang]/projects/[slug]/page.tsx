@@ -45,7 +45,7 @@ export default async function ProjectPage({ params }: Props) {
       </article>
       <Link
         href={`/${lang}/projects`}
-        className="mt-8 inline-flex min-h-11 items-center text-neon-cyan underline underline-offset-4"
+        className="mt-8 inline-flex min-h-11 items-center text-primary-text underline underline-offset-4"
       >
         {dict.projects.back}
       </Link>

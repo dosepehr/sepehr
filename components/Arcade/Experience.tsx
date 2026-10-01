@@ -61,7 +61,13 @@ function Arcade3D({ data }: { data: ArcadeData }) {
   return (
     <div className="fixed inset-0 bg-background">
       <Scene data={data} onReady={() => setReady(true)} />
-      {ready && <Hud />}
+      {ready && (
+        <Hud
+          projectTitles={Object.fromEntries(
+            data.projects.map((p) => [p.slug, p.title])
+          )}
+        />
+      )}
       <PanelHost data={data} />
       <TerminalHost data={data} navigate={go} />
       <GameHost />

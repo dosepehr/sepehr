@@ -8,13 +8,14 @@ export const meta = {
 
 > **TODO:** placeholder post.
 
-Every object in the arcade is built from boxes, cylinders and planes. The neon look comes from
-emissive materials and a bloom pass rather than real lights, which keeps the scene cheap.
+Every object in the arcade is built from boxes, cylinders and planes. The room is lit by one warm
+hemisphere light and a single directional "sun" with soft shadows, which keeps the scene cheap and the
+colors readable.
 
 ```tsx
-<mesh>
+<mesh castShadow>
   <boxGeometry args={[1, 2, 0.8]} />
-  <meshStandardMaterial emissive="#ff2d95" emissiveIntensity={2} toneMapped={false} />
+  <meshStandardMaterial color="#e45e4d" roughness={0.45} />
 </mesh>
 ```
 

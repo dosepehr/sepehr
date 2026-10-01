@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next"
-import { Geist, JetBrains_Mono, Orbitron, Vazirmatn } from "next/font/google"
+import { Geist, JetBrains_Mono, Vazirmatn } from "next/font/google"
 import { notFound } from "next/navigation"
 import type { ReactNode } from "react"
 
@@ -16,11 +16,6 @@ import { getDictionary } from "./dictionaries"
 
 const sans = Geist({ subsets: ["latin"], variable: "--font-sans" })
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" })
-const display = Orbitron({
-  subsets: ["latin"],
-  weight: ["500", "700", "900"],
-  variable: "--font-display",
-})
 const fa = Vazirmatn({ subsets: ["arabic", "latin"], variable: "--font-fa" })
 
 type Props = { children: ReactNode; params: Promise<{ lang: string }> }
@@ -29,7 +24,13 @@ export function generateStaticParams() {
   return locales.map((lang) => ({ lang }))
 }
 
-export const viewport: Viewport = { themeColor: "#140f2a", colorScheme: "dark" }
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#faf6ee" },
+    { media: "(prefers-color-scheme: dark)", color: "#1b1715" },
+  ],
+  colorScheme: "light dark",
+}
 
 export async function generateMetadata({
   params,
@@ -69,7 +70,6 @@ export default async function LangLayout({ children, params }: Props) {
         "antialiased",
         sans.variable,
         mono.variable,
-        display.variable,
         fa.variable
       )}
     >
