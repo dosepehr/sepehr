@@ -18,6 +18,16 @@ export default function CameraRig({
   const focus = useStage((s) => s.focus)
   const reduced = usePrefersReducedMotion()
 
+  // The camera starts at INTRO_POSE (see Scene): glide down into the room slowly
+  // the first time, then switch to the snappier navigation easing.
+  useEffect(() => {
+    const c = controls.current
+    if (!c) return
+    c.smoothTime = 1.4
+    const id = setTimeout(() => (c.smoothTime = 0.55), 2600)
+    return () => clearTimeout(id)
+  }, [])
+
   useEffect(() => {
     const pose = resolvePose(focus, projectSlugs, gameSlots)
     // Reduced motion: cut instead of ease.

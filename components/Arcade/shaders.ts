@@ -82,3 +82,32 @@ void main() {
   gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }
 `
+
+/** Cabinet side art: dark lacquer with neon racing stripes and a fading grid. */
+export const sideArtFragment = /* glsl */ `
+uniform vec3 uColor;
+uniform float uBoost;
+varying vec2 vUv;
+void main() {
+  vec2 uv = vUv;
+  vec3 base = mix(vec3(0.03, 0.01, 0.07), vec3(0.09, 0.03, 0.16), uv.y);
+  // Three diagonal stripes, thinning toward the top.
+  float d = uv.x * 0.9 + uv.y * 0.55;
+  float stripes = 0.0;
+  for (int i = 0; i < 3; i++) {
+    float c = 0.55 + float(i) * 0.12;
+    float w = 0.035 - float(i) * 0.008;
+    stripes += smoothstep(w, w * 0.6, abs(d - c));
+  }
+  // Perspective grid in the lower third.
+  float g = 0.0;
+  if (uv.y < 0.32) {
+    float depth = (0.32 - uv.y) / 0.32;
+    vec2 cell = vec2(uv.x * 10.0, 1.0 / max(depth, 0.05));
+    vec2 f = abs(fract(cell) - 0.5);
+    g = (step(0.46, f.x) + step(0.46, f.y)) * depth;
+  }
+  vec3 color = base + uColor * (stripes * (1.4 + uBoost) + min(g, 1.0) * 0.6);
+  gl_FragColor = vec4(color, 1.0);
+}
+`

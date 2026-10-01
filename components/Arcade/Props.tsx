@@ -1,15 +1,21 @@
 "use client"
 
+import { RoundedBox, useGLTF } from "@react-three/drei"
 import { useFrame } from "@react-three/fiber"
-import { useRef } from "react"
+import { useLayoutEffect, useMemo, useRef } from "react"
 import * as THREE from "three"
 import { useDictionary } from "@/components/DictionaryProvider"
 import type { Post, Skill } from "@/lib/content/types"
+import { usePrefersReducedMotion } from "@/lib/hooks/useExperience"
 import { useHydrated } from "@/lib/hooks/useHydrated"
 import { useScores } from "@/lib/store/scores"
+import { BoomBox, Trophy } from "./Decor"
 import Hotspot, { useIsHovered } from "./Hotspot"
 import Label from "./Label"
+import { MODELS } from "./models"
 import { usePalette } from "./palette"
+import { useCanvasTexture } from "./useCanvasTexture"
+import { useModel } from "./useModel"
 
 const useFont = () => {
   const { lang } = useDictionary()
@@ -33,6 +39,9 @@ function useGlow(id: string, base = 1.5) {
   return ref
 }
 
+// Computer screen size in computer.glb (scripts/models/build-props.mjs).
+const TERMINAL_ASPECT = 0.49 / 0.37
+
 export function CrtDesk({
   onDesk,
   onScreen,
@@ -42,26 +51,64 @@ export function CrtDesk({
 }) {
   const palette = usePalette()
   const glow = useGlow("desk")
-  const screenGlow = useGlow("crt", 1.2)
+  const terminal = useCanvasTexture("sepehr@arcade:~$\n> help_", {
+    width: Math.round(256 * TERMINAL_ASPECT),
+    height: 256,
+    color: "#5dff9d",
+    background: "#021208",
+    fontVar: "--font-mono",
+    fontSize: 26,
+    align: "left",
+  })
+  const screen = useMemo(
+    () =>
+      new THREE.MeshBasicMaterial({
+        color: new THREE.Color(1.3, 1.3, 1.3),
+        toneMapped: false,
+      }),
+    []
+  )
+  useLayoutEffect(() => {
+    screen.map = terminal
+    screen.needsUpdate = true
+  }, [screen, terminal])
+  useLayoutEffect(() => () => screen.dispose(), [screen])
+  const slots = useMemo(() => ({ Screen: screen }), [screen])
+  const { model } = useModel(MODELS.computer, {
+    hoverId: "crt",
+    trim: palette.purple,
+    slots,
+  })
   return (
     <group position={[6.6, 0, -0.8]} rotation-y={-Math.PI / 2}>
       <Hotspot id="desk" onActivate={onDesk}>
-        <mesh position={[0, 0.75, 0]}>
-          <boxGeometry args={[2.4, 0.08, 1]} />
+        <RoundedBox
+          args={[2.4, 0.07, 1]}
+          radius={0.03}
+          position={[0, 0.755, 0]}
+        >
           <meshStandardMaterial
             color={palette.body}
-            emissive={palette.purple}
-            emissiveIntensity={0.15}
+            roughness={0.3}
+            metalness={0.3}
           />
-        </mesh>
+        </RoundedBox>
         {[-1.1, 1.1].map((x) => (
-          <mesh key={x} position={[x, 0.37, 0]}>
-            <boxGeometry args={[0.08, 0.74, 0.9]} />
-            <meshStandardMaterial color={palette.body} />
-          </mesh>
+          <RoundedBox
+            key={x}
+            args={[0.08, 0.72, 0.9]}
+            radius={0.02}
+            position={[x, 0.36, 0]}
+          >
+            <meshStandardMaterial
+              color={palette.body}
+              roughness={0.35}
+              metalness={0.3}
+            />
+          </RoundedBox>
         ))}
-        <mesh position={[0, 0.79, 0.04]}>
-          <boxGeometry args={[2.38, 0.02, 0.02]} />
+        <mesh position={[0, 0.755, 0.505]}>
+          <boxGeometry args={[2.38, 0.02, 0.01]} />
           <meshStandardMaterial
             ref={glow}
             color="black"
@@ -70,45 +117,15 @@ export function CrtDesk({
             toneMapped={false}
           />
         </mesh>
-        {/* Keyboard */}
-        <mesh position={[0, 0.81, 0.25]}>
-          <boxGeometry args={[0.9, 0.04, 0.3]} />
-          <meshStandardMaterial
-            color="#0c0816"
-            emissive={palette.cyan}
-            emissiveIntensity={0.2}
-          />
-        </mesh>
       </Hotspot>
       <Hotspot id="crt" onActivate={onScreen}>
-        {/* CRT monitor */}
-        <mesh position={[0, 1.2, -0.15]}>
-          <boxGeometry args={[0.95, 0.75, 0.7]} />
-          <meshStandardMaterial color="#d8d0c0" roughness={0.7} />
+        <primitive object={model} position={[0, 0.79, -0.05]} />
+        <mesh position={[0, 1.15, -0.05]} visible={false}>
+          <boxGeometry args={[0.8, 0.75, 0.9]} />
         </mesh>
-        <mesh position={[0, 1.22, 0.205]}>
-          <planeGeometry args={[0.78, 0.58]} />
-          <meshStandardMaterial
-            ref={screenGlow}
-            color="black"
-            emissive="#0a2a1a"
-            emissiveIntensity={1.2}
-          />
-        </mesh>
-        <Label
-          text={"sepehr@arcade:~$\n> help_"}
-          size={[0.74, 0.5]}
-          position={[0, 1.22, 0.21]}
-          options={{
-            color: "#5dff9d",
-            fontVar: "--font-mono",
-            fontSize: 40,
-            height: 200,
-            align: "left",
-            dir: "ltr",
-          }}
-        />
       </Hotspot>
+      <BoomBox position={[0.8, 0.95, 0.02]} rotation={-0.35} />
+      <Trophy position={[-0.85, 0.79, 0.1]} rotation={0.4} />
     </group>
   )
 }
@@ -248,43 +265,52 @@ export function BlogRack({
 export function Payphone({ onActivate }: { onActivate: () => void }) {
   const palette = usePalette()
   const { dict } = useDictionary()
-  const glow = useGlow("contact")
   const { fontVar, dir } = useFont()
+  const reduced = usePrefersReducedMotion()
+  const sign = useCanvasTexture(dict.nav.contact.toUpperCase(), {
+    width: 430,
+    height: 110,
+    color: palette.pink,
+    fontSize: 56,
+    fontVar,
+    dir,
+    background: "#0a0514",
+  })
+  const signMat = useMemo(
+    () =>
+      new THREE.MeshBasicMaterial({
+        color: new THREE.Color(1.5, 1.5, 1.5),
+        toneMapped: false,
+      }),
+    []
+  )
+  useLayoutEffect(() => {
+    signMat.map = sign
+    signMat.needsUpdate = true
+  }, [signMat, sign])
+  useLayoutEffect(() => () => signMat.dispose(), [signMat])
+  const slots = useMemo(() => ({ Sign: signMat }), [signMat])
+  const { model, hover } = useModel(MODELS.payphone, {
+    hoverId: "contact",
+    trim: palette.pink,
+    body: palette.body,
+    slots,
+  })
+  const handset = useMemo(() => model.getObjectByName("Handset"), [model])
+  // Hover rings the phone: the handset rattles on its hook.
+  useFrame(({ clock }) => {
+    if (!handset || reduced) return
+    const t = clock.elapsedTime
+    const ring = Math.sin(t * 3) > 0 ? 1 : 0
+    handset.rotation.z = Math.sin(t * 40) * 0.08 * hover.current * ring
+  })
   return (
     <Hotspot id="contact" onActivate={onActivate}>
       <group position={[-3.6, 0, 5.2]}>
-        <mesh position={[0, 1.1, 0]}>
-          <boxGeometry args={[0.9, 2.2, 0.5]} />
-          <meshStandardMaterial color={palette.body} />
+        <primitive object={model} />
+        <mesh position={[0, 1.15, 0]} visible={false}>
+          <boxGeometry args={[0.95, 2.3, 0.55]} />
         </mesh>
-        <mesh position={[0, 1.3, 0.26]}>
-          <boxGeometry args={[0.6, 0.8, 0.06]} />
-          <meshStandardMaterial color="#222" metalness={0.8} roughness={0.3} />
-        </mesh>
-        {/* Handset */}
-        <mesh position={[-0.2, 1.35, 0.33]} rotation-z={Math.PI / 2}>
-          <capsuleGeometry args={[0.05, 0.4, 4, 8]} />
-          <meshStandardMaterial
-            ref={glow}
-            color="black"
-            emissive={palette.pink}
-            emissiveIntensity={1.5}
-            toneMapped={false}
-          />
-        </mesh>
-        <Label
-          text={dict.nav.contact.toUpperCase()}
-          size={[0.85, 0.25]}
-          position={[0, 2.05, 0.26]}
-          options={{
-            color: palette.pink,
-            fontSize: 56,
-            height: 110,
-            fontVar,
-            dir,
-            background: "#0a0514",
-          }}
-        />
       </group>
     </Hotspot>
   )
@@ -293,44 +319,26 @@ export function Payphone({ onActivate }: { onActivate: () => void }) {
 export function Printer({ onActivate }: { onActivate: () => void }) {
   const palette = usePalette()
   const { dict } = useDictionary()
-  const glow = useGlow("resume")
-  const paper = useRef<THREE.Mesh>(null)
-  const hovered = useIsHovered("resume")
   const { fontVar, dir } = useFont()
-  useFrame((_, dt) => {
-    if (!paper.current) return
-    const target = hovered ? 0.25 : 0
-    paper.current.position.z +=
-      (0.25 + target - paper.current.position.z) * Math.min(1, dt * 6)
+  const { model, hover } = useModel(MODELS.printer, {
+    hoverId: "resume",
+    trim: palette.yellow,
+    body: palette.body,
+  })
+  const paper = useMemo(() => model.getObjectByName("Paper"), [model])
+  const paperZ = useMemo(() => paper?.position.z ?? 0, [paper])
+  // Hover feeds the printed page further out.
+  useFrame(() => {
+    if (!paper) return
+    paper.position.z = paperZ + hover.current * 0.08
+    paper.scale.y = 1 + hover.current * 0.35
   })
   return (
     <Hotspot id="resume" onActivate={onActivate}>
       <group position={[0.8, 0, 5.4]}>
-        <mesh position={[0, 0.4, 0]}>
-          <boxGeometry args={[0.9, 0.8, 0.7]} />
-          <meshStandardMaterial color={palette.body} />
-        </mesh>
-        <mesh position={[0, 0.9, 0]}>
-          <boxGeometry args={[0.8, 0.2, 0.6]} />
-          <meshStandardMaterial color="#e8e3f0" />
-        </mesh>
-        <mesh position={[0, 0.81, 0.36]}>
-          <boxGeometry args={[0.6, 0.02, 0.02]} />
-          <meshStandardMaterial
-            ref={glow}
-            color="black"
-            emissive={palette.yellow}
-            emissiveIntensity={1.5}
-            toneMapped={false}
-          />
-        </mesh>
-        <mesh
-          ref={paper}
-          position={[0, 0.82, 0.25]}
-          rotation-x={-Math.PI / 2 + 0.2}
-        >
-          <planeGeometry args={[0.45, 0.6]} />
-          <meshStandardMaterial color="#fffdf5" side={THREE.DoubleSide} />
+        <primitive object={model} />
+        <mesh position={[0, 0.45, 0.05]} visible={false}>
+          <boxGeometry args={[0.85, 0.95, 0.75]} />
         </mesh>
         <Label
           text={dict.nav.resume.toUpperCase()}
@@ -402,3 +410,7 @@ export function NeonCat({ onActivate }: { onActivate: () => void }) {
     </group>
   )
 }
+
+useGLTF.preload(MODELS.computer)
+useGLTF.preload(MODELS.payphone)
+useGLTF.preload(MODELS.printer)

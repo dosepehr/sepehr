@@ -1,6 +1,6 @@
 # Sepehr · Synthwave Arcade
 
-Portfolio built as a procedural 3D arcade room (Next.js 16, React Three Fiber, Rapier), with a 2D
+Portfolio built as a 3D arcade room (Next.js 16, React Three Fiber, Rapier, GLB models), with a 2D
 "Lite" hub and classic pages for phones, crawlers and anyone who prefers plain HTML.
 The plan lives in [`docs/sudo-sepehr.md`](docs/sudo-sepehr.md).
 
@@ -22,6 +22,22 @@ npm run typecheck && npm run lint && npm run build
 
 Placeholder copy is marked `TODO`.
 
+## 3D models
+
+Everything in the room is a GLB in `public/models` (credits in `public/models/CREDITS.md`):
+
+- The arcade cabinet, payphone, printer and desk computer are modelled in code:
+  `scripts/models/build-cabinet.mjs` and `build-props.mjs`. Tweak and rebuild.
+- The robot mascot, boombox and Kenney props (coins, ? block, trophy, drone, Neon Drive truck)
+  are CC0 downloads, listed in `scripts/models/fetch-models.mjs`.
+
+```bash
+npm run models     # build + download + meshopt-compress everything into public/models
+```
+
+Components re-skin models by material name (e.g. `Trim` gets the neon color, `Screen` gets a
+shader), so a replacement GLB only needs the same material names. See `components/Arcade/useModel.ts`.
+
 ## Environment
 
 All optional. Without the Resend vars the contact form shows an error and the direct links still work.
@@ -37,4 +53,5 @@ All optional. Without the Resend vars the contact form shows an error and the di
 
 - `?view=2d` forces the Lite hub; `?view=3d` forces the room on a capable device.
 - `?webgl=off` simulates a device without WebGL2.
+- `?tier=high` (or `medium` / `low`) pins the render quality instead of adapting to the frame rate.
 - `` ` `` opens the terminal in the room; `Esc` steps back.

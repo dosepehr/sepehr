@@ -1,10 +1,12 @@
 "use client"
 
+import { useGLTF } from "@react-three/drei"
 import { useFrame } from "@react-three/fiber"
-import { useLayoutEffect, useMemo, useRef } from "react"
+import { useEffect, useLayoutEffect, useMemo, useRef } from "react"
 import * as THREE from "three"
 import { driveRef } from "@/components/Games/NeonDrive"
 import { LANES, MAX_OBSTACLES } from "@/components/Games/NeonDrive/logic"
+import { MODELS } from "./models"
 import { usePalette } from "./palette"
 import { gridFragment, gridVertex, screenVertex, sunFragment } from "./shaders"
 
@@ -12,6 +14,20 @@ import { gridFragment, gridVertex, screenVertex, sunFragment } from "./shaders"
 export default function NeonDriveScene() {
   const palette = usePalette()
   const car = useRef<THREE.Group>(null)
+  const truck = useGLTF(MODELS.truck).scene
+  // Soft radial falloff for the underglow.
+  const glowMap = useMemo(() => {
+    const canvas = document.createElement("canvas")
+    canvas.width = canvas.height = 64
+    const ctx = canvas.getContext("2d")!
+    const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32)
+    g.addColorStop(0, "rgba(255,255,255,0.9)")
+    g.addColorStop(1, "rgba(255,255,255,0)")
+    ctx.fillStyle = g
+    ctx.fillRect(0, 0, 64, 64)
+    return new THREE.CanvasTexture(canvas)
+  }, [])
+  useEffect(() => () => glowMap.dispose(), [glowMap])
   const obstacles = useRef<THREE.InstancedMesh>(null)
   const dummy = useMemo(() => new THREE.Object3D(), [])
   const target = useMemo(() => new THREE.Vector3(), [])
@@ -155,31 +171,19 @@ export default function NeonDriveScene() {
         />
       </instancedMesh>
       <group ref={car}>
-        <mesh position={[0, 0.35, 0]}>
-          <boxGeometry args={[1.1, 0.35, 2]} />
-          <meshStandardMaterial
-            color="#120820"
-            metalness={0.6}
-            roughness={0.3}
-          />
-        </mesh>
-        <mesh position={[0, 0.65, 0.15]}>
-          <boxGeometry args={[0.8, 0.3, 0.9]} />
-          <meshStandardMaterial color="#1c0f33" />
-        </mesh>
-        {[-0.5, 0.5].map((x) => (
-          <mesh key={x} position={[x, 0.35, 1.01]}>
-            <boxGeometry args={[0.25, 0.08, 0.02]} />
-            <meshBasicMaterial
-              color={new THREE.Color(palette.pink).multiplyScalar(4)}
-              toneMapped={false}
-            />
-          </mesh>
-        ))}
-        <mesh position={[0, 0.18, 0]}>
-          <boxGeometry args={[1.15, 0.04, 2.02]} />
+        {/* Kenney truck faces +z; the road runs toward -z. */}
+        <group rotation-y={Math.PI} scale={0.72}>
+          <primitive object={truck} />
+        </group>
+        {/* Underglow. */}
+        <mesh rotation-x={-Math.PI / 2} position={[0, 0.03, 0]}>
+          <planeGeometry args={[2.2, 3]} />
           <meshBasicMaterial
+            map={glowMap}
             color={new THREE.Color(palette.cyan).multiplyScalar(2)}
+            transparent
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
             toneMapped={false}
           />
         </mesh>
@@ -187,3 +191,5 @@ export default function NeonDriveScene() {
     </group>
   )
 }
+
+useGLTF.preload(MODELS.truck)

@@ -1,7 +1,13 @@
 "use client"
 
-import { ContactShadows } from "@react-three/drei"
+import {
+  ContactShadows,
+  Environment,
+  Lightformer,
+  Sparkles,
+} from "@react-three/drei"
 import { lazy, Suspense, useRef, useState } from "react"
+import * as THREE from "three"
 import { useDictionary } from "@/components/DictionaryProvider"
 import { sfx } from "@/lib/audio/sfx"
 import { useDiscover } from "@/lib/hooks/useDiscover"
@@ -11,8 +17,10 @@ import { useStage } from "@/lib/store/stage"
 import { launchGame } from "./actions"
 import type { ArcadeData } from "./arcade.types"
 import Cabinet from "./Cabinet"
+import { Drone, PowerBlock, SpinningCoin } from "./Decor"
 import Floor from "./Floor"
 import { GAME_WALL_X, gameZ, PROJECT_ROW_Z, projectX } from "./hotspots"
+import Mascot from "./Mascot"
 import { usePalette } from "./palette"
 import {
   BlogRack,
@@ -42,6 +50,7 @@ export default function Room({ data }: { data: ArcadeData }) {
   const secretOpen = useQuests((s) => allQuestsFound(s.found))
   const taps = useRef(0)
   const [booted, setBooted] = useState(false)
+  const tier = useStage((s) => s.tier)
   const stage = useStage.getState
 
   const gameColors: Record<string, string> = {
@@ -53,7 +62,8 @@ export default function Room({ data }: { data: ArcadeData }) {
 
   return (
     <group>
-      <ambientLight intensity={0.35} color={palette.purple} />
+      <ambientLight intensity={0.55} color={palette.purple} />
+      <hemisphereLight args={[palette.cyan, palette.pink, 0.35]} />
       <pointLight
         position={[0, 5, 2]}
         intensity={25}
@@ -66,6 +76,50 @@ export default function Room({ data }: { data: ArcadeData }) {
         color={palette.cyan}
         distance={14}
       />
+      {/* Key lights: the project row and the game wall get a soft white wash. */}
+      <Spot position={[0, 6.2, 0.5]} target={[0, 1.2, PROJECT_ROW_Z]} />
+      <Spot
+        position={[-4.5, 6.2, -1]}
+        target={[GAME_WALL_X, 1.2, -1.5]}
+        intensity={45}
+      />
+      <Spot position={[4.5, 6, 2.5]} target={[3.3, 0.8, 2.4]} intensity={30} />
+
+      {/* Neon reflections for the PBR models, rendered once from light cards (no HDR download). */}
+      <Environment frames={1} resolution={256} environmentIntensity={1}>
+        <color attach="background" args={["#05020c"]} />
+        <Lightformer
+          form="rect"
+          intensity={4}
+          color={palette.pink}
+          position={[0, 5, -6]}
+          scale={[12, 1, 1]}
+        />
+        <Lightformer
+          form="rect"
+          intensity={3}
+          color={palette.cyan}
+          position={[-8, 3, 0]}
+          rotation-y={Math.PI / 2}
+          scale={[10, 1, 1]}
+        />
+        <Lightformer
+          form="rect"
+          intensity={2.5}
+          color={palette.purple}
+          position={[8, 3, 0]}
+          rotation-y={-Math.PI / 2}
+          scale={[10, 1, 1]}
+        />
+        <Lightformer
+          form="circle"
+          intensity={2}
+          color="#ffffff"
+          position={[0, 8, 4]}
+          rotation-x={Math.PI / 2}
+          scale={4}
+        />
+      </Environment>
 
       <Floor />
       <Walls />
@@ -124,6 +178,29 @@ export default function Room({ data }: { data: ArcadeData }) {
         />
       )}
 
+      {ROOM_GAMES.map((game, i) => (
+        <SpinningCoin
+          key={game}
+          hoverId={`game:${game}`}
+          position={[GAME_WALL_X + 0.05, 2.75, gameZ(i)]}
+        />
+      ))}
+
+      <Mascot />
+      <PowerBlock position={[0, 3.7, PROJECT_ROW_Z - 0.6]} />
+      <Drone />
+      {tier !== "low" && (
+        <Sparkles
+          count={tier === "high" ? 90 : 45}
+          scale={[17, 5.5, 14]}
+          position={[0, 3, 0]}
+          size={2.2}
+          speed={0.25}
+          opacity={0.55}
+          color={palette.cyan}
+        />
+      )}
+
       <CrtDesk
         onDesk={() => stage().focusOn("desk", "about")}
         onScreen={() => {
@@ -162,5 +239,32 @@ export default function Room({ data }: { data: ArcadeData }) {
         frames={1}
       />
     </group>
+  )
+}
+
+function Spot({
+  position,
+  target,
+  intensity = 60,
+}: {
+  position: [number, number, number]
+  target: [number, number, number]
+  intensity?: number
+}) {
+  const [light] = useState(() => new THREE.SpotLight())
+  return (
+    <>
+      <primitive
+        object={light}
+        position={position}
+        intensity={intensity}
+        color="#ffe9f6"
+        angle={0.62}
+        penumbra={0.9}
+        distance={16}
+        decay={1.6}
+      />
+      <primitive object={light.target} position={target} />
+    </>
   )
 }

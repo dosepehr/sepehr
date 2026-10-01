@@ -1,13 +1,17 @@
 "use client"
 
+import { useGLTF } from "@react-three/drei"
 import { useFrame } from "@react-three/fiber"
-import { useMemo, useRef } from "react"
+import { useLayoutEffect, useMemo } from "react"
 import * as THREE from "three"
 import { useDictionary } from "@/components/DictionaryProvider"
-import Hotspot, { useIsHovered } from "./Hotspot"
+import Hotspot from "./Hotspot"
 import Label from "./Label"
+import { MODELS } from "./models"
 import { usePalette } from "./palette"
-import { attractFragment, screenVertex } from "./shaders"
+import { attractFragment, screenVertex, sideArtFragment } from "./shaders"
+import { useCanvasTexture } from "./useCanvasTexture"
+import { useModel } from "./useModel"
 
 export type CabinetProps = {
   id: string
@@ -20,7 +24,13 @@ export type CabinetProps = {
   broken?: boolean
 }
 
-/** Procedural arcade cabinet: body, glowing trims, attract-mode screen, marquee. */
+// Where the CRT sits in the model (see scripts/models/build-cabinet.mjs).
+const SCREEN_Y = 1.49
+const SCREEN_Z = 0.29
+const SCREEN_TILT = -Math.atan2(0.16, 0.72)
+const MARQUEE_ASPECT = 0.97 / 0.3
+
+/** Arcade cabinet from a GLB. Trim, screen, side art and marquee are re-skinned per cabinet. */
 export default function Cabinet({
   id,
   label,
@@ -32,8 +42,17 @@ export default function Cabinet({
 }: CabinetProps) {
   const palette = usePalette()
   const { dict, lang } = useDictionary()
-  const hovered = useIsHovered(id)
-  const trim = useRef<THREE.MeshBasicMaterial>(null)
+  const fontVar = lang === "fa" ? "--font-fa" : "--font-display"
+  const marqueeMap = useCanvasTexture(label, {
+    width: Math.round(150 * MARQUEE_ASPECT),
+    height: 150,
+    color,
+    fontSize: 54,
+    fontVar,
+    dir: lang === "fa" ? "rtl" : "ltr",
+    background: "#0a0514",
+  })
+
   const uniforms = useMemo(
     () => ({
       uTime: { value: (id.length * 7.3) % 10 },
@@ -42,94 +61,84 @@ export default function Cabinet({
     }),
     [id.length]
   )
-  uniforms.uColor.value.set(color)
-  const trimColor = useMemo(() => new THREE.Color(color), [color])
 
-  useFrame((_, dt) => {
+  const materials = useMemo(
+    () => ({
+      screen: new THREE.ShaderMaterial({
+        vertexShader: screenVertex,
+        fragmentShader: attractFragment,
+        uniforms,
+        toneMapped: false,
+      }),
+      dead: new THREE.MeshStandardMaterial({
+        color: "#050308",
+        roughness: 0.08,
+        metalness: 0.3,
+      }),
+      side: new THREE.ShaderMaterial({
+        vertexShader: screenVertex,
+        fragmentShader: sideArtFragment,
+        uniforms,
+      }),
+      marquee: new THREE.MeshBasicMaterial({
+        color: new THREE.Color(1.5, 1.5, 1.5),
+        toneMapped: false,
+      }),
+    }),
+    [uniforms]
+  )
+  const slots = useMemo(
+    () => ({
+      Screen: broken ? materials.dead : materials.screen,
+      SideArt: materials.side,
+      Marquee: materials.marquee,
+    }),
+    [materials, broken]
+  )
+  const { model, hover } = useModel(MODELS.cabinet, {
+    hoverId: id,
+    trim: color,
+    body: palette.body,
+    slots,
+  })
+  const joystick = useMemo(() => model.getObjectByName("Joystick"), [model])
+
+  useLayoutEffect(() => {
+    uniforms.uColor.value.set(color)
+    materials.marquee.map = marqueeMap
+    materials.marquee.needsUpdate = true
+  }, [color, marqueeMap, materials, uniforms])
+
+  useLayoutEffect(
+    () => () => Object.values(materials).forEach((m) => m.dispose()),
+    [materials]
+  )
+
+  useFrame(({ clock }, dt) => {
     uniforms.uTime.value += dt
-    const target = hovered ? 1 : 0
-    uniforms.uBoost.value +=
-      (target - uniforms.uBoost.value) * Math.min(1, dt * 8)
-    if (trim.current)
-      trim.current.color
-        .copy(trimColor)
-        .multiplyScalar(2 + uniforms.uBoost.value * 3)
+    const boost = (uniforms.uBoost.value = hover.current)
+    if (joystick) {
+      // Someone's playing: wiggle the stick while hovered.
+      const t = clock.elapsedTime
+      joystick.rotation.z = Math.sin(t * 11) * 0.28 * boost
+      joystick.rotation.x = Math.cos(t * 7) * 0.2 * boost
+    }
   })
 
-  const fontVar = lang === "fa" ? "--font-fa" : "--font-display"
   return (
     <Hotspot id={id} onActivate={onActivate}>
       <group position={position} rotation-y={rotation}>
-        {/* Body */}
-        <mesh position={[0, 1.05, 0]}>
-          <boxGeometry args={[1.1, 2.1, 0.85]} />
-          <meshStandardMaterial
-            color={palette.body}
-            roughness={0.5}
-            metalness={0.2}
-          />
+        <primitive object={model} />
+        {/* One cheap box for pointer hits instead of ~50 meshes. */}
+        <mesh position={[0, 1.15, 0.05]} visible={false}>
+          <boxGeometry args={[1.15, 2.3, 1.05]} />
         </mesh>
-        {/* Side trims */}
-        {[-0.56, 0.56].map((x) => (
-          <mesh key={x} position={[x, 1.05, 0.1]}>
-            <boxGeometry args={[0.03, 2.12, 0.7]} />
-            <meshBasicMaterial
-              ref={x < 0 ? trim : undefined}
-              color={trimColor}
-              toneMapped={false}
-            />
-          </mesh>
-        ))}
-        {/* Screen */}
-        <mesh position={[0, 1.5, 0.43]} rotation-x={-0.12}>
-          <planeGeometry args={[0.86, 0.7]} />
-          {broken ? (
-            <meshStandardMaterial color="#050308" roughness={0.2} />
-          ) : (
-            <shaderMaterial
-              vertexShader={screenVertex}
-              fragmentShader={attractFragment}
-              uniforms={uniforms}
-              toneMapped={false}
-            />
-          )}
-        </mesh>
-        {/* Control panel + buttons */}
-        <mesh position={[0, 0.98, 0.52]} rotation-x={-0.5}>
-          <boxGeometry args={[1.05, 0.08, 0.35]} />
-          <meshStandardMaterial color={palette.body} />
-        </mesh>
-        {[-0.25, 0.05, 0.25].map((x, i) => (
-          <mesh key={x} position={[x, 1.03, 0.55]} rotation-x={-0.5}>
-            <cylinderGeometry args={[0.045, 0.045, 0.04, 16]} />
-            <meshBasicMaterial
-              color={
-                i === 0 ? palette.yellow : i === 1 ? palette.cyan : palette.pink
-              }
-              toneMapped={false}
-            />
-          </mesh>
-        ))}
-        {/* Marquee */}
-        <Label
-          text={label}
-          size={[1.04, 0.3]}
-          position={[0, 2.0, 0.43]}
-          options={{
-            color,
-            fontSize: 52,
-            height: 150,
-            fontVar,
-            dir: lang === "fa" ? "rtl" : "ltr",
-            background: "#0a0514",
-          }}
-        />
         {broken && (
           <Label
             text={dict.games.outOfOrder}
             size={[0.8, 0.2]}
-            position={[0, 1.5, 0.45]}
-            rotation-z={0.15}
+            position={[0, SCREEN_Y, SCREEN_Z + 0.03]}
+            rotation={[SCREEN_TILT, 0, 0.15]}
             options={{
               color: "#ff5c5c",
               fontSize: 40,
@@ -143,3 +152,5 @@ export default function Cabinet({
     </Hotspot>
   )
 }
+
+useGLTF.preload(MODELS.cabinet)

@@ -6,13 +6,16 @@ export const HOTSPOTS = {
   projects: { position: [0, 2.4, 1.6], target: [0, 1.5, -5] },
   games: { position: [-3.4, 2.3, -0.6], target: [-8, 1.4, -1.4] },
   blog: { position: [-4.2, 2.1, 4.8], target: [-7.5, 1.1, 4.6] },
-  desk: { position: [3.2, 2.3, -0.8], target: [6.6, 1.3, -0.8] },
+  desk: { position: [4.4, 1.95, -0.8], target: [6.6, 1.15, -0.8] },
   skills: { position: [4.6, 2.8, -3.6], target: [8.9, 2.8, -4.2] },
   contact: { position: [-3.6, 1.9, 9], target: [-3.6, 1.4, 5.2] },
   resume: { position: [0.8, 2.1, 8.6], target: [0.8, 0.9, 5.4] },
   physics: { position: [4.6, 2.9, 10], target: [4.8, 1.1, 5] },
   roof: { position: [2, 3, 3], target: [6, 7, -7.4] },
 } satisfies Record<string, Pose>
+
+/** Where the camera starts before gliding into the overview. */
+export const INTRO_POSITION: Vec3 = [3, 9.5, 24]
 
 export type StaticHotspot = keyof typeof HOTSPOTS
 /** Static hotspots plus per-project and per-game cabinet focuses. */

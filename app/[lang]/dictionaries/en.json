@@ -31,7 +31,20 @@
     "liteNote": "You're in Lite mode: same content, no WebGL.",
     "escHint": "Esc to step back",
     "clickHint": "Click a glowing thing",
-    "fallback": "The 3D arcade couldn't start on this device, so here's the Lite version."
+    "fallback": "The 3D arcade couldn't start on this device, so here's the Lite version.",
+    "loadingModels": "Loading 3D models",
+    "mascot": {
+      "name": "BYTE",
+      "hint": "Click me",
+      "lines": [
+        "Hey! I'm BYTE, Sepehr's arcade bot.",
+        "Click a cabinet to open a project.",
+        "The left wall is all playable games.",
+        "Psst… some machines just need a few taps.",
+        "Press the backtick key for a terminal.",
+        "I could dance all day. Watch this!"
+      ]
+    }
   },
   "hud": {
     "sound": "Sound",

@@ -8,7 +8,8 @@ import Progress from "@/components/ui/Progress"
 export default function Loader() {
   const { dict } = useDictionary()
   const [value, setValue] = useState(8)
-  // Assets are procedural, so there is nothing to measure: fake a quick ramp.
+  // This only covers the JS chunk download, which has no progress events: fake a
+  // quick ramp. GLB model progress is shown by ModelProgress inside Scene.
   useEffect(() => {
     const id = setInterval(
       () => setValue((v) => Math.min(92, v + (100 - v) * 0.12)),
