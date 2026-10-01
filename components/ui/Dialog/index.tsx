@@ -73,7 +73,7 @@ const DialogWrapper: FC<DialogWrapperProps> = ({
                     <DialogFooter>
                         {footer}
                         {showCancelButton && (
-                            <DialogClose render={<Button variant="outline" />}>{cancelLabel}</DialogClose>
+                            <DialogClose asChild><Button variant="outline">{cancelLabel}</Button></DialogClose>
                         )}
                     </DialogFooter>
                 )}

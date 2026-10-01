@@ -56,14 +56,14 @@ const DatePicker = ({
             )}
 
             <Popover open={open} onOpenChange={setOpen}>
-                <PopoverTrigger render={<button id={triggerId} type="button" disabled={disabled} aria-invalid={isInvalid || undefined} aria-expanded={open} className={cn(
+                <PopoverTrigger asChild><button id={triggerId} type="button" disabled={disabled} aria-invalid={isInvalid || undefined} aria-expanded={open} className={cn(
                                             'group/trigger flex h-9 w-full items-center gap-2 rounded-md border bg-transparent px-3 py-1 text-sm shadow-xs transition-[color,box-shadow,border] outline-none select-none',
                                             'border-input/50 hover:enabled:not-aria-invalid:border-primary',
                                             'aria-expanded:not-aria-invalid:border-primary aria-expanded:not-aria-invalid:ring-3 aria-expanded:not-aria-invalid:ring-primary/50',
                                             'disabled:cursor-not-allowed disabled:opacity-50',
                                             'aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/50 aria-invalid:hover:border-destructive',
                                             triggerClassName,
-                                        )} />}>{startAddon ? (
+                                        )}>{startAddon ? (
                                             <span className="shrink-0 text-muted-foreground">
                                                 {startAddon}
                                             </span>
@@ -83,7 +83,7 @@ const DatePicker = ({
                                                 'size-4 shrink-0 text-muted-foreground transition-transform duration-200',
                                                 open && 'rotate-180',
                                             )}
-                                        /></PopoverTrigger>
+                                        /></button></PopoverTrigger>
 
                 <PopoverContent
                     className="w-auto p-0"

@@ -1,0 +1,26 @@
+export const meta = {
+  title: "Synthwave Arcade",
+  summary: "This portfolio: a procedural 3D arcade room built with Next.js and React Three Fiber.",
+  date: "2026-10-01",
+  role: "Design & development",
+  stack: ["Next.js", "React Three Fiber", "Rapier", "TypeScript", "Tailwind"],
+  tags: ["3d", "webgl", "i18n"],
+  color: "#ff2d95",
+  order: 1,
+  links: [{ label: "Source", href: "https://github.com/dosepehr/sepehr" }],
+}
+
+## The idea
+
+A portfolio people remember: a neon arcade where each cabinet is a project, the CRT desk is a terminal,
+and there are games and secrets to find.
+
+## How it's built
+
+- **100% procedural 3D.** No model files. Cabinets, desk and props are primitives, labels are drawn on a canvas.
+- **One content source, two views.** The same MDX feeds the 3D room and the classic 2D pages, so SEO and accessibility don't depend on WebGL.
+- **Lazy 3D.** The three.js bundle only loads on capable desktop devices. Phones get a fast 2D "Lite" hub.
+
+## What I'd do next
+
+Real case-study screenshots, a CC0 soundtrack, and more secrets.
