@@ -3,7 +3,13 @@ import type { Locale } from "@/lib/i18n/config"
 import type { Dictionary } from "@/lib/i18n/dictionary"
 import LocaleSwitch from "./LocaleSwitch"
 
-export default function SiteHeader({ lang, dict }: { lang: Locale; dict: Dictionary }) {
+export default function SiteHeader({
+  lang,
+  dict,
+}: {
+  lang: Locale
+  dict: Dictionary
+}) {
   const links = [
     { href: `/${lang}/projects`, label: dict.nav.projects },
     { href: `/${lang}/blog`, label: dict.nav.blog },
@@ -18,7 +24,7 @@ export default function SiteHeader({ lang, dict }: { lang: Locale; dict: Diction
       >
         <Link
           href={`/${lang}`}
-          className="font-display text-lg tracking-widest text-neon-pink text-glow uppercase"
+          className="font-display text-lg tracking-widest text-neon-pink uppercase text-glow"
         >
           {dict.site.name}
         </Link>

@@ -11,7 +11,9 @@ export const dynamicParams = false
 
 export async function generateStaticParams() {
   const all = await Promise.all(
-    locales.map(async (lang) => (await listSlugs("blog", lang)).map((slug) => ({ lang, slug })))
+    locales.map(async (lang) =>
+      (await listSlugs("blog", lang)).map((slug) => ({ lang, slug }))
+    )
   )
   return all.flat()
 }
@@ -35,16 +37,22 @@ export default async function PostPage({ params }: Props) {
   const { lang, dict } = await resolveLang(params)
   const { slug } = await params
   const { Content, ...post } = await getPost(lang, slug)
-  const fmt = new Intl.DateTimeFormat(lang === "fa" ? "fa-IR" : "en-US", { dateStyle: "long" })
+  const fmt = new Intl.DateTimeFormat(lang === "fa" ? "fa-IR" : "en-US", {
+    dateStyle: "long",
+  })
   return (
     <PageShell lang={lang} dict={dict} title={post.title}>
       <p className="text-sm text-muted-foreground">
-        <time dateTime={post.date}>{fmt.format(new Date(post.date))}</time> · {post.minutes} {dict.blog.minutes}
+        <time dateTime={post.date}>{fmt.format(new Date(post.date))}</time> ·{" "}
+        {post.minutes} {dict.blog.minutes}
       </p>
       <article className="mt-4 max-w-3xl">
         <Content />
       </article>
-      <Link href={`/${lang}/blog`} className="mt-8 inline-flex min-h-11 items-center text-neon-cyan underline underline-offset-4">
+      <Link
+        href={`/${lang}/blog`}
+        className="mt-8 inline-flex min-h-11 items-center text-neon-cyan underline underline-offset-4"
+      >
         {dict.blog.back}
       </Link>
     </PageShell>

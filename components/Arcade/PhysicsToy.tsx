@@ -1,7 +1,12 @@
 "use client"
 
 import { useFrame, useThree, type ThreeEvent } from "@react-three/fiber"
-import { CuboidCollider, Physics, RigidBody, type RapierRigidBody } from "@react-three/rapier"
+import {
+  CuboidCollider,
+  Physics,
+  RigidBody,
+  type RapierRigidBody,
+} from "@react-three/rapier"
 import { useEffect, useRef, useState } from "react"
 import * as THREE from "three"
 import { useDictionary } from "@/components/DictionaryProvider"
@@ -17,9 +22,32 @@ const TABLE_Y = 0.7
 const LEVELS = 6
 const BLOCK = { long: 0.6, h: 0.14, w: 0.19 }
 const MAX_BALLS = 6
-const STACK = ["React", "Next", "TS", "Node", "SQL", "CSS", "Git", "R3F", "Vite", "Zod", "Jest", "AWS", "Bun", "Deno", "Vue", "Go", "Rust", "Py"]
+const STACK = [
+  "React",
+  "Next",
+  "TS",
+  "Node",
+  "SQL",
+  "CSS",
+  "Git",
+  "R3F",
+  "Vite",
+  "Zod",
+  "Jest",
+  "AWS",
+  "Bun",
+  "Deno",
+  "Vue",
+  "Go",
+  "Rust",
+  "Py",
+]
 
-type Ball = { id: number; position: [number, number, number]; velocity: [number, number, number] }
+type Ball = {
+  id: number
+  position: [number, number, number]
+  velocity: [number, number, number]
+}
 
 function Block({
   position,
@@ -37,7 +65,15 @@ function Block({
   bodyRef?: React.Ref<RapierRigidBody>
 }) {
   return (
-    <RigidBody ref={bodyRef} position={position} rotation={[0, rotation, 0]} colliders="cuboid" friction={0.8} restitution={0.05} mass={golden ? 0.6 : 0.4}>
+    <RigidBody
+      ref={bodyRef}
+      position={position}
+      rotation={[0, rotation, 0]}
+      colliders="cuboid"
+      friction={0.8}
+      restitution={0.05}
+      mass={golden ? 0.6 : 0.4}
+    >
       <mesh>
         <boxGeometry args={[BLOCK.long, BLOCK.h, BLOCK.w]} />
         <meshStandardMaterial
@@ -52,7 +88,13 @@ function Block({
         text={label}
         size={[0.5, 0.12]}
         position={[0, 0, BLOCK.w / 2 + 0.002]}
-        options={{ color: golden ? "#fff3b0" : "#ffffff", fontVar: "--font-mono", fontSize: 48, height: 64, glow: false }}
+        options={{
+          color: golden ? "#fff3b0" : "#ffffff",
+          fontVar: "--font-mono",
+          fontSize: 48,
+          height: 64,
+          glow: false,
+        }}
       />
     </RigidBody>
   )
@@ -85,7 +127,11 @@ function Tower({ onCoinMoved }: { onCoinMoved: () => void }) {
       blocks.push(
         <Block
           key={`${level}-${i}`}
-          position={[ORIGIN.x + (rotated ? offset : 0), y, ORIGIN.z + (rotated ? 0 : offset)]}
+          position={[
+            ORIGIN.x + (rotated ? offset : 0),
+            y,
+            ORIGIN.z + (rotated ? 0 : offset),
+          ]}
           rotation={rotated ? Math.PI / 2 : 0}
           color={colors[(level + i) % 3]}
           label={golden ? "$$$" : STACK[(level * 3 + i) % STACK.length]}
@@ -114,7 +160,11 @@ export default function PhysicsToy() {
   useEffect(() => {
     if (!focused) return
     const onKey = (e: KeyboardEvent) => {
-      if (e.key.toLowerCase() !== "r" || (e.target as HTMLElement)?.closest("input,textarea")) return
+      if (
+        e.key.toLowerCase() !== "r" ||
+        (e.target as HTMLElement)?.closest("input,textarea")
+      )
+        return
       setBalls([])
       setRound((r) => r + 1)
     }
@@ -130,7 +180,10 @@ export default function PhysicsToy() {
     const v = dir.multiplyScalar(16)
     sfx.shoot()
     const id = nextId.current++
-    setBalls((list) => [...list.slice(-(MAX_BALLS - 1)), { id, position: from.toArray(), velocity: v.toArray() }])
+    setBalls((list) => [
+      ...list.slice(-(MAX_BALLS - 1)),
+      { id, position: from.toArray(), velocity: v.toArray() },
+    ])
   }
 
   return (
@@ -139,7 +192,11 @@ export default function PhysicsToy() {
       <group position={ORIGIN.toArray()}>
         <mesh position={[0, TABLE_Y, 0]}>
           <boxGeometry args={[2.2, 0.1, 1.6]} />
-          <meshStandardMaterial color={palette.body} emissive={palette.purple} emissiveIntensity={0.2} />
+          <meshStandardMaterial
+            color={palette.body}
+            emissive={palette.purple}
+            emissiveIntensity={0.2}
+          />
         </mesh>
         {[-1, 1].flatMap((x) =>
           [-0.7, 0.7].map((z) => (
@@ -150,7 +207,11 @@ export default function PhysicsToy() {
           ))
         )}
         <Label
-          text={focused ? `${dict.nav.physics} · click to fire · R` : dict.nav.physics}
+          text={
+            focused
+              ? `${dict.nav.physics} · click to fire · R`
+              : dict.nav.physics
+          }
           size={[2, 0.24]}
           position={[0, 2.2, -0.6]}
           options={{
@@ -164,23 +225,44 @@ export default function PhysicsToy() {
       </group>
 
       {/* Click target: focuses the corner, then fires balls once focused. */}
-      <Hotspot id="physics" disabled={focused} onActivate={() => useStage.getState().focusOn("physics")}>
-        <mesh position={[ORIGIN.x, 1.4, ORIGIN.z]} visible={false} onPointerDown={fire}>
+      <Hotspot
+        id="physics"
+        disabled={focused}
+        onActivate={() => useStage.getState().focusOn("physics")}
+      >
+        <mesh
+          position={[ORIGIN.x, 1.4, ORIGIN.z]}
+          visible={false}
+          onPointerDown={fire}
+        >
           <boxGeometry args={[2.4, 1.6, 1.8]} />
         </mesh>
       </Hotspot>
 
       <Physics timeStep={1 / 60} paused={!!game}>
         <RigidBody type="fixed" colliders={false}>
-          <CuboidCollider args={[1.1, 0.05, 0.8]} position={[ORIGIN.x, TABLE_Y, ORIGIN.z]} />
+          <CuboidCollider
+            args={[1.1, 0.05, 0.8]}
+            position={[ORIGIN.x, TABLE_Y, ORIGIN.z]}
+          />
           <CuboidCollider args={[9, 0.05, 8]} position={[0, -0.05, 0]} />
         </RigidBody>
         <Tower key={round} onCoinMoved={() => discover("golden-coin")} />
         {balls.map((ball) => (
-          <RigidBody key={ball.id} colliders="ball" position={ball.position} linearVelocity={ball.velocity} mass={1.5} restitution={0.3}>
+          <RigidBody
+            key={ball.id}
+            colliders="ball"
+            position={ball.position}
+            linearVelocity={ball.velocity}
+            mass={1.5}
+            restitution={0.3}
+          >
             <mesh>
               <sphereGeometry args={[0.12, 16, 16]} />
-              <meshBasicMaterial color={new THREE.Color(palette.cyan).multiplyScalar(2)} toneMapped={false} />
+              <meshBasicMaterial
+                color={new THREE.Color(palette.cyan).multiplyScalar(2)}
+                toneMapped={false}
+              />
             </mesh>
           </RigidBody>
         ))}

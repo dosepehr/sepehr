@@ -15,7 +15,12 @@ const BACK_Z = -7.5
 const SIDE_X = 9
 
 // Neon strips: [position, rotation, length, color key]
-type Strip = [[number, number, number], [number, number, number], number, "pink" | "cyan" | "purple"]
+type Strip = [
+  [number, number, number],
+  [number, number, number],
+  number,
+  "pink" | "cyan" | "purple",
+]
 const STRIPS: Strip[] = [
   [[0, 0.05, BACK_Z + 0.05], [0, 0, 0], W, "pink"],
   [[0, H - 0.1, BACK_Z + 0.05], [0, 0, 0], W, "cyan"],
@@ -30,7 +35,11 @@ const STRIPS: Strip[] = [
 function Sun() {
   const palette = usePalette()
   const uniforms = useMemo(
-    () => ({ uTop: { value: new THREE.Color() }, uBottom: { value: new THREE.Color() }, uTime: { value: 0 } }),
+    () => ({
+      uTop: { value: new THREE.Color() },
+      uBottom: { value: new THREE.Color() },
+      uTime: { value: 0 },
+    }),
     []
   )
   uniforms.uTop.value.set(palette.sunTop)
@@ -39,9 +48,14 @@ function Sun() {
     uniforms.uTime.value += dt
   })
   return (
-    <mesh position={[0, 3.3, BACK_Z + 0.02]}>
+    <mesh position={[0, 2.35, BACK_Z + 0.02]}>
       <planeGeometry args={[4.4, 4.4]} />
-      <shaderMaterial vertexShader={screenVertex} fragmentShader={sunFragment} uniforms={uniforms} toneMapped={false} />
+      <shaderMaterial
+        vertexShader={screenVertex}
+        fragmentShader={sunFragment}
+        uniforms={uniforms}
+        toneMapped={false}
+      />
     </mesh>
   )
 }
@@ -96,7 +110,7 @@ export default function Walls() {
           text={dict.site.name.toUpperCase()}
           size={[7, 1.6]}
           intensity={2.2}
-          position={[0, 4.9, BACK_Z + 0.1]}
+          position={[0, 5.45, BACK_Z + 0.1]}
           options={{
             fontSize: 96,
             height: 220,
@@ -110,7 +124,7 @@ export default function Walls() {
           text={dict.site.role}
           size={[7, 0.45]}
           intensity={1.4}
-          position={[0, 4.05, BACK_Z + 0.1]}
+          position={[0, 4.75, BACK_Z + 0.1]}
           options={{
             fontSize: 44,
             height: 80,

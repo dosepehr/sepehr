@@ -22,6 +22,7 @@ export default function DictionaryProvider({
 
 export function useDictionary() {
   const value = useContext(DictionaryContext)
-  if (!value) throw new Error("useDictionary must be used inside DictionaryProvider")
+  if (!value)
+    throw new Error("useDictionary must be used inside DictionaryProvider")
   return value
 }

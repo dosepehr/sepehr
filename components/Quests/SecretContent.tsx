@@ -28,8 +28,15 @@ export default function SecretContent() {
         </p>
         <ul className="flex flex-col gap-1 text-sm">
           {QUEST_IDS.map((id) => (
-            <li key={id} className={found.includes(id) ? "text-neon-cyan" : "text-muted-foreground"}>
-              {found.includes(id) ? "✔ " + dict.quests.list[id].name : "? " + dict.quests.list[id].clue}
+            <li
+              key={id}
+              className={
+                found.includes(id) ? "text-neon-cyan" : "text-muted-foreground"
+              }
+            >
+              {found.includes(id)
+                ? "✔ " + dict.quests.list[id].name
+                : "? " + dict.quests.list[id].clue}
             </li>
           ))}
         </ul>
@@ -42,7 +49,10 @@ export default function SecretContent() {
     <div className="flex max-w-3xl flex-col gap-8">
       <p className="leading-7">{dict.secret.body}</p>
       <section aria-labelledby="hof">
-        <h2 id="hof" className="mb-3 flex items-center gap-2 font-display text-xl text-neon-yellow">
+        <h2
+          id="hof"
+          className="mb-3 flex items-center gap-2 font-display text-xl text-neon-yellow"
+        >
           <Trophy className="size-5" aria-hidden />
           {dict.secret.hallOfFame}
         </h2>
@@ -53,7 +63,10 @@ export default function SecretContent() {
             {scores
               .sort((a, b) => b[1] - a[1])
               .map(([game, score]) => (
-                <li key={game} className="flex justify-between rounded-md bg-card/70 px-3 py-2">
+                <li
+                  key={game}
+                  className="flex justify-between rounded-md bg-card/70 px-3 py-2"
+                >
                   <span>{dict.games.list[game].name}</span>
                   <span className="text-neon-yellow" dir="ltr">
                     {score.toString().padStart(6, "0")}

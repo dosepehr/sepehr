@@ -14,13 +14,24 @@ import Cabinet from "./Cabinet"
 import Floor from "./Floor"
 import { GAME_WALL_X, gameZ, PROJECT_ROW_Z, projectX } from "./hotspots"
 import { usePalette } from "./palette"
-import { BlogRack, CrtDesk, NeonCat, Payphone, Printer, ScoreBoard } from "./Props"
+import {
+  BlogRack,
+  CrtDesk,
+  NeonCat,
+  Payphone,
+  Printer,
+  ScoreBoard,
+} from "./Props"
 import Walls from "./Walls"
 
 // Rapier's WASM is only fetched with this chunk.
 const PhysicsToy = lazy(() => import("./PhysicsToy"))
 
-export const ROOM_GAMES: GameId[] = ["tech-catcher", "bug-blaster", "neon-drive"]
+export const ROOM_GAMES: GameId[] = [
+  "tech-catcher",
+  "bug-blaster",
+  "neon-drive",
+]
 /** Order of cabinets along the left wall (used for camera poses too). */
 export const WALL_SLOTS = [...ROOM_GAMES, "out-of-order", "friday-night"]
 
@@ -43,8 +54,18 @@ export default function Room({ data }: { data: ArcadeData }) {
   return (
     <group>
       <ambientLight intensity={0.35} color={palette.purple} />
-      <pointLight position={[0, 5, 2]} intensity={25} color={palette.pink} distance={18} />
-      <pointLight position={[-5, 4, -3]} intensity={15} color={palette.cyan} distance={14} />
+      <pointLight
+        position={[0, 5, 2]}
+        intensity={25}
+        color={palette.pink}
+        distance={18}
+      />
+      <pointLight
+        position={[-5, 4, -3]}
+        intensity={15}
+        color={palette.cyan}
+        distance={14}
+      />
 
       <Floor />
       <Walls />
@@ -57,7 +78,9 @@ export default function Room({ data }: { data: ArcadeData }) {
           label={project.title}
           color={project.color}
           position={[projectX(i, data.projects.length), 0, PROJECT_ROW_Z]}
-          onActivate={() => stage().focusOn(`project:${project.slug}`, "project", project.slug)}
+          onActivate={() =>
+            stage().focusOn(`project:${project.slug}`, "project", project.slug)
+          }
         />
       ))}
 
@@ -108,8 +131,14 @@ export default function Room({ data }: { data: ArcadeData }) {
           stage().setTerminal(true)
         }}
       />
-      <ScoreBoard skills={data.skills} onActivate={() => stage().focusOn("skills", "skills")} />
-      <BlogRack posts={data.posts} onActivate={() => stage().focusOn("blog", "blog")} />
+      <ScoreBoard
+        skills={data.skills}
+        onActivate={() => stage().focusOn("skills", "skills")}
+      />
+      <BlogRack
+        posts={data.posts}
+        onActivate={() => stage().focusOn("blog", "blog")}
+      />
       <Payphone onActivate={() => stage().focusOn("contact", "contact")} />
       <Printer onActivate={() => stage().focusOn("resume", "resume")} />
       <NeonCat
@@ -123,7 +152,15 @@ export default function Room({ data }: { data: ArcadeData }) {
         <PhysicsToy />
       </Suspense>
 
-      <ContactShadows position={[0, 0.01, 0]} scale={20} far={3} blur={2.5} opacity={0.55} resolution={512} frames={1} />
+      <ContactShadows
+        position={[0, 0.01, 0]}
+        scale={20}
+        far={3}
+        blur={2.5}
+        opacity={0.55}
+        resolution={512}
+        frames={1}
+      />
     </group>
   )
 }

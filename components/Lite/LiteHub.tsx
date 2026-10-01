@@ -12,10 +12,24 @@ import { sfx } from "@/lib/audio/sfx"
 import { useDiscover } from "@/lib/hooks/useDiscover"
 import { usePrefs } from "@/lib/store/prefs"
 
-function Section({ id, title, color, children }: { id: string; title: string; color: string; children: ReactNode }) {
+function Section({
+  id,
+  title,
+  color,
+  children,
+}: {
+  id: string
+  title: string
+  color: string
+  children: ReactNode
+}) {
   return (
     <section id={id} aria-labelledby={`${id}-title`} className="scroll-mt-20">
-      <h2 id={`${id}-title`} className="mb-4 font-display text-xl tracking-wide text-glow" style={{ color }}>
+      <h2
+        id={`${id}-title`}
+        className="mb-4 font-display text-xl tracking-wide text-glow"
+        style={{ color }}
+      >
         {title}
       </h2>
       {children}
@@ -24,7 +38,15 @@ function Section({ id, title, color, children }: { id: string; title: string; co
 }
 
 /** 2D neon hub: same content as the 3D room, no WebGL. Used on phones, Classic view and on WebGL failure. */
-export default function LiteHub({ data, canEnter3d, notice }: { data: ArcadeData; canEnter3d: boolean; notice?: string }) {
+export default function LiteHub({
+  data,
+  canEnter3d,
+  notice,
+}: {
+  data: ArcadeData
+  canEnter3d: boolean
+  notice?: string
+}) {
   const { dict } = useDictionary()
   const discover = useDiscover()
   const taps = useRef(0)
@@ -41,7 +63,9 @@ export default function LiteHub({ data, canEnter3d, notice }: { data: ArcadeData
   return (
     <div className="min-h-svh neon-grid">
       <header className="sticky top-0 z-40 flex flex-wrap items-center gap-2 border-b border-border bg-background/85 px-4 py-2 backdrop-blur">
-        <span className="font-display tracking-widest text-neon-pink text-glow uppercase">{dict.site.name}</span>
+        <span className="font-display tracking-widest text-neon-pink uppercase text-glow">
+          {dict.site.name}
+        </span>
         <div className="ms-auto flex items-center gap-2">
           <QuestTracker />
           <SoundToggle className="inline-flex size-11 items-center justify-center rounded-md hover:bg-white/10" />
@@ -51,7 +75,10 @@ export default function LiteHub({ data, canEnter3d, notice }: { data: ArcadeData
           <ul className="flex gap-1 text-sm">
             {nav.map((item) => (
               <li key={item.id}>
-                <a href={`#${item.id}`} className="inline-flex h-11 items-center rounded-md px-3 hover:bg-muted hover:text-neon-cyan">
+                <a
+                  href={`#${item.id}`}
+                  className="inline-flex h-11 items-center rounded-md px-3 hover:bg-muted hover:text-neon-cyan"
+                >
                   {item.label}
                 </a>
               </li>
@@ -60,14 +87,19 @@ export default function LiteHub({ data, canEnter3d, notice }: { data: ArcadeData
         </nav>
       </header>
 
-      <main id="main" className="mx-auto flex max-w-4xl flex-col gap-14 px-4 py-10">
+      <main
+        id="main"
+        className="mx-auto flex max-w-4xl flex-col gap-14 px-4 py-10"
+      >
         <div className="flex flex-col gap-3">
-          <h1 className="font-display text-4xl tracking-wider text-neon-pink text-glow animate-flicker sm:text-5xl">
+          <h1 className="animate-flicker font-display text-4xl tracking-wider text-neon-pink text-glow sm:text-5xl">
             {dict.site.name}
           </h1>
           <p className="text-lg text-neon-cyan">{dict.site.role}</p>
           <p className="max-w-xl text-foreground/90">{dict.site.tagline}</p>
-          <p className="text-sm text-muted-foreground">{notice ?? dict.hub.liteNote}</p>
+          <p className="text-sm text-muted-foreground">
+            {notice ?? dict.hub.liteNote}
+          </p>
           {canEnter3d && (
             <button
               type="button"
@@ -87,7 +119,11 @@ export default function LiteHub({ data, canEnter3d, notice }: { data: ArcadeData
           )}
         </div>
 
-        <Section id="projects" title={dict.projects.title} color="var(--neon-pink)">
+        <Section
+          id="projects"
+          title={dict.projects.title}
+          color="var(--neon-pink)"
+        >
           {data.panels.projects}
         </Section>
 
@@ -117,7 +153,11 @@ export default function LiteHub({ data, canEnter3d, notice }: { data: ArcadeData
           {data.panels.about}
         </Section>
 
-        <Section id="contact" title={dict.contact.title} color="var(--neon-pink)">
+        <Section
+          id="contact"
+          title={dict.contact.title}
+          color="var(--neon-pink)"
+        >
           {data.panels.contact}
         </Section>
       </main>

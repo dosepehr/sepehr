@@ -10,7 +10,9 @@ import Input from "@/components/ui/Input"
 import Textarea from "@/components/ui/Textarea"
 import { contactSchema, type ContactInput } from "@/lib/contact"
 
-type FormValues = Pick<ContactInput, "name" | "email" | "message"> & { company: string }
+type FormValues = Pick<ContactInput, "name" | "email" | "message"> & {
+  company: string
+}
 
 export default function ContactForm() {
   const { dict } = useDictionary()
@@ -37,7 +39,10 @@ export default function ContactForm() {
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<FormValues>({ resolver, defaultValues: { name: "", email: "", message: "", company: "" } })
+  } = useForm<FormValues>({
+    resolver,
+    defaultValues: { name: "", email: "", message: "", company: "" },
+  })
 
   const onSubmit = handleSubmit(async (values) => {
     const result = await sendContact({ ...values, startedAt })
@@ -52,7 +57,13 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-3">
-      <Input label={t.name} autoComplete="name" required error={errors.name?.message} {...register("name")} />
+      <Input
+        label={t.name}
+        autoComplete="name"
+        required
+        error={errors.name?.message}
+        {...register("name")}
+      />
       <Input
         label={t.email}
         type="email"
@@ -62,14 +73,28 @@ export default function ContactForm() {
         error={errors.email?.message}
         {...register("email")}
       />
-      <Textarea label={t.message} rows={5} required error={errors.message?.message} {...register("message")} />
-      <div aria-hidden className="absolute -start-[9999px] h-px w-px overflow-hidden">
+      <Textarea
+        label={t.message}
+        rows={5}
+        required
+        error={errors.message?.message}
+        {...register("message")}
+      />
+      <div
+        aria-hidden
+        className="absolute -start-[9999px] h-px w-px overflow-hidden"
+      >
         <label>
           Company
           <input tabIndex={-1} autoComplete="off" {...register("company")} />
         </label>
       </div>
-      <Button type="submit" isLoading={isSubmitting} loadingText={t.sending} className="self-start">
+      <Button
+        type="submit"
+        isLoading={isSubmitting}
+        loadingText={t.sending}
+        className="self-start"
+      >
         {t.send}
       </Button>
       <p role="status" className="text-sm text-success-text">

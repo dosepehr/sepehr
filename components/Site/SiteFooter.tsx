@@ -18,17 +18,30 @@ export default function SiteFooter({
         <p>{dict.footer.built}</p>
         <ul className="flex flex-wrap gap-4">
           <li>
-            <a className="hover:text-neon-cyan" href={`mailto:${profile.links.email}`}>
+            <a
+              className="hover:text-neon-cyan"
+              href={`mailto:${profile.links.email}`}
+            >
               Email
             </a>
           </li>
           <li>
-            <a className="hover:text-neon-cyan" href={profile.links.github} rel="me noreferrer" target="_blank">
+            <a
+              className="hover:text-neon-cyan"
+              href={profile.links.github}
+              rel="me noreferrer"
+              target="_blank"
+            >
               GitHub
             </a>
           </li>
           <li>
-            <a className="hover:text-neon-cyan" href={profile.links.linkedin} rel="me noreferrer" target="_blank">
+            <a
+              className="hover:text-neon-cyan"
+              href={profile.links.linkedin}
+              rel="me noreferrer"
+              target="_blank"
+            >
               LinkedIn
             </a>
           </li>

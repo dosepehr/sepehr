@@ -1,6 +1,7 @@
 import { createPersistedStore } from "./createPersistedStore"
 
-export type GameId = "tech-catcher" | "bug-blaster" | "neon-drive" | "friday-night"
+export type GameId =
+  "tech-catcher" | "bug-blaster" | "neon-drive" | "friday-night"
 
 type ScoreState = {
   best: Partial<Record<GameId, number>>
@@ -22,7 +23,11 @@ export const useScores = createPersistedStore<ScoreState>(
     },
     unlockSkill: (skill) => {
       if (get().unlockedSkills.includes(skill)) return
-      set({ unlockedSkills: [...get().unlockedSkills, skill] }, false, "unlockSkill")
+      set(
+        { unlockedSkills: [...get().unlockedSkills, skill] },
+        false,
+        "unlockSkill"
+      )
     },
   }),
   "scores",

@@ -19,7 +19,9 @@ export type LabelOptions = {
 }
 
 function fontFamily(fontVar: string) {
-  const value = getComputedStyle(document.documentElement).getPropertyValue(fontVar).trim()
+  const value = getComputedStyle(document.documentElement)
+    .getPropertyValue(fontVar)
+    .trim()
   return value || "sans-serif"
 }
 
@@ -74,7 +76,12 @@ export function useCanvasTexture(text: string, options: LabelOptions = {}) {
         ctx.shadowBlur = fontSize / 4
       }
       const lines = text.split("\n")
-      const x = align === "center" ? width / 2 : align === "right" || align === "end" ? width - 16 : 16
+      const x =
+        align === "center"
+          ? width / 2
+          : align === "right" || align === "end"
+            ? width - 16
+            : 16
       const total = lines.length * fontSize * lineHeight
       lines.forEach((line, i) => {
         const y = height / 2 - total / 2 + fontSize * lineHeight * (i + 0.5)
@@ -88,7 +95,21 @@ export function useCanvasTexture(text: string, options: LabelOptions = {}) {
     return () => {
       cancelled = true
     }
-  }, [texture, text, width, height, fontSize, color, background, fontVar, weight, dir, align, glow, lineHeight])
+  }, [
+    texture,
+    text,
+    width,
+    height,
+    fontSize,
+    color,
+    background,
+    fontVar,
+    weight,
+    dir,
+    align,
+    glow,
+    lineHeight,
+  ])
 
   useEffect(() => () => texture.dispose(), [texture])
 

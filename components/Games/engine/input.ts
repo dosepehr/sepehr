@@ -15,7 +15,13 @@ const KEYMAP: Record<string, keyof InputState> = {
 
 /** Keyboard + virtual (touch D-pad) input sharing one mutable state object. */
 export function createInput() {
-  const state: InputState = { left: false, right: false, up: false, down: false, fire: false }
+  const state: InputState = {
+    left: false,
+    right: false,
+    up: false,
+    down: false,
+    fire: false,
+  }
 
   const onKey = (down: boolean) => (event: KeyboardEvent) => {
     const target = event.target as HTMLElement | null
@@ -28,7 +34,8 @@ export function createInput() {
   const keydown = onKey(true)
   const keyup = onKey(false)
   const clear = () => {
-    for (const key of Object.keys(state) as (keyof InputState)[]) state[key] = false
+    for (const key of Object.keys(state) as (keyof InputState)[])
+      state[key] = false
   }
 
   return {

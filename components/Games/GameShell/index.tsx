@@ -1,6 +1,14 @@
 "use client"
 
-import { ArrowLeft, ArrowRight, Crosshair, Pause, Play, RotateCcw, X } from "lucide-react"
+import {
+  ArrowLeft,
+  ArrowRight,
+  Crosshair,
+  Pause,
+  Play,
+  RotateCcw,
+  X,
+} from "lucide-react"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useDictionary } from "@/components/DictionaryProvider"
 import Kbd from "@/components/ui/Kbd"
@@ -18,7 +26,13 @@ import { GAMES } from "../registry"
 
 type Phase = "ready" | "playing" | "paused" | "over"
 
-export default function GameShell({ game, onExit }: { game: GameId; onExit: () => void }) {
+export default function GameShell({
+  game,
+  onExit,
+}: {
+  game: GameId
+  onExit: () => void
+}) {
   const { dict } = useDictionary()
   const entry = GAMES[game]
   const info = dict.games.list[game]
@@ -56,8 +70,13 @@ export default function GameShell({ game, onExit }: { game: GameId; onExit: () =
         event.stopPropagation()
         onExit()
       } else if (key === "p") {
-        setPhase((p) => (p === "playing" ? "paused" : p === "paused" ? "playing" : p))
-      } else if ((key === " " || key === "enter") && (phase === "ready" || phase === "over")) {
+        setPhase((p) =>
+          p === "playing" ? "paused" : p === "paused" ? "playing" : p
+        )
+      } else if (
+        (key === " " || key === "enter") &&
+        (phase === "ready" || phase === "over")
+      ) {
         event.preventDefault()
         start()
       }
@@ -81,8 +100,12 @@ export default function GameShell({ game, onExit }: { game: GameId; onExit: () =
   // New run: fresh state.
   useEffect(() => {
     if (runId === 0) return
-    stateRef.current = entry.def.init((Math.random() * 2 ** 31) | 0, entry.options)
-    if (entry.is3d) driveRef.current = stateRef.current as typeof driveRef.current
+    stateRef.current = entry.def.init(
+      (Math.random() * 2 ** 31) | 0,
+      entry.options
+    )
+    if (entry.is3d)
+      driveRef.current = stateRef.current as typeof driveRef.current
     return () => {
       if (entry.is3d) driveRef.current = null
     }
@@ -139,15 +162,24 @@ export default function GameShell({ game, onExit }: { game: GameId; onExit: () =
     const { width, height } = entry.def
     const resize = () => {
       const parent = canvas.parentElement!
-      const scale = Math.min(parent.clientWidth / width, parent.clientHeight / height)
+      const scale = Math.min(
+        parent.clientWidth / width,
+        parent.clientHeight / height
+      )
       const dpr = Math.min(window.devicePixelRatio || 1, 2)
       canvas.style.width = `${width * scale}px`
       canvas.style.height = `${height * scale}px`
       canvas.width = Math.round(width * scale * dpr)
       canvas.height = Math.round(height * scale * dpr)
-      canvas.getContext("2d")?.setTransform(scale * dpr, 0, 0, scale * dpr, 0, 0)
+      canvas
+        .getContext("2d")
+        ?.setTransform(scale * dpr, 0, 0, scale * dpr, 0, 0)
       if (stateRef.current && entry.def.render) {
-        entry.def.render(canvas.getContext("2d")!, stateRef.current, performance.now() / 1000)
+        entry.def.render(
+          canvas.getContext("2d")!,
+          stateRef.current,
+          performance.now() / 1000
+        )
       }
     }
     resize()
@@ -181,14 +213,24 @@ export default function GameShell({ game, onExit }: { game: GameId; onExit: () =
         entry.is3d ? "bg-transparent" : "bg-background/95 backdrop-blur-sm"
       )}
     >
-      <header className="flex items-center gap-3 border-b border-border bg-background/80 px-3 py-2" style={{ color: entry.color }}>
-        <h2 className="font-display text-sm tracking-widest text-glow uppercase">{info.name}</h2>
-        <dl className="ms-auto flex items-center gap-4 font-mono text-sm text-foreground" dir="ltr">
+      <header
+        className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-border bg-background/80 px-3 py-2"
+        style={{ color: entry.color }}
+      >
+        <h2 className="font-display text-xs tracking-widest uppercase text-glow sm:text-sm">
+          {info.name}
+        </h2>
+        <dl
+          className="ms-auto flex items-center gap-3 font-mono text-xs text-foreground sm:gap-4 sm:text-sm"
+          dir="ltr"
+        >
           <div className="flex gap-1">
             <dt className="text-muted-foreground">{dict.games.score}</dt>
-            <dd ref={scoreRef} aria-live="off">0</dd>
+            <dd ref={scoreRef} aria-live="off">
+              0
+            </dd>
           </div>
-          <div className="flex gap-1">
+          <div className="hidden gap-1 sm:flex">
             <dt className="text-muted-foreground">{dict.games.best}</dt>
             <dd>{best}</dd>
           </div>
@@ -199,47 +241,81 @@ export default function GameShell({ game, onExit }: { game: GameId; onExit: () =
             </div>
           )}
         </dl>
-        <SoundToggle className={iconButton} />
-        <button
-          type="button"
-          className={iconButton}
-          onClick={() => setPhase((p) => (p === "playing" ? "paused" : p === "paused" ? "playing" : p))}
-          disabled={phase !== "playing" && phase !== "paused"}
-          aria-label={phase === "paused" ? dict.games.resume : dict.games.pause}
-        >
-          {phase === "paused" ? <Play className="size-5" /> : <Pause className="size-5" />}
-        </button>
-        <button type="button" className={iconButton} onClick={start} aria-label={dict.games.restart}>
-          <RotateCcw className="size-5" />
-        </button>
-        <button type="button" className={iconButton} onClick={onExit} aria-label={dict.games.exit}>
-          <X className="size-5" />
-        </button>
+        <div className="flex items-center">
+          <SoundToggle className={iconButton} />
+          <button
+            type="button"
+            className={iconButton}
+            onClick={() =>
+              setPhase((p) =>
+                p === "playing" ? "paused" : p === "paused" ? "playing" : p
+              )
+            }
+            disabled={phase !== "playing" && phase !== "paused"}
+            aria-label={
+              phase === "paused" ? dict.games.resume : dict.games.pause
+            }
+          >
+            {phase === "paused" ? (
+              <Play className="size-5" />
+            ) : (
+              <Pause className="size-5" />
+            )}
+          </button>
+          <button
+            type="button"
+            className={iconButton}
+            onClick={start}
+            aria-label={dict.games.restart}
+          >
+            <RotateCcw className="size-5" />
+          </button>
+          <button
+            type="button"
+            className={iconButton}
+            onClick={onExit}
+            aria-label={dict.games.exit}
+          >
+            <X className="size-5" />
+          </button>
+        </div>
       </header>
 
       <div className="relative flex min-h-0 flex-1 items-center justify-center p-2">
         {!entry.is3d && (
           <canvas
             ref={canvasRef}
-            className="rounded-md neon-border touch-none"
+            className="touch-none rounded-md neon-border"
             style={{ color: entry.color }}
-            onPointerDown={() => (phase === "ready" || phase === "over") && start()}
+            onPointerDown={() =>
+              (phase === "ready" || phase === "over") && start()
+            }
           />
         )}
         {phase !== "playing" && (
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center p-4">
-            <div className="pointer-events-auto flex max-w-sm flex-col items-center gap-3 rounded-lg bg-background/90 p-6 text-center neon-border" style={{ color: entry.color }}>
+            <div
+              className="pointer-events-auto flex max-w-sm flex-col items-center gap-3 rounded-lg bg-background/90 p-6 text-center neon-border"
+              style={{ color: entry.color }}
+            >
               <p className="font-display text-xl text-glow">
-                {phase === "over" ? dict.games.gameOver : phase === "paused" ? dict.games.paused : info.name}
+                {phase === "over"
+                  ? dict.games.gameOver
+                  : phase === "paused"
+                    ? dict.games.paused
+                    : info.name}
               </p>
               {phase === "over" && (
                 <p className="font-mono text-foreground" dir="ltr">
                   {dict.games.score}: {finalScore}
                 </p>
               )}
-              {phase === "ready" && <p className="text-sm text-foreground/90">{info.blurb}</p>}
+              {phase === "ready" && (
+                <p className="text-sm text-foreground/90">{info.blurb}</p>
+              )}
               <p className="text-xs text-muted-foreground">
-                {dict.games.controls}: {info.controls} · <Kbd>Esc</Kbd> {dict.games.exit}
+                {dict.games.controls}: {info.controls} · <Kbd>Esc</Kbd>{" "}
+                {dict.games.exit}
               </p>
               <button
                 type="button"
@@ -247,7 +323,11 @@ export default function GameShell({ game, onExit }: { game: GameId; onExit: () =
                 className="mt-1 inline-flex min-h-11 items-center gap-2 rounded-md px-5 font-display text-sm tracking-wider uppercase neon-border hover:bg-white/10"
               >
                 <Play className="size-4" />
-                {phase === "paused" ? dict.games.resume : phase === "over" ? dict.games.restart : dict.hub.enter}
+                {phase === "paused"
+                  ? dict.games.resume
+                  : phase === "over"
+                    ? dict.games.restart
+                    : dict.hub.enter}
               </button>
             </div>
           </div>
@@ -255,17 +335,35 @@ export default function GameShell({ game, onExit }: { game: GameId; onExit: () =
       </div>
 
       {/* Touch D-pad, only on coarse pointers. */}
-      <div className="hidden items-center justify-between gap-4 p-4 pointer-coarse:flex" dir="ltr">
+      <div
+        className="hidden items-center justify-between gap-4 p-4 pointer-coarse:flex"
+        dir="ltr"
+      >
         <div className="flex gap-3">
-          <button type="button" aria-label="Left" className="size-16 rounded-full neon-border text-neon-cyan touch-none select-none" {...press("left")}>
+          <button
+            type="button"
+            aria-label="Left"
+            className="size-16 touch-none rounded-full text-neon-cyan neon-border select-none"
+            {...press("left")}
+          >
             <ArrowLeft className="mx-auto size-7" />
           </button>
-          <button type="button" aria-label="Right" className="size-16 rounded-full neon-border text-neon-cyan touch-none select-none" {...press("right")}>
+          <button
+            type="button"
+            aria-label="Right"
+            className="size-16 touch-none rounded-full text-neon-cyan neon-border select-none"
+            {...press("right")}
+          >
             <ArrowRight className="mx-auto size-7" />
           </button>
         </div>
         {game !== "tech-catcher" && game !== "neon-drive" && (
-          <button type="button" aria-label="Fire" className="size-16 rounded-full neon-border text-neon-pink touch-none select-none" {...press("fire")}>
+          <button
+            type="button"
+            aria-label="Fire"
+            className="size-16 touch-none rounded-full text-neon-pink neon-border select-none"
+            {...press("fire")}
+          >
             <Crosshair className="mx-auto size-7" />
           </button>
         )}

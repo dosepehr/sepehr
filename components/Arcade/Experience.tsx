@@ -17,15 +17,25 @@ import type { ArcadeData } from "./arcade.types"
 import Loader from "./Loader"
 
 // ssr:false must live in a Client Component. three.js never reaches Lite or the 2D pages.
-const Scene = dynamic(() => import("./Scene"), { ssr: false, loading: () => <Loader /> })
+const Scene = dynamic(() => import("./Scene"), {
+  ssr: false,
+  loading: () => <Loader />,
+})
 
 function liteNavigate(target: NavTarget) {
-  const id = target === "resume" ? "contact" : target === "skills" ? "about" : target
+  const id =
+    target === "resume" ? "contact" : target === "skills" ? "about" : target
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
   useStage.getState().setTerminal(false)
 }
 
-function TerminalHost({ data, navigate }: { data: ArcadeData; navigate: (t: NavTarget) => void }) {
+function TerminalHost({
+  data,
+  navigate,
+}: {
+  data: ArcadeData
+  navigate: (t: NavTarget) => void
+}) {
   const open = useStage((s) => s.terminalOpen)
   if (!open) return null
   return (
@@ -41,7 +51,9 @@ function TerminalHost({ data, navigate }: { data: ArcadeData; navigate: (t: NavT
 function Arcade3D({ data }: { data: ArcadeData }) {
   const [ready, setReady] = useState(false)
   useEffect(() => {
-    void import("./Scene").then((m) => useStage.getState().setTier(m.initialTier()))
+    void import("./Scene").then((m) =>
+      useStage.getState().setTier(m.initialTier())
+    )
     return () => {
       document.body.style.cursor = ""
     }
@@ -69,19 +81,32 @@ function Lite({ data, notice }: { data: ArcadeData; notice?: string }) {
 }
 
 /** Picks the full 3D arcade or the Lite hub. `hero` is the server-rendered first paint. */
-export default function Experience({ data, hero }: { data: ArcadeData; hero: ReactNode }) {
+export default function Experience({
+  data,
+  hero,
+}: {
+  data: ArcadeData
+  hero: ReactNode
+}) {
   const { dict } = useDictionary()
   const experience = useExperience()
 
   // Leaving a mode resets the stage so nothing stays focused or open.
   useEffect(() => {
-    useStage.setState({ focus: "overview", panel: null, game: null, terminalOpen: false })
+    useStage.setState({
+      focus: "overview",
+      panel: null,
+      game: null,
+      terminalOpen: false,
+    })
   }, [experience])
 
   if (experience === "pending") return hero
   if (experience === "lite") return <Lite data={data} />
   return (
-    <ErrorBoundary fallback={() => <Lite data={data} notice={dict.hub.fallback} />}>
+    <ErrorBoundary
+      fallback={() => <Lite data={data} notice={dict.hub.fallback} />}
+    >
       <Arcade3D data={data} />
     </ErrorBoundary>
   )

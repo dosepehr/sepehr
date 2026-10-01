@@ -61,7 +61,12 @@ export default function Terminal({
         later.push(() => navigate("about"))
         break
       case "skills":
-        out.push({ kind: "out", text: skills.map((s) => `${s.name} ${"█".repeat(Math.round(s.level / 10))}`).join("\n") })
+        out.push({
+          kind: "out",
+          text: skills
+            .map((s) => `${s.name} ${"█".repeat(Math.round(s.level / 10))}`)
+            .join("\n"),
+        })
         later.push(() => navigate("skills"))
         break
       case "projects":
@@ -144,19 +149,34 @@ export default function Terminal({
       aria-label={t.title}
       dir="ltr"
       lang={lang}
-      className="fixed inset-x-4 bottom-4 z-40 mx-auto flex max-h-[60svh] max-w-2xl flex-col overflow-hidden rounded-lg bg-[#04120b]/95 font-mono text-sm text-[#5dff9d] shadow-[0_0_40px_rgba(93,255,157,0.25)] neon-border scanlines"
+      className="scanlines fixed inset-x-4 bottom-4 z-40 mx-auto flex max-h-[60svh] max-w-2xl flex-col overflow-hidden rounded-lg bg-[#04120b]/95 font-mono text-sm text-[#5dff9d] shadow-[0_0_40px_rgba(93,255,157,0.25)] neon-border"
     >
       <header className="relative z-10 flex items-center justify-between border-b border-[#5dff9d]/30 px-3 py-1.5">
         <span className="text-glow">{t.title}</span>
-        <button type="button" onClick={onClose} aria-label={dict.games.exit} className="inline-flex size-9 items-center justify-center rounded hover:bg-white/10">
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label={dict.games.exit}
+          className="inline-flex size-9 items-center justify-center rounded hover:bg-white/10"
+        >
           <X className="size-4" />
         </button>
       </header>
-      <div ref={log} className="relative z-10 flex-1 overflow-y-auto px-3 py-2" aria-live="polite">
+      <div
+        ref={log}
+        className="relative z-10 flex-1 overflow-y-auto px-3 py-2"
+        aria-live="polite"
+      >
         {lines.map((line, i) => (
           <pre
             key={i}
-            className={line.kind === "err" ? "whitespace-pre-wrap text-[#ff7a7a]" : line.kind === "in" ? "whitespace-pre-wrap text-[#b5ffd1]" : "whitespace-pre-wrap"}
+            className={
+              line.kind === "err"
+                ? "whitespace-pre-wrap text-[#ff7a7a]"
+                : line.kind === "in"
+                  ? "whitespace-pre-wrap text-[#b5ffd1]"
+                  : "whitespace-pre-wrap"
+            }
             dir="auto"
           >
             {line.kind === "in" ? `$ ${line.text}` : line.text}

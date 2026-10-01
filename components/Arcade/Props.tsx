@@ -13,7 +13,11 @@ import { usePalette } from "./palette"
 
 const useFont = () => {
   const { lang } = useDictionary()
-  return { fontVar: lang === "fa" ? ("--font-fa" as const) : ("--font-display" as const), dir: lang === "fa" ? ("rtl" as const) : ("ltr" as const) }
+  return {
+    fontVar:
+      lang === "fa" ? ("--font-fa" as const) : ("--font-display" as const),
+    dir: lang === "fa" ? ("rtl" as const) : ("ltr" as const),
+  }
 }
 
 /** Pulsing emissive helper for hovered props. */
@@ -29,7 +33,13 @@ function useGlow(id: string, base = 1.5) {
   return ref
 }
 
-export function CrtDesk({ onDesk, onScreen }: { onDesk: () => void; onScreen: () => void }) {
+export function CrtDesk({
+  onDesk,
+  onScreen,
+}: {
+  onDesk: () => void
+  onScreen: () => void
+}) {
   const palette = usePalette()
   const glow = useGlow("desk")
   const screenGlow = useGlow("crt", 1.2)
@@ -38,7 +48,11 @@ export function CrtDesk({ onDesk, onScreen }: { onDesk: () => void; onScreen: ()
       <Hotspot id="desk" onActivate={onDesk}>
         <mesh position={[0, 0.75, 0]}>
           <boxGeometry args={[2.4, 0.08, 1]} />
-          <meshStandardMaterial color={palette.body} emissive={palette.purple} emissiveIntensity={0.15} />
+          <meshStandardMaterial
+            color={palette.body}
+            emissive={palette.purple}
+            emissiveIntensity={0.15}
+          />
         </mesh>
         {[-1.1, 1.1].map((x) => (
           <mesh key={x} position={[x, 0.37, 0]}>
@@ -48,12 +62,22 @@ export function CrtDesk({ onDesk, onScreen }: { onDesk: () => void; onScreen: ()
         ))}
         <mesh position={[0, 0.79, 0.04]}>
           <boxGeometry args={[2.38, 0.02, 0.02]} />
-          <meshStandardMaterial ref={glow} color="black" emissive={palette.purple} emissiveIntensity={1.5} toneMapped={false} />
+          <meshStandardMaterial
+            ref={glow}
+            color="black"
+            emissive={palette.purple}
+            emissiveIntensity={1.5}
+            toneMapped={false}
+          />
         </mesh>
         {/* Keyboard */}
         <mesh position={[0, 0.81, 0.25]}>
           <boxGeometry args={[0.9, 0.04, 0.3]} />
-          <meshStandardMaterial color="#0c0816" emissive={palette.cyan} emissiveIntensity={0.2} />
+          <meshStandardMaterial
+            color="#0c0816"
+            emissive={palette.cyan}
+            emissiveIntensity={0.2}
+          />
         </mesh>
       </Hotspot>
       <Hotspot id="crt" onActivate={onScreen}>
@@ -64,20 +88,38 @@ export function CrtDesk({ onDesk, onScreen }: { onDesk: () => void; onScreen: ()
         </mesh>
         <mesh position={[0, 1.22, 0.205]}>
           <planeGeometry args={[0.78, 0.58]} />
-          <meshStandardMaterial ref={screenGlow} color="black" emissive="#0a2a1a" emissiveIntensity={1.2} />
+          <meshStandardMaterial
+            ref={screenGlow}
+            color="black"
+            emissive="#0a2a1a"
+            emissiveIntensity={1.2}
+          />
         </mesh>
         <Label
           text={"sepehr@arcade:~$\n> help_"}
           size={[0.74, 0.5]}
           position={[0, 1.22, 0.21]}
-          options={{ color: "#5dff9d", fontVar: "--font-mono", fontSize: 40, height: 200, align: "left", dir: "ltr" }}
+          options={{
+            color: "#5dff9d",
+            fontVar: "--font-mono",
+            fontSize: 40,
+            height: 200,
+            align: "left",
+            dir: "ltr",
+          }}
         />
       </Hotspot>
     </group>
   )
 }
 
-export function ScoreBoard({ skills, onActivate }: { skills: Skill[]; onActivate: () => void }) {
+export function ScoreBoard({
+  skills,
+  onActivate,
+}: {
+  skills: Skill[]
+  onActivate: () => void
+}) {
   const palette = usePalette()
   const { dict } = useDictionary()
   const hydrated = useHydrated()
@@ -85,7 +127,10 @@ export function ScoreBoard({ skills, onActivate }: { skills: Skill[]; onActivate
   const glow = useGlow("skills", 1)
   const lines = skills
     .slice(0, 8)
-    .map((s, i) => `${String(i + 1).padStart(2, "0")} ${s.name.padEnd(11, ".")} ${hydrated && unlocked.includes(s.name) ? "★" : String(s.level * 10).padStart(4, "0")}`)
+    .map(
+      (s, i) =>
+        `${String(i + 1).padStart(2, "0")} ${s.name.padEnd(11, ".")} ${hydrated && unlocked.includes(s.name) ? "★" : String(s.level * 10).padStart(4, "0")}`
+    )
     .join("\n")
   const { fontVar, dir } = useFont()
   return (
@@ -93,7 +138,13 @@ export function ScoreBoard({ skills, onActivate }: { skills: Skill[]; onActivate
       <group position={[8.9, 2.8, -4.2]} rotation-y={-Math.PI / 2}>
         <mesh>
           <boxGeometry args={[3, 2.6, 0.1]} />
-          <meshStandardMaterial ref={glow} color="#07040f" emissive={palette.yellow} emissiveIntensity={1} toneMapped={false} />
+          <meshStandardMaterial
+            ref={glow}
+            color="#07040f"
+            emissive={palette.yellow}
+            emissiveIntensity={1}
+            toneMapped={false}
+          />
         </mesh>
         <mesh position={[0, 0, 0.06]}>
           <planeGeometry args={[2.9, 2.5]} />
@@ -103,20 +154,40 @@ export function ScoreBoard({ skills, onActivate }: { skills: Skill[]; onActivate
           text={dict.nav.skills.toUpperCase()}
           size={[2.6, 0.35]}
           position={[0, 1.0, 0.07]}
-          options={{ color: palette.yellow, fontSize: 60, height: 100, fontVar, dir }}
+          options={{
+            color: palette.yellow,
+            fontSize: 60,
+            height: 100,
+            fontVar,
+            dir,
+          }}
         />
         <Label
           text={lines}
           size={[2.6, 1.9]}
           position={[0, -0.2, 0.07]}
-          options={{ color: palette.cyan, fontVar: "--font-mono", fontSize: 30, height: 380, align: "left", dir: "ltr", glow: false }}
+          options={{
+            color: palette.cyan,
+            fontVar: "--font-mono",
+            fontSize: 30,
+            height: 380,
+            align: "left",
+            dir: "ltr",
+            glow: false,
+          }}
         />
       </group>
     </Hotspot>
   )
 }
 
-export function BlogRack({ posts, onActivate }: { posts: Post[]; onActivate: () => void }) {
+export function BlogRack({
+  posts,
+  onActivate,
+}: {
+  posts: Post[]
+  onActivate: () => void
+}) {
   const palette = usePalette()
   const { dict } = useDictionary()
   const glow = useGlow("blog")
@@ -132,21 +203,42 @@ export function BlogRack({ posts, onActivate }: { posts: Post[]; onActivate: () 
         {[0.45, 1.0].map((y) => (
           <mesh key={y} position={[0, y, 0.25]}>
             <boxGeometry args={[1.75, 0.03, 0.2]} />
-            <meshStandardMaterial ref={y === 1 ? glow : undefined} color="black" emissive={palette.cyan} emissiveIntensity={1.5} toneMapped={false} />
+            <meshStandardMaterial
+              ref={y === 1 ? glow : undefined}
+              color="black"
+              emissive={palette.cyan}
+              emissiveIntensity={1.5}
+              toneMapped={false}
+            />
           </mesh>
         ))}
         {/* VHS tapes / zines, one per post (plus filler) */}
         {Array.from({ length: Math.max(6, posts.length) }, (_, i) => (
-          <mesh key={i} position={[-0.7 + (i % 6) * 0.28, i < 6 ? 1.2 : 0.65, 0.22]} rotation-x={-0.15}>
+          <mesh
+            key={i}
+            position={[-0.7 + (i % 6) * 0.28, i < 6 ? 1.2 : 0.65, 0.22]}
+            rotation-x={-0.15}
+          >
             <boxGeometry args={[0.22, 0.34, 0.05]} />
-            <meshStandardMaterial color={colors[i % colors.length]} emissive={colors[i % colors.length]} emissiveIntensity={i < posts.length ? 0.8 : 0.15} />
+            <meshStandardMaterial
+              color={colors[i % colors.length]}
+              emissive={colors[i % colors.length]}
+              emissiveIntensity={i < posts.length ? 0.8 : 0.15}
+            />
           </mesh>
         ))}
         <Label
           text={dict.nav.blog.toUpperCase()}
           size={[1.6, 0.36]}
           position={[0, 1.85, 0]}
-          options={{ color: palette.cyan, fontSize: 64, height: 120, fontVar, dir, background: "#0a0514" }}
+          options={{
+            color: palette.cyan,
+            fontSize: 64,
+            height: 120,
+            fontVar,
+            dir,
+            background: "#0a0514",
+          }}
         />
       </group>
     </Hotspot>
@@ -172,13 +264,26 @@ export function Payphone({ onActivate }: { onActivate: () => void }) {
         {/* Handset */}
         <mesh position={[-0.2, 1.35, 0.33]} rotation-z={Math.PI / 2}>
           <capsuleGeometry args={[0.05, 0.4, 4, 8]} />
-          <meshStandardMaterial ref={glow} color="black" emissive={palette.pink} emissiveIntensity={1.5} toneMapped={false} />
+          <meshStandardMaterial
+            ref={glow}
+            color="black"
+            emissive={palette.pink}
+            emissiveIntensity={1.5}
+            toneMapped={false}
+          />
         </mesh>
         <Label
           text={dict.nav.contact.toUpperCase()}
           size={[0.85, 0.25]}
           position={[0, 2.05, 0.26]}
-          options={{ color: palette.pink, fontSize: 56, height: 110, fontVar, dir, background: "#0a0514" }}
+          options={{
+            color: palette.pink,
+            fontSize: 56,
+            height: 110,
+            fontVar,
+            dir,
+            background: "#0a0514",
+          }}
         />
       </group>
     </Hotspot>
@@ -195,7 +300,8 @@ export function Printer({ onActivate }: { onActivate: () => void }) {
   useFrame((_, dt) => {
     if (!paper.current) return
     const target = hovered ? 0.25 : 0
-    paper.current.position.z += (0.25 + target - paper.current.position.z) * Math.min(1, dt * 6)
+    paper.current.position.z +=
+      (0.25 + target - paper.current.position.z) * Math.min(1, dt * 6)
   })
   return (
     <Hotspot id="resume" onActivate={onActivate}>
@@ -210,9 +316,19 @@ export function Printer({ onActivate }: { onActivate: () => void }) {
         </mesh>
         <mesh position={[0, 0.81, 0.36]}>
           <boxGeometry args={[0.6, 0.02, 0.02]} />
-          <meshStandardMaterial ref={glow} color="black" emissive={palette.yellow} emissiveIntensity={1.5} toneMapped={false} />
+          <meshStandardMaterial
+            ref={glow}
+            color="black"
+            emissive={palette.yellow}
+            emissiveIntensity={1.5}
+            toneMapped={false}
+          />
         </mesh>
-        <mesh ref={paper} position={[0, 0.82, 0.25]} rotation-x={-Math.PI / 2 + 0.2}>
+        <mesh
+          ref={paper}
+          position={[0, 0.82, 0.25]}
+          rotation-x={-Math.PI / 2 + 0.2}
+        >
           <planeGeometry args={[0.45, 0.6]} />
           <meshStandardMaterial color="#fffdf5" side={THREE.DoubleSide} />
         </mesh>
@@ -220,7 +336,13 @@ export function Printer({ onActivate }: { onActivate: () => void }) {
           text={dict.nav.resume.toUpperCase()}
           size={[0.85, 0.22]}
           position={[0, 1.25, 0]}
-          options={{ color: palette.yellow, fontSize: 56, height: 110, fontVar, dir }}
+          options={{
+            color: palette.yellow,
+            fontSize: 56,
+            height: 110,
+            fontVar,
+            dir,
+          }}
         />
       </group>
     </Hotspot>
@@ -238,10 +360,18 @@ export function NeonCat({ onActivate }: { onActivate: () => void }) {
     g.visible = cycle > 8 && cycle < 20
     g.position.x = 5.5 + Math.sin(clock.elapsedTime * 0.3) * 0.6
   })
-  const m = <meshBasicMaterial color={new THREE.Color(palette.pink).multiplyScalar(2.5)} toneMapped={false} />
+  const m = (
+    <meshBasicMaterial
+      color={new THREE.Color(palette.pink).multiplyScalar(2.5)}
+      toneMapped={false}
+    />
+  )
   return (
     <group ref={group} position={[5.5, 6.62, -7.4]}>
-      <Hotspot id="cat" onActivate={() => group.current?.visible && onActivate()}>
+      <Hotspot
+        id="cat"
+        onActivate={() => group.current?.visible && onActivate()}
+      >
         <mesh position={[0, 0.15, 0]}>
           <boxGeometry args={[0.5, 0.25, 0.2]} />
           {m}

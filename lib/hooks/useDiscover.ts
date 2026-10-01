@@ -15,7 +15,9 @@ export function useDiscover() {
       const isNew = useQuests.getState().discover(id)
       if (!isNew) return
       sfx.discover()
-      toast.success(dict.quests.found, { description: dict.quests.list[id].name })
+      toast.success(dict.quests.found, {
+        description: dict.quests.list[id].name,
+      })
       if (allQuestsFound(useQuests.getState().found)) {
         setTimeout(() => toast.success(dict.quests.allFound), 1200)
       }

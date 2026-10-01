@@ -4,7 +4,8 @@ import { createStore } from "./createStore"
 
 export type PerfTier = "high" | "medium" | "low"
 export type Palette = "synthwave" | "vaporwave"
-export type PanelId = "project" | "blog" | "about" | "skills" | "contact" | "resume" | "games"
+export type PanelId =
+  "project" | "blog" | "about" | "skills" | "contact" | "resume" | "games"
 
 type StageState = {
   /** Where the camera is (or is heading). */
@@ -19,7 +20,11 @@ type StageState = {
   tier: PerfTier
   palette: Palette
   hovered: string | null
-  focusOn: (focus: HotspotId, panel?: PanelId | null, projectSlug?: string | null) => void
+  focusOn: (
+    focus: HotspotId,
+    panel?: PanelId | null,
+    projectSlug?: string | null
+  ) => void
   back: () => void
   setPanel: (panel: PanelId | null) => void
   setGame: (game: GameId | null) => void
@@ -44,10 +49,15 @@ export const useStage = createStore<StageState>(
     back: () => {
       const { game, terminalOpen, panel, focus } = get()
       if (game) return set({ game: null }, false, "back/game")
-      if (terminalOpen) return set({ terminalOpen: false }, false, "back/terminal")
+      if (terminalOpen)
+        return set({ terminalOpen: false }, false, "back/terminal")
       if (panel) return set({ panel: null }, false, "back/panel")
       if (focus !== "overview")
-        return set({ focus: "overview", projectSlug: null }, false, "back/focus")
+        return set(
+          { focus: "overview", projectSlug: null },
+          false,
+          "back/focus"
+        )
     },
     setPanel: (panel) => set({ panel }, false, "setPanel"),
     setGame: (game) => set({ game, panel: null }, false, "setGame"),

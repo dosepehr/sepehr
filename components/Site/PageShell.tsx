@@ -26,7 +26,9 @@ export default function PageShell({
         <h1 className="font-display text-3xl tracking-wide text-neon-pink text-glow sm:text-4xl">
           {title}
         </h1>
-        {intro && <p className="mt-3 max-w-2xl text-muted-foreground">{intro}</p>}
+        {intro && (
+          <p className="mt-3 max-w-2xl text-muted-foreground">{intro}</p>
+        )}
         <div className="mt-8">{children}</div>
       </main>
       <SiteFooter lang={lang} dict={dict} profile={getProfile(lang)} />

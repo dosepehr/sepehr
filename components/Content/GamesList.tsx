@@ -17,7 +17,8 @@ export default function GamesList({ include3d }: { include3d: boolean }) {
   const unlocked = useQuests((s) => allQuestsFound(s.found)) && hydrated
 
   const ids = (Object.keys(GAMES) as GameId[]).filter(
-    (id) => (include3d || !GAMES[id].is3d) && (id !== "friday-night" || unlocked)
+    (id) =>
+      (include3d || !GAMES[id].is3d) && (id !== "friday-night" || unlocked)
   )
 
   return (
@@ -39,8 +40,13 @@ export default function GamesList({ include3d }: { include3d: boolean }) {
                 <Gamepad2 className="size-4" aria-hidden />
                 {info.name}
               </span>
-              <span className="text-sm text-card-foreground/90">{info.blurb}</span>
-              <span className="mt-1 font-mono text-xs text-muted-foreground" dir="ltr">
+              <span className="text-sm text-card-foreground/90">
+                {info.blurb}
+              </span>
+              <span
+                className="mt-1 font-mono text-xs text-muted-foreground"
+                dir="ltr"
+              >
                 {dict.games.best}: {hydrated ? (best[id] ?? 0) : 0}
               </span>
             </button>

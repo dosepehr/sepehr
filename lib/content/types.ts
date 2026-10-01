@@ -27,8 +27,17 @@ export type PostMeta = {
 export type Project = ProjectMeta & { slug: string }
 export type Post = PostMeta & { slug: string }
 
-export type Skill = { name: string; level: number; group: "frontend" | "backend" | "tools" }
-export type Job = { company: string; role: string; period: string; summary: string }
+export type Skill = {
+  name: string
+  level: number
+  group: "frontend" | "backend" | "tools"
+}
+export type Job = {
+  company: string
+  role: string
+  period: string
+  summary: string
+}
 export type Profile = {
   name: string
   role: string

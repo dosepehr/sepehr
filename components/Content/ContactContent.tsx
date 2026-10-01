@@ -15,7 +15,11 @@ export default function ContactContent({
   lang: Locale
 }) {
   const direct = [
-    { href: `mailto:${profile.links.email}`, label: profile.links.email, Icon: Mail },
+    {
+      href: `mailto:${profile.links.email}`,
+      label: profile.links.email,
+      Icon: Mail,
+    },
     { href: profile.links.github, label: "GitHub", Icon: CodeXml },
     { href: profile.links.linkedin, label: "LinkedIn", Icon: Briefcase },
   ]
@@ -26,7 +30,9 @@ export default function ContactContent({
         <ContactForm />
       </div>
       <aside className="flex flex-col gap-3">
-        <h2 className="font-display text-sm tracking-wide text-neon-cyan">{dict.contact.direct}</h2>
+        <h2 className="font-display text-sm tracking-wide text-neon-cyan">
+          {dict.contact.direct}
+        </h2>
         <ul className="flex flex-col gap-2">
           {direct.map(({ href, label, Icon }) => (
             <li key={href}>

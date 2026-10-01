@@ -14,7 +14,11 @@ import { usePalette } from "./palette"
 import Room, { WALL_SLOTS } from "./Room"
 
 const TIERS: PerfTier[] = ["low", "medium", "high"]
-const DPR: Record<PerfTier, number | [number, number]> = { low: 1, medium: [1, 1.5], high: [1, 2] }
+const DPR: Record<PerfTier, number | [number, number]> = {
+  low: 1,
+  medium: [1, 1.5],
+  high: [1, 2],
+}
 
 /** Seed the tier from device hints; PerformanceMonitor adjusts it at runtime. */
 export function initialTier(): PerfTier {
@@ -26,7 +30,13 @@ export function initialTier(): PerfTier {
   return "medium"
 }
 
-export default function Scene({ data, onReady }: { data: ArcadeData; onReady?: () => void }) {
+export default function Scene({
+  data,
+  onReady,
+}: {
+  data: ArcadeData
+  onReady?: () => void
+}) {
   const palette = usePalette()
   const tier = useStage((s) => s.tier)
   const game = useStage((s) => s.game)
@@ -46,15 +56,25 @@ export default function Scene({ data, onReady }: { data: ArcadeData; onReady?: (
       dpr={DPR[tier]}
       frameloop={covered ? "never" : "always"}
       gl={{ antialias: tier !== "low", powerPreference: "high-performance" }}
-      camera={{ position: HOTSPOTS.overview.position, fov: 50, near: 0.1, far: 140 }}
+      camera={{
+        position: HOTSPOTS.overview.position,
+        fov: 50,
+        near: 0.1,
+        far: 140,
+      }}
       onCreated={() => onReady?.()}
       aria-hidden
     >
-      <PerformanceMonitor onIncline={() => step(1)} onDecline={() => step(-1)} flipflops={3} onFallback={() => useStage.getState().setTier("low")} />
+      <PerformanceMonitor
+        onIncline={() => step(1)}
+        onDecline={() => step(-1)}
+        flipflops={3}
+        onFallback={() => useStage.getState().setTier("low")}
+      />
       {!driving && (
         <>
           <color attach="background" args={[palette.bg]} />
-          <fog attach="fog" args={[palette.bg, 16, 34]} />
+          <fog attach="fog" args={[palette.bg, 22, 42]} />
         </>
       )}
       <Suspense fallback={null}>

@@ -36,13 +36,15 @@ const profiles: Record<Locale, Profile> = {
         company: "TODO Company",
         role: "Senior Frontend Developer",
         period: "2023 – now",
-        summary: "Placeholder: led the design system and the move to the Next.js App Router.",
+        summary:
+          "Placeholder: led the design system and the move to the Next.js App Router.",
       },
       {
         company: "TODO Studio",
         role: "Fullstack Developer",
         period: "2020 – 2023",
-        summary: "Placeholder: shipped dashboards, APIs and a few things that glowed.",
+        summary:
+          "Placeholder: shipped dashboards, APIs and a few things that glowed.",
       },
     ],
     links,
@@ -61,7 +63,8 @@ const profiles: Record<Locale, Profile> = {
         company: "شرکت (موقت)",
         role: "توسعه‌دهنده ارشد فرانت‌اند",
         period: "۲۰۲۳ – اکنون",
-        summary: "متن موقت: رهبری دیزاین سیستم و مهاجرت به App Router در Next.js.",
+        summary:
+          "متن موقت: رهبری دیزاین سیستم و مهاجرت به App Router در Next.js.",
       },
       {
         company: "استودیو (موقت)",

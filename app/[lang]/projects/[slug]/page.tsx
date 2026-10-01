@@ -12,7 +12,9 @@ export const dynamicParams = false
 
 export async function generateStaticParams() {
   const all = await Promise.all(
-    locales.map(async (lang) => (await listSlugs("projects", lang)).map((slug) => ({ lang, slug })))
+    locales.map(async (lang) =>
+      (await listSlugs("projects", lang)).map((slug) => ({ lang, slug }))
+    )
   )
   return all.flat()
 }
@@ -41,7 +43,10 @@ export default async function ProjectPage({ params }: Props) {
       <article className="mt-6 max-w-3xl">
         <Content />
       </article>
-      <Link href={`/${lang}/projects`} className="mt-8 inline-flex min-h-11 items-center text-neon-cyan underline underline-offset-4">
+      <Link
+        href={`/${lang}/projects`}
+        className="mt-8 inline-flex min-h-11 items-center text-neon-cyan underline underline-offset-4"
+      >
         {dict.projects.back}
       </Link>
     </PageShell>

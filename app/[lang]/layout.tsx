@@ -16,7 +16,11 @@ import { getDictionary } from "./dictionaries"
 
 const sans = Geist({ subsets: ["latin"], variable: "--font-sans" })
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" })
-const display = Orbitron({ subsets: ["latin"], weight: ["500", "700", "900"], variable: "--font-display" })
+const display = Orbitron({
+  subsets: ["latin"],
+  weight: ["500", "700", "900"],
+  variable: "--font-display",
+})
 const fa = Vazirmatn({ subsets: ["arabic", "latin"], variable: "--font-fa" })
 
 type Props = { children: ReactNode; params: Promise<{ lang: string }> }
@@ -27,7 +31,9 @@ export function generateStaticParams() {
 
 export const viewport: Viewport = { themeColor: "#140f2a", colorScheme: "dark" }
 
-export async function generateMetadata({ params }: Omit<Props, "children">): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: Omit<Props, "children">): Promise<Metadata> {
   const { lang } = await params
   if (!hasLocale(lang)) return {}
   const dict = await getDictionary(lang)
@@ -39,7 +45,11 @@ export async function generateMetadata({ params }: Omit<Props, "children">): Pro
       canonical: `/${lang}`,
       languages: { en: "/en", fa: "/fa", "x-default": "/en" },
     },
-    openGraph: { type: "website", locale: lang === "fa" ? "fa_IR" : "en_US", siteName: dict.site.name },
+    openGraph: {
+      type: "website",
+      locale: lang === "fa" ? "fa_IR" : "en_US",
+      siteName: dict.site.name,
+    },
     twitter: { card: "summary_large_image" },
   }
 }
@@ -55,7 +65,13 @@ export default async function LangLayout({ children, params }: Props) {
       lang={lang}
       dir={dir}
       suppressHydrationWarning
-      className={cn("antialiased", sans.variable, mono.variable, display.variable, fa.variable)}
+      className={cn(
+        "antialiased",
+        sans.variable,
+        mono.variable,
+        display.variable,
+        fa.variable
+      )}
     >
       <body className="min-h-svh bg-background font-sans">
         <a

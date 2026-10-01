@@ -13,9 +13,19 @@ export type GameEntry = {
 }
 
 export const GAMES: Record<GameId, GameEntry> = {
-  "tech-catcher": { def: TechCatcher as unknown as GameDef<BaseState>, color: "#22e5ff" },
-  "bug-blaster": { def: BugBlaster as unknown as GameDef<BaseState>, color: "#b45cff" },
-  "neon-drive": { def: NeonDrive as unknown as GameDef<BaseState>, is3d: true, color: "#ff2d95" },
+  "tech-catcher": {
+    def: TechCatcher as unknown as GameDef<BaseState>,
+    color: "#22e5ff",
+  },
+  "bug-blaster": {
+    def: BugBlaster as unknown as GameDef<BaseState>,
+    color: "#b45cff",
+  },
+  "neon-drive": {
+    def: NeonDrive as unknown as GameDef<BaseState>,
+    is3d: true,
+    color: "#ff2d95",
+  },
   "friday-night": {
     def: BugBlaster as unknown as GameDef<BaseState>,
     options: { hard: true },

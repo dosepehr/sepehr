@@ -37,7 +37,11 @@ export default function Floor() {
             mirror={0.5}
           />
         ) : (
-          <meshStandardMaterial color={palette.floor} roughness={0.6} metalness={0.3} />
+          <meshStandardMaterial
+            color={palette.floor}
+            roughness={0.6}
+            metalness={0.3}
+          />
         )}
       </mesh>
       <mesh rotation-x={-Math.PI / 2} position={[0, 0.002, 0.5]}>

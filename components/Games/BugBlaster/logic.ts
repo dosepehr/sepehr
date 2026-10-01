@@ -4,7 +4,7 @@ import type { BaseState, GameOptions, InputState } from "../engine/types"
 export const W = 360
 export const H = 540
 export const PLAYER_Y = H - 36
-const ENEMY_W = 64
+const ENEMY_W = 78
 const ENEMY_H = 18
 export const LABELS = ["undefined", "NaN", "404", "null"]
 export const BOSS_LABEL = "Friday deploy"
@@ -28,16 +28,27 @@ export type BugBlasterState = BaseState & {
   hard: boolean
 }
 
-function spawnWave(wave: number, hard: boolean): Pick<BugBlasterState, "enemies" | "boss" | "dir"> {
+function spawnWave(
+  wave: number,
+  hard: boolean
+): Pick<BugBlasterState, "enemies" | "boss" | "dir"> {
   // Every third wave (or immediately on hard mode) is the boss.
   if (hard ? wave % 2 === 1 : wave % 3 === 0) {
-    return { enemies: [], boss: { x: W / 2, y: 70, hp: BOSS_HP + wave * 4, dir: 1 }, dir: 1 }
+    return {
+      enemies: [],
+      boss: { x: W / 2, y: 70, hp: BOSS_HP + wave * 4, dir: 1 },
+      dir: 1,
+    }
   }
   const enemies: Enemy[] = []
   const rows = Math.min(3 + Math.floor(wave / 2), 5)
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < 4; col++) {
-      enemies.push({ x: 50 + col * 80, y: 50 + row * 30, label: LABELS[(row + col) % LABELS.length] })
+      enemies.push({
+        x: 50 + col * 80,
+        y: 50 + row * 30,
+        label: LABELS[(row + col) % LABELS.length],
+      })
     }
   }
   return { enemies, boss: null, dir: 1 }
@@ -63,21 +74,40 @@ export function init(seed: number, options?: GameOptions): BugBlasterState {
   }
 }
 
-const hits = (ax: number, ay: number, bx: number, by: number, bw: number, bh: number) =>
-  ax >= bx - bw / 2 && ax <= bx + bw / 2 && ay >= by - bh / 2 && ay <= by + bh / 2
+const hits = (
+  ax: number,
+  ay: number,
+  bx: number,
+  by: number,
+  bw: number,
+  bh: number
+) =>
+  ax >= bx - bw / 2 &&
+  ax <= bx + bw / 2 &&
+  ay >= by - bh / 2 &&
+  ay <= by + bh / 2
 
-export function step(state: BugBlasterState, input: InputState, dt: number): BugBlasterState {
+export function step(
+  state: BugBlasterState,
+  input: InputState,
+  dt: number
+): BugBlasterState {
   if (state.status === "over") return { ...state, events: [] }
   const events: BugBlasterState["events"] = []
   let { seed, score, lives, dir, cooldown, invulnerable, wave, boss } = state
   const speedUp = (state.hard ? 1.5 : 1) * (1 + wave * 0.12)
 
   const move = (input.right ? 1 : 0) - (input.left ? 1 : 0)
-  const playerX = Math.max(16, Math.min(W - 16, state.playerX + move * 260 * dt))
+  const playerX = Math.max(
+    16,
+    Math.min(W - 16, state.playerX + move * 260 * dt)
+  )
 
   cooldown = Math.max(0, cooldown - dt)
   invulnerable = Math.max(0, invulnerable - dt)
-  let shots = state.shots.map((s) => ({ ...s, y: s.y + s.vy * dt })).filter((s) => s.y > -10)
+  let shots = state.shots
+    .map((s) => ({ ...s, y: s.y + s.vy * dt }))
+    .filter((s) => s.y > -10)
   if (input.fire && cooldown === 0) {
     shots.push({ x: playerX, y: PLAYER_Y - 12, vy: -420 })
     cooldown = 0.28
@@ -110,7 +140,9 @@ export function step(state: BugBlasterState, input: InputState, dt: number): Bug
   // Player shots vs enemies and boss.
   const remainingShots: typeof shots = []
   for (const shot of shots) {
-    const index = enemies.findIndex((e) => hits(shot.x, shot.y, e.x, e.y, ENEMY_W, ENEMY_H))
+    const index = enemies.findIndex((e) =>
+      hits(shot.x, shot.y, e.x, e.y, ENEMY_W, ENEMY_H)
+    )
     if (index >= 0) {
       enemies = enemies.filter((_, i) => i !== index)
       score += 10 * wave
@@ -132,7 +164,9 @@ export function step(state: BugBlasterState, input: InputState, dt: number): Bug
   shots = remainingShots
 
   // Enemy fire.
-  let enemyShots = state.enemyShots.map((s) => ({ ...s, y: s.y + s.vy * dt })).filter((s) => s.y < H + 10)
+  let enemyShots = state.enemyShots
+    .map((s) => ({ ...s, y: s.y + s.vy * dt }))
+    .filter((s) => s.y < H + 10)
   const shooters: { x: number; y: number }[] = boss ? [boss] : enemies
   let r: number
   ;[r, seed] = rand(seed)
@@ -145,7 +179,9 @@ export function step(state: BugBlasterState, input: InputState, dt: number): Bug
   let hitPlayer = false
   if (invulnerable === 0) {
     const before = enemyShots.length
-    enemyShots = enemyShots.filter((s) => !hits(s.x, s.y, playerX, PLAYER_Y, 28, 16))
+    enemyShots = enemyShots.filter(
+      (s) => !hits(s.x, s.y, playerX, PLAYER_Y, 28, 16)
+    )
     hitPlayer = enemyShots.length < before
   }
   if (enemies.some((e) => e.y + ENEMY_H / 2 >= PLAYER_Y - 10)) {

@@ -37,7 +37,11 @@ export function init(seed: number): NeonDriveState {
   }
 }
 
-export function step(state: NeonDriveState, input: InputState, dt: number): NeonDriveState {
+export function step(
+  state: NeonDriveState,
+  input: InputState,
+  dt: number
+): NeonDriveState {
   if (state.status === "over") return { ...state, events: [] }
   const events: NeonDriveState["events"] = []
   let { lane, latch, seed, spawnIn } = state
@@ -64,12 +68,15 @@ export function step(state: NeonDriveState, input: InputState, dt: number): Neon
     const free = Math.floor(r * 3)
     ;[r, seed] = rand(seed)
     // One or two blocked lanes, never all three.
-    const blocked = r < 0.4 ? [0, 1, 2].filter((l) => l !== free) : [(free + 1) % 3]
+    const blocked =
+      r < 0.4 ? [0, 1, 2].filter((l) => l !== free) : [(free + 1) % 3]
     obstacles = [...obstacles, ...blocked.map((l) => ({ lane: l, z: SPAWN_Z }))]
     spawnIn = Math.max(0.45, 1.3 - speed / 80)
   }
 
-  const crashed = obstacles.some((o) => Math.abs(o.z - PLAYER_Z) < 1.1 && Math.abs(LANES[o.lane] - x) < 1.2)
+  const crashed = obstacles.some(
+    (o) => Math.abs(o.z - PLAYER_Z) < 1.1 && Math.abs(LANES[o.lane] - x) < 1.2
+  )
   const status = crashed ? "over" : "playing"
   if (crashed) events.push({ type: "explode" }, { type: "lose" })
 

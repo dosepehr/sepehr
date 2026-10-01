@@ -1,9 +1,18 @@
 import type { Project } from "@/lib/content/types"
 import type { Dictionary } from "@/lib/i18n/dictionary"
 
-export default function ProjectHeader({ project, dict }: { project: Project; dict: Dictionary }) {
+export default function ProjectHeader({
+  project,
+  dict,
+}: {
+  project: Project
+  dict: Dictionary
+}) {
   return (
-    <div className="flex flex-col gap-4 rounded-lg bg-card/70 p-5" style={{ color: project.color }}>
+    <div
+      className="flex flex-col gap-4 rounded-lg bg-card/70 p-5"
+      style={{ color: project.color }}
+    >
       <p className="text-sm text-card-foreground/90">{project.summary}</p>
       <dl className="grid gap-3 text-sm text-card-foreground sm:grid-cols-2">
         <div>
@@ -16,7 +25,10 @@ export default function ProjectHeader({ project, dict }: { project: Project; dic
           <dt className="text-muted-foreground">{dict.projects.stack}</dt>
           <dd className="mt-1 flex flex-wrap gap-1.5" dir="ltr">
             {project.stack.map((tech) => (
-              <span key={tech} className="rounded-sm bg-muted px-2 py-0.5 font-mono text-xs">
+              <span
+                key={tech}
+                className="rounded-sm bg-muted px-2 py-0.5 font-mono text-xs"
+              >
                 {tech}
               </span>
             ))}

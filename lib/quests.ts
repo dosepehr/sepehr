@@ -27,7 +27,11 @@ export const KONAMI = [
 ]
 
 /** Pure: feed keys one by one; returns the new progress index (or full length on success). */
-export function advanceSequence(sequence: string[], progress: number, key: string) {
+export function advanceSequence(
+  sequence: string[],
+  progress: number,
+  key: string
+) {
   const k = key.toLowerCase()
   if (sequence[progress] === k) return progress + 1
   return sequence[0] === k ? 1 : 0

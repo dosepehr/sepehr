@@ -26,7 +26,11 @@ export default function NeonDriveScene() {
     []
   )
   const sun = useMemo(
-    () => ({ uTop: { value: new THREE.Color() }, uBottom: { value: new THREE.Color() }, uTime: { value: 0 } }),
+    () => ({
+      uTop: { value: new THREE.Color() },
+      uBottom: { value: new THREE.Color() },
+      uTime: { value: 0 },
+    }),
     []
   )
 
@@ -41,7 +45,10 @@ export default function NeonDriveScene() {
     const list: { position: [number, number, number]; scale: number }[] = []
     for (let i = 0; i < 24; i++) {
       const side = i % 2 === 0 ? -1 : 1
-      list.push({ position: [side * (12 + (i % 5) * 4), 0, -20 - i * 3.5], scale: 4 + ((i * 7) % 5) })
+      list.push({
+        position: [side * (12 + (i % 5) * 4), 0, -20 - i * 3.5],
+        scale: 4 + ((i * 7) % 5),
+      })
     }
     return list
   }, [])
@@ -93,31 +100,68 @@ export default function NeonDriveScene() {
     <group>
       <color attach="background" args={["#05010d"]} />
       <fog attach="fog" args={["#05010d", 30, 95]} />
-      <ambientLight intensity={0.4} />
+      <ambientLight intensity={0.6} />
+      <pointLight
+        position={[0, 3, 3]}
+        intensity={30}
+        color={palette.pink}
+        distance={12}
+      />
       <mesh rotation-x={-Math.PI / 2} position={[0, 0, -40]}>
         <planeGeometry args={[60, 120]} />
         <meshBasicMaterial color="#090316" />
       </mesh>
       <mesh rotation-x={-Math.PI / 2} position={[0, 0.01, -40]}>
         <planeGeometry args={[60, 120]} />
-        <shaderMaterial vertexShader={gridVertex} fragmentShader={gridFragment} uniforms={grid} transparent depthWrite={false} toneMapped={false} />
+        <shaderMaterial
+          vertexShader={gridVertex}
+          fragmentShader={gridFragment}
+          uniforms={grid}
+          transparent
+          depthWrite={false}
+          toneMapped={false}
+        />
       </mesh>
       <mesh position={[0, 12, -95]}>
         <planeGeometry args={[40, 40]} />
-        <shaderMaterial vertexShader={screenVertex} fragmentShader={sunFragment} uniforms={sun} toneMapped={false} fog={false} />
+        <shaderMaterial
+          vertexShader={screenVertex}
+          fragmentShader={sunFragment}
+          uniforms={sun}
+          toneMapped={false}
+          fog={false}
+        />
       </mesh>
-      <instancedMesh ref={mountainRef} args={[undefined, undefined, mountains.length]}>
+      <instancedMesh
+        ref={mountainRef}
+        args={[undefined, undefined, mountains.length]}
+      >
         <coneGeometry args={[1, 1, 4]} />
-        <meshBasicMaterial color={palette.purple} wireframe toneMapped={false} />
+        <meshBasicMaterial
+          color={palette.purple}
+          wireframe
+          toneMapped={false}
+        />
       </instancedMesh>
-      <instancedMesh ref={obstacles} args={[undefined, undefined, MAX_OBSTACLES]} frustumCulled={false}>
+      <instancedMesh
+        ref={obstacles}
+        args={[undefined, undefined, MAX_OBSTACLES]}
+        frustumCulled={false}
+      >
         <boxGeometry args={[1.4, 1, 0.6]} />
-        <meshBasicMaterial color={new THREE.Color(palette.cyan).multiplyScalar(2)} toneMapped={false} />
+        <meshBasicMaterial
+          color={new THREE.Color(palette.cyan).multiplyScalar(2)}
+          toneMapped={false}
+        />
       </instancedMesh>
       <group ref={car}>
         <mesh position={[0, 0.35, 0]}>
           <boxGeometry args={[1.1, 0.35, 2]} />
-          <meshStandardMaterial color="#120820" metalness={0.6} roughness={0.3} />
+          <meshStandardMaterial
+            color="#120820"
+            metalness={0.6}
+            roughness={0.3}
+          />
         </mesh>
         <mesh position={[0, 0.65, 0.15]}>
           <boxGeometry args={[0.8, 0.3, 0.9]} />
@@ -126,12 +170,18 @@ export default function NeonDriveScene() {
         {[-0.5, 0.5].map((x) => (
           <mesh key={x} position={[x, 0.35, 1.01]}>
             <boxGeometry args={[0.25, 0.08, 0.02]} />
-            <meshBasicMaterial color={new THREE.Color(palette.pink).multiplyScalar(4)} toneMapped={false} />
+            <meshBasicMaterial
+              color={new THREE.Color(palette.pink).multiplyScalar(4)}
+              toneMapped={false}
+            />
           </mesh>
         ))}
         <mesh position={[0, 0.18, 0]}>
           <boxGeometry args={[1.15, 0.04, 2.02]} />
-          <meshBasicMaterial color={new THREE.Color(palette.cyan).multiplyScalar(2)} toneMapped={false} />
+          <meshBasicMaterial
+            color={new THREE.Color(palette.cyan).multiplyScalar(2)}
+            toneMapped={false}
+          />
         </mesh>
       </group>
     </group>

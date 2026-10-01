@@ -25,7 +25,10 @@ export default function GlobalEggs() {
 
   useEffect(() => {
     console.log(`%c${ART}`, "color:#ff2d95;font-family:monospace")
-    console.log("%cHey, developer. Type secret() to claim something.", "color:#22e5ff")
+    console.log(
+      "%cHey, developer. Type secret() to claim something.",
+      "color:#22e5ff"
+    )
     window.secret = () => {
       discover("console")
       return "🕹  Secret found. Check the HUD."
@@ -41,7 +44,10 @@ export default function GlobalEggs() {
       progress = advanceSequence(KONAMI, progress, event.key)
       if (progress === KONAMI.length) {
         progress = 0
-        const next = useStage.getState().palette === "vaporwave" ? "synthwave" : "vaporwave"
+        const next =
+          useStage.getState().palette === "vaporwave"
+            ? "synthwave"
+            : "vaporwave"
         useStage.getState().setPalette(next)
         discover("konami")
       }

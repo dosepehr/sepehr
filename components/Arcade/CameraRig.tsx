@@ -7,7 +7,13 @@ import { usePrefersReducedMotion } from "@/lib/hooks/useExperience"
 import { useStage } from "@/lib/store/stage"
 import { HOTSPOTS, resolvePose } from "./hotspots"
 
-export default function CameraRig({ projectSlugs, gameSlots }: { projectSlugs: string[]; gameSlots: string[] }) {
+export default function CameraRig({
+  projectSlugs,
+  gameSlots,
+}: {
+  projectSlugs: string[]
+  gameSlots: string[]
+}) {
   const controls = useRef<CameraControls>(null)
   const focus = useStage((s) => s.focus)
   const reduced = usePrefersReducedMotion()
@@ -34,5 +40,12 @@ export default function CameraRig({ projectSlugs, gameSlots }: { projectSlugs: s
   })
 
   // User orbit/dolly is off: navigation is hotspot-driven (and keyboard via the HUD).
-  return <CameraControls ref={controls} enabled={false} smoothTime={0.55} makeDefault />
+  return (
+    <CameraControls
+      ref={controls}
+      enabled={false}
+      smoothTime={0.55}
+      makeDefault
+    />
+  )
 }

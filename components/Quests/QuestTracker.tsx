@@ -3,7 +3,10 @@
 import { Sparkles } from "lucide-react"
 import Link from "next/link"
 import { useDictionary } from "@/components/DictionaryProvider"
-import Popover, { PopoverContent, PopoverTrigger } from "@/components/ui/Popover"
+import Popover, {
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/Popover"
 import { cn } from "@/lib/funcs/cn"
 import { useHydrated } from "@/lib/hooks/useHydrated"
 import { QUEST_IDS } from "@/lib/quests"
@@ -31,19 +34,29 @@ export default function QuestTracker({ className }: { className?: string }) {
         </button>
       </PopoverTrigger>
       <PopoverContent className="w-72 border-border bg-popover/95 p-4">
-        <p className="mb-2 font-display text-sm text-neon-yellow">{dict.quests.title}</p>
+        <p className="mb-2 font-display text-sm text-neon-yellow">
+          {dict.quests.title}
+        </p>
         <ul className="flex flex-col gap-1.5 text-sm">
           {QUEST_IDS.map((id) => {
             const got = found.includes(id)
             return (
-              <li key={id} className={got ? "text-neon-cyan" : "text-muted-foreground"}>
-                {got ? `✔ ${dict.quests.list[id].name}` : `? ${dict.quests.list[id].clue}`}
+              <li
+                key={id}
+                className={got ? "text-neon-cyan" : "text-muted-foreground"}
+              >
+                {got
+                  ? `✔ ${dict.quests.list[id].name}`
+                  : `? ${dict.quests.list[id].clue}`}
               </li>
             )
           })}
         </ul>
         {done && (
-          <Link href={`/${lang}/secret`} className="mt-3 inline-block text-sm text-neon-pink underline underline-offset-4">
+          <Link
+            href={`/${lang}/secret`}
+            className="mt-3 inline-block text-sm text-neon-pink underline underline-offset-4"
+          >
             {dict.nav.secret} →
           </Link>
         )}

@@ -13,4 +13,5 @@ export const contactSchema = z.object({
 })
 
 export type ContactInput = z.infer<typeof contactSchema>
-export type ContactResult = { ok: true } | { ok: false; reason: "invalid" | "spam" | "unavailable" }
+export type ContactResult =
+  { ok: true } | { ok: false; reason: "invalid" | "spam" | "unavailable" }

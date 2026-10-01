@@ -10,7 +10,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang, dict } = await resolveLang(params)
   return {
     title: dict.contact.title,
-    alternates: { canonical: `/${lang}/contact`, languages: { en: "/en/contact", fa: "/fa/contact" } },
+    alternates: {
+      canonical: `/${lang}/contact`,
+      languages: { en: "/en/contact", fa: "/fa/contact" },
+    },
   }
 }
 

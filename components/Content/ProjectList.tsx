@@ -18,13 +18,24 @@ export default function ProjectList({
         <li key={project.slug}>
           <article
             style={{ color: project.color }}
-            className="flex h-full flex-col rounded-lg bg-card/80 p-5 neon-border scanlines"
+            className="scanlines flex h-full flex-col rounded-lg bg-card/80 p-5 neon-border"
           >
-            <h3 className="font-display text-lg tracking-wide text-glow">{project.title}</h3>
-            <p className="mt-2 flex-1 text-sm text-card-foreground/90">{project.summary}</p>
-            <ul className="mt-4 flex flex-wrap gap-1.5" aria-label={dict.projects.stack}>
+            <h3 className="font-display text-lg tracking-wide text-glow">
+              {project.title}
+            </h3>
+            <p className="mt-2 flex-1 text-sm text-card-foreground/90">
+              {project.summary}
+            </p>
+            <ul
+              className="mt-4 flex flex-wrap gap-1.5"
+              aria-label={dict.projects.stack}
+            >
               {project.stack.map((tech) => (
-                <li key={tech} className="rounded-sm bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground" dir="ltr">
+                <li
+                  key={tech}
+                  className="rounded-sm bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground"
+                  dir="ltr"
+                >
                   {tech}
                 </li>
               ))}

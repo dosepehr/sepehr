@@ -10,7 +10,12 @@ export const NEON = {
   white: "#f5ecff",
 }
 
-export function drawBackdrop(ctx: CanvasRenderingContext2D, w: number, h: number, time: number) {
+export function drawBackdrop(
+  ctx: CanvasRenderingContext2D,
+  w: number,
+  h: number,
+  time: number
+) {
   ctx.fillStyle = NEON.bg
   ctx.fillRect(0, 0, w, h)
   ctx.strokeStyle = NEON.grid

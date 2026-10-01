@@ -13,13 +13,17 @@ const root = path.join(process.cwd(), "content")
 export async function listSlugs(collection: Collection, lang: Locale) {
   const dir = path.join(root, collection, lang)
   const files = await fs.readdir(dir).catch(() => [])
-  return files.filter((f) => f.endsWith(".mdx")).map((f) => f.replace(/\.mdx$/, ""))
+  return files
+    .filter((f) => f.endsWith(".mdx"))
+    .map((f) => f.replace(/\.mdx$/, ""))
 }
 
 // The import path must stay a template literal rooted at @/content so the
 // bundler can build a context for every MDX file.
 function load<M>(collection: Collection, lang: Locale, slug: string) {
-  return import(`@/content/${collection}/${lang}/${slug}.mdx`) as Promise<MdxModule<M>>
+  return import(`@/content/${collection}/${lang}/${slug}.mdx`) as Promise<
+    MdxModule<M>
+  >
 }
 
 export async function getProject(lang: Locale, slug: string) {
@@ -35,7 +39,10 @@ export async function getPost(lang: Locale, slug: string) {
 export async function getProjects(lang: Locale): Promise<Project[]> {
   const slugs = await listSlugs("projects", lang)
   const all = await Promise.all(
-    slugs.map(async (slug) => ({ ...(await load<ProjectMeta>("projects", lang, slug)).meta, slug }))
+    slugs.map(async (slug) => ({
+      ...(await load<ProjectMeta>("projects", lang, slug)).meta,
+      slug,
+    }))
   )
   return all.sort((a, b) => (a.order ?? 99) - (b.order ?? 99))
 }
@@ -43,7 +50,10 @@ export async function getProjects(lang: Locale): Promise<Project[]> {
 export async function getPosts(lang: Locale): Promise<Post[]> {
   const slugs = await listSlugs("blog", lang)
   const all = await Promise.all(
-    slugs.map(async (slug) => ({ ...(await load<PostMeta>("blog", lang, slug)).meta, slug }))
+    slugs.map(async (slug) => ({
+      ...(await load<PostMeta>("blog", lang, slug)).meta,
+      slug,
+    }))
   )
   return all.sort((a, b) => b.date.localeCompare(a.date))
 }

@@ -13,7 +13,10 @@ type Props = { params: Promise<{ lang: string }> }
 
 export default async function Home({ params }: Props) {
   const { lang, dict } = await resolveLang(params)
-  const [projects, posts] = await Promise.all([getProjects(lang), getPosts(lang)])
+  const [projects, posts] = await Promise.all([
+    getProjects(lang),
+    getPosts(lang),
+  ])
   const profile = getProfile(lang)
 
   const bodies = await Promise.all(
@@ -56,13 +59,18 @@ export default async function Home({ params }: Props) {
 
   // Server-rendered first paint (and what crawlers see): hero over a CSS neon grid.
   const hero = (
-    <main id="main" className="flex min-h-svh flex-col items-center justify-center gap-4 px-4 text-center neon-grid">
-      <h1 className="font-display text-5xl tracking-[0.25em] text-neon-pink uppercase text-glow animate-flicker sm:text-7xl">
+    <main
+      id="main"
+      className="flex min-h-svh flex-col items-center justify-center gap-4 neon-grid px-4 text-center"
+    >
+      <h1 className="animate-flicker font-display text-5xl tracking-[0.25em] text-neon-pink uppercase text-glow sm:text-7xl">
         {dict.site.name}
       </h1>
       <p className="text-lg text-neon-cyan">{dict.site.role}</p>
       <p className="max-w-md text-foreground/90">{dict.site.tagline}</p>
-      <p className="font-mono text-sm text-muted-foreground">{dict.hub.loading}</p>
+      <p className="font-mono text-sm text-muted-foreground">
+        {dict.hub.loading}
+      </p>
     </main>
   )
 
@@ -70,7 +78,9 @@ export default async function Home({ params }: Props) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
       />
       <Experience data={data} hero={hero} />
     </>
