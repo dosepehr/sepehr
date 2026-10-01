@@ -12,11 +12,15 @@ const serverSchema = z.object({
     NODE_ENV: z
         .enum(['development', 'test', 'production'])
         .default('development'),
-    BACKEND_URL: z.url(),
+    BACKEND_URL: z.url().optional(),
+    RESEND_API_KEY: z.string().min(1).optional(),
+    CONTACT_TO_EMAIL: z.email().optional(),
+    CONTACT_FROM_EMAIL: z.string().min(1).optional(),
 });
 
 const clientSchema = z.object({
-    NEXT_PUBLIC_APP_BASE_URL: z.url(),
+    // Optional so the portfolio builds without it; lib/site.ts falls back.
+    NEXT_PUBLIC_APP_BASE_URL: z.url().optional(),
 });
 
 type ServerEnv = z.infer<typeof serverSchema>;
@@ -58,6 +62,9 @@ const serverEnv = isServer
           {
               NODE_ENV: process.env.NODE_ENV,
               BACKEND_URL: process.env.BACKEND_URL,
+              RESEND_API_KEY: process.env.RESEND_API_KEY,
+              CONTACT_TO_EMAIL: process.env.CONTACT_TO_EMAIL,
+              CONTACT_FROM_EMAIL: process.env.CONTACT_FROM_EMAIL,
           },
           'server',
       )

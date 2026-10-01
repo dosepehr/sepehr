@@ -1,0 +1,164 @@
+{
+  "meta": {
+    "title": "Sepehr · Synthwave Arcade",
+    "description": "Frontend and fullstack developer. Step into a neon arcade of projects, games and secrets."
+  },
+  "site": {
+    "name": "Sepehr",
+    "role": "Frontend / Fullstack Developer",
+    "tagline": "I build fast, playful interfaces for the web.",
+    "skipToContent": "Skip to content"
+  },
+  "nav": {
+    "home": "Arcade",
+    "projects": "Projects",
+    "blog": "Blog",
+    "about": "About",
+    "contact": "Contact",
+    "resume": "Resume",
+    "games": "Games",
+    "skills": "High scores",
+    "physics": "Stack Jenga",
+    "overview": "Overview",
+    "terminal": "Terminal",
+    "secret": "Secret"
+  },
+  "hub": {
+    "enter": "Insert coin",
+    "loading": "Booting the arcade…",
+    "classicView": "Classic view",
+    "enter3d": "Enter 3D arcade",
+    "liteNote": "You're in Lite mode: same content, no WebGL.",
+    "escHint": "Esc to step back",
+    "clickHint": "Click a glowing thing",
+    "fallback": "The 3D arcade couldn't start on this device, so here's the Lite version."
+  },
+  "hud": {
+    "sound": "Sound",
+    "soundOn": "Sound on",
+    "soundOff": "Sound off",
+    "secrets": "Secrets",
+    "language": "فارسی",
+    "menu": "Menu",
+    "openTerminal": "Open terminal"
+  },
+  "projects": {
+    "title": "Projects",
+    "intro": "Each cabinet in the arcade is one of these.",
+    "readCase": "Read case study",
+    "stack": "Stack",
+    "links": "Links",
+    "back": "All projects"
+  },
+  "blog": {
+    "title": "Blog",
+    "intro": "Notes on frontend, 3D on the web, and shipping things.",
+    "read": "Read post",
+    "back": "All posts",
+    "minutes": "min read"
+  },
+  "about": {
+    "title": "About",
+    "skills": "Skills",
+    "experience": "Experience",
+    "unlocked": "Caught in Tech Catcher"
+  },
+  "contact": {
+    "title": "Contact",
+    "intro": "Hiring, collaborating or just saying hi? The line is always open.",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send message",
+    "sending": "Sending…",
+    "sent": "Message sent. I'll get back to you soon.",
+    "error": "Couldn't send right now. Please email me directly.",
+    "direct": "Or reach me directly",
+    "resume": "Download resume (PDF)",
+    "validation": {
+      "name": "Tell me your name",
+      "email": "That email doesn't look right",
+      "message": "A few more words, please (10+ characters)"
+    }
+  },
+  "games": {
+    "title": "Games",
+    "play": "Play",
+    "score": "Score",
+    "best": "Best",
+    "lives": "Lives",
+    "paused": "Paused",
+    "pause": "Pause",
+    "resume": "Resume",
+    "restart": "Restart",
+    "exit": "Exit",
+    "gameOver": "Game over",
+    "pressToStart": "Press Space or tap to start",
+    "controls": "Controls",
+    "desktopOnly": "Desktop only",
+    "list": {
+      "tech-catcher": {
+        "name": "Tech Catcher",
+        "blurb": "Catch my stack, dodge the bugs. Every icon you catch lights up a skill.",
+        "controls": "← → or A D to move"
+      },
+      "bug-blaster": {
+        "name": "Bug Blaster",
+        "blurb": "Shoot semicolons at undefined, NaN and 404. Beware the Friday deploy.",
+        "controls": "← → to move, Space to fire"
+      },
+      "neon-drive": {
+        "name": "Neon Drive",
+        "blurb": "Endless synthwave runner. Three lanes, no brakes.",
+        "controls": "← → or A D to switch lanes"
+      },
+      "friday-night": {
+        "name": "Friday Night Deploy",
+        "blurb": "Secret cabinet. Bug Blaster on hard mode, boss first.",
+        "controls": "← → to move, Space to fire"
+      }
+    },
+    "outOfOrder": "OUT OF ORDER"
+  },
+  "quests": {
+    "title": "Secrets",
+    "found": "Secret found!",
+    "allFound": "All secrets found. The secret cabinet is open.",
+    "list": {
+      "konami": { "name": "Up up down down", "clue": "Old cheat codes never die." },
+      "out-of-order": { "name": "Percussive maintenance", "clue": "Some machines just need a few taps." },
+      "sudo-hire-me": { "name": "Root access", "clue": "The terminal respects authority." },
+      "golden-coin": { "name": "Golden coin", "clue": "Something shiny hides in the tower." },
+      "leet-score": { "name": "Elite", "clue": "Score like it's 1337." },
+      "console": { "name": "Dev tools", "clue": "Developers read the console." },
+      "neon-cat": { "name": "Roof cat", "clue": "Look up. Way up." }
+    }
+  },
+  "terminal": {
+    "title": "sepehr@arcade:~",
+    "welcome": "Welcome to the arcade shell. Type 'help' for commands.",
+    "help": "Commands: help, about, skills, projects, blog, contact, resume, games, lang <en|fa>, theme, clear, exit",
+    "notFound": "command not found",
+    "about": "Frontend / fullstack developer who likes fast UIs, typed code and neon.",
+    "theme": "Only one theme here: synthwave, forever.",
+    "hireMe": "Permission granted. Opening a direct line…",
+    "sudo": "sepehr is not in the sudoers file. This incident will be reported. (Try something more specific.)",
+    "placeholder": "type a command"
+  },
+  "secret": {
+    "title": "Behind the scenes",
+    "locked": "This page unlocks after you find all 7 secrets.",
+    "progress": "Found",
+    "hallOfFame": "Hall of Fame",
+    "noScores": "No scores yet. Go play something.",
+    "body": "Everything in the arcade is procedural: no model files, no textures from disk. Geometry is built from primitives, labels are drawn on canvas, and the sound effects are synthesized with WebAudio."
+  },
+  "notFound": {
+    "title": "404: Level not found",
+    "body": "This cabinet was unplugged.",
+    "home": "Back to the arcade"
+  },
+  "footer": {
+    "built": "Built with Next.js, React Three Fiber and too much neon."
+  }
+}
