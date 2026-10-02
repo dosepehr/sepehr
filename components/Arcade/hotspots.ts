@@ -29,6 +29,11 @@ export const projectX = (index: number, count: number) =>
 export const GAME_WALL_X = -8.2
 export const gameZ = (index: number) => -4.6 + index * 1.55
 
+/** Second bank of cabinets along the right wall, past the claw machine. */
+export const RIGHT_GAMES = ["neon-snake", "brick-breaker", "pixel-pong"]
+export const RIGHT_WALL_X = 8.2
+export const rightGameZ = (index: number) => 3.85 + index * 1.25
+
 export function resolvePose(
   focus: HotspotId,
   projectSlugs: string[],
@@ -40,6 +45,13 @@ export function resolvePose(
     return {
       position: [x, 1.85, PROJECT_ROW_Z + 2.4],
       target: [x, 1.55, PROJECT_ROW_Z],
+    }
+  }
+  if (focus.startsWith("game:") && RIGHT_GAMES.includes(focus.slice(5))) {
+    const z = rightGameZ(RIGHT_GAMES.indexOf(focus.slice(5)))
+    return {
+      position: [RIGHT_WALL_X - 1.6, 1.75, z],
+      target: [RIGHT_WALL_X, 1.6, z],
     }
   }
   if (focus.startsWith("game:")) {

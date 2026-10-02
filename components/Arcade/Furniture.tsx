@@ -13,7 +13,7 @@ import { WALL_HEIGHT } from "./Walls"
 
 type V3 = [number, number, number]
 
-const neon = (color: string, k = 2.6) =>
+const neon = (color: string, k = 1.8) =>
   new THREE.Color(color).multiplyScalar(k)
 
 /** Additive pool of colored light on the floor: fakes a light without the cost of one. */
@@ -110,7 +110,7 @@ export function Ceiling() {
           ))}
           <mesh rotation-z={Math.PI / 2}>
             <capsuleGeometry args={[0.035, 1.6, 4, 12]} />
-            <meshBasicMaterial color={neon(color, 3.2)} toneMapped={false} />
+            <meshBasicMaterial color={neon(color, 2.2)} toneMapped={false} />
           </mesh>
         </group>
       ))}
@@ -304,7 +304,7 @@ export function ClawMachine({
       <Label
         text="CLAW"
         size={[0.9, 0.26]}
-        intensity={2.2}
+        intensity={1.5}
         position={[0, 2.37, 0.505]}
         options={{
           color: palette.yellow,
@@ -391,7 +391,7 @@ export function VendingMachine({
       <Label
         text="SODA"
         size={[0.9, 0.24]}
-        intensity={2.4}
+        intensity={1.5}
         position={[0, 2.06, 0.43]}
         options={{
           color: palette.pink,

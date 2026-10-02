@@ -127,7 +127,7 @@ export default function Cabinet({
   })
 
   return (
-    <Hotspot id={id} onActivate={onActivate}>
+    <Hotspot id={id} onActivate={onActivate} label={label}>
       <group position={position} rotation-y={rotation}>
         <primitive object={model} />
         {/* Light spilling from the screen onto the carpet. */}

@@ -125,6 +125,21 @@
         "blurb": "Endless synthwave runner. Three lanes, no brakes.",
         "controls": "← → or A D to switch lanes"
       },
+      "neon-snake": {
+        "name": "Neon Snake",
+        "blurb": "Eat packages, grow the bundle, don't bite your own tail. The walls wrap.",
+        "controls": "Arrows or WASD to steer"
+      },
+      "brick-breaker": {
+        "name": "Legacy Breaker",
+        "blurb": "Smash through jQuery, IE6 and eval. Every level, the legacy code gets thicker.",
+        "controls": "← → to move, Space to launch"
+      },
+      "pixel-pong": {
+        "name": "Pixel Pong",
+        "blurb": "First to 7 against a CPU that's good but not perfect. Long rallies score more.",
+        "controls": "← → or A D to move"
+      },
       "friday-night": {
         "name": "Friday Night Deploy",
         "blurb": "Secret cabinet. Bug Blaster on hard mode, boss first.",
@@ -138,13 +153,34 @@
     "found": "Secret found!",
     "allFound": "All secrets found. The secret cabinet is open.",
     "list": {
-      "konami": { "name": "Up up down down", "clue": "Old cheat codes never die." },
-      "out-of-order": { "name": "Percussive maintenance", "clue": "Some machines just need a few taps." },
-      "sudo-hire-me": { "name": "Root access", "clue": "The terminal respects authority." },
-      "golden-coin": { "name": "Golden coin", "clue": "Something shiny hides in the tower." },
-      "leet-score": { "name": "Elite", "clue": "Score like it's 1337." },
-      "console": { "name": "Dev tools", "clue": "Developers read the console." },
-      "neon-cat": { "name": "Roof cat", "clue": "Look up. Way up." }
+      "konami": {
+        "name": "Up up down down",
+        "clue": "Old cheat codes never die."
+      },
+      "out-of-order": {
+        "name": "Percussive maintenance",
+        "clue": "Some machines just need a few taps."
+      },
+      "sudo-hire-me": {
+        "name": "Root access",
+        "clue": "The terminal respects authority."
+      },
+      "golden-coin": {
+        "name": "Golden coin",
+        "clue": "Something shiny hides in the tower."
+      },
+      "leet-score": {
+        "name": "Elite",
+        "clue": "Score like it's 1337."
+      },
+      "console": {
+        "name": "Dev tools",
+        "clue": "Developers read the console."
+      },
+      "neon-cat": {
+        "name": "Roof cat",
+        "clue": "Look up. Way up."
+      }
     }
   },
   "terminal": {
@@ -173,5 +209,81 @@
   },
   "footer": {
     "built": "Built with Next.js, React Three Fiber and too much neon."
+  },
+  "world": {
+    "explore": "Explore",
+    "tour": "Tour",
+    "controls": "WASD / arrows move · Shift run · Space jump · E use · B dance · drag to look · scroll to zoom · click the ground to walk",
+    "press": "Press",
+    "use": "to use",
+    "coins": "Coins",
+    "relics": {
+      "rubber-duck": {
+        "name": "Rubber duck",
+        "note": "Explain the bug to it. It always listens.",
+        "hint": "Something floats near water."
+      },
+      "floppy": {
+        "name": "Floppy disk",
+        "note": "1.44 MB of pure nostalgia. Somebody's save icon.",
+        "hint": "Check behind the big advert."
+      },
+      "cassette": {
+        "name": "Mixtape",
+        "note": "Side A: lo-fi beats to debug to.",
+        "hint": "Squeeze in beside the soda machine."
+      },
+      "ufo": {
+        "name": "Tiny UFO",
+        "note": "It was here for the pyramid. Same as everyone.",
+        "hint": "Behind the pyramid, look up."
+      },
+      "any-key": {
+        "name": "The Any key",
+        "note": "Finally. Press it to continue.",
+        "hint": "At the far end of the road."
+      },
+      "cartridge": {
+        "name": "Game cartridge",
+        "note": "Blow on it before you plug it in.",
+        "hint": "Lost among the palms by the road."
+      }
+    },
+    "relicFound": "Relic found",
+    "allRelics": "All relics found! Your robot just turned gold.",
+    "billboard": "frontend · fullstack · now hiring me",
+    "entrance": "SEPEHR'S ARCADE",
+    "signs": {
+      "arcade": "ARCADE",
+      "pond": "POND",
+      "road": "ROAD",
+      "pyramid": "PYRAMID"
+    },
+    "hint": "Six odd things are hidden out here. Look around corners.",
+    "labels": {
+      "desk": "About me",
+      "crt": "Terminal",
+      "skills": "High scores",
+      "blog": "Blog",
+      "contact": "Contact",
+      "resume": "Resume",
+      "mascot": "Talk to BYTE",
+      "boombox": "Toggle sound",
+      "physics": "Throw a ball at the tower",
+      "out-of-order": "Give it a whack",
+      "power-block": "Hit the block",
+      "truck": "Drive"
+    },
+    "relicsTitle": "Relics"
+  },
+  "lab": {
+    "hero": "Hero",
+    "about": "About",
+    "skills": "Skills",
+    "projects": "Projects",
+    "experience": "Experience",
+    "blog": "Blog",
+    "contact": "Contact",
+    "intro": "Classic view is showing all 40 candidate sections so you can choose. Hit Pick on the ones you like and copy the list at the bottom."
   }
 }

@@ -141,7 +141,7 @@ export default function Floor() {
             map={carpet}
             emissiveMap={carpet}
             emissive="#ffffff"
-            emissiveIntensity={0.2}
+            emissiveIntensity={0.13}
             resolution={512}
             blur={[400, 100]}
             mixBlur={1}
@@ -155,7 +155,7 @@ export default function Floor() {
             map={carpet}
             emissiveMap={carpet}
             emissive="#ffffff"
-            emissiveIntensity={0.2}
+            emissiveIntensity={0.13}
             roughness={0.85}
             metalness={0.1}
           />
@@ -192,7 +192,7 @@ export default function Floor() {
         <mesh key={`${x}${z}`} position={[x, -0.04, z]} rotation-y={rot}>
           <boxGeometry args={[len, 0.04, 0.02]} />
           <meshBasicMaterial
-            color={new THREE.Color(palette.pink).multiplyScalar(3)}
+            color={new THREE.Color(palette.pink).multiplyScalar(2)}
             toneMapped={false}
           />
         </mesh>

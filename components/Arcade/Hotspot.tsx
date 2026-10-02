@@ -1,7 +1,9 @@
 "use client"
 
 import type { ThreeEvent } from "@react-three/fiber"
-import type { ReactNode } from "react"
+import { useEffect, useRef, type ReactNode } from "react"
+import type * as THREE from "three"
+import { registerInteractable } from "@/components/World/interactables"
 import { sfx } from "@/lib/audio/sfx"
 import { useStage } from "@/lib/store/stage"
 
@@ -11,12 +13,32 @@ export default function Hotspot({
   onActivate,
   children,
   disabled,
+  label,
 }: {
   id: string
   onActivate: () => void
   children: ReactNode
   disabled?: boolean
+  /** Shown in the explore-mode "press E" prompt. */
+  label?: string
 }) {
+  const group = useRef<THREE.Group>(null)
+  const activate = useRef(onActivate)
+  useEffect(() => {
+    activate.current = onActivate
+  })
+  useEffect(() => {
+    if (!group.current) return
+    return registerInteractable(
+      id,
+      group.current,
+      () => {
+        sfx.select()
+        activate.current()
+      },
+      label
+    )
+  }, [id, label])
   const over = (e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation()
     if (disabled || useStage.getState().hovered === id) return
@@ -31,6 +53,7 @@ export default function Hotspot({
   }
   return (
     <group
+      ref={group}
       onPointerOver={over}
       onPointerOut={out}
       onClick={(e) => {

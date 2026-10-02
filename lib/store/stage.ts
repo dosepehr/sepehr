@@ -3,6 +3,8 @@ import type { GameId } from "./scores"
 import { createStore } from "./createStore"
 
 export type PerfTier = "high" | "medium" | "low"
+/** Explore: walk the robot around. Tour: the hotspot camera. */
+export type ViewMode = "explore" | "tour"
 export type Palette = "synthwave" | "vaporwave"
 export type PanelId =
   "project" | "blog" | "about" | "skills" | "contact" | "resume" | "games"
@@ -20,6 +22,11 @@ type StageState = {
   tier: PerfTier
   palette: Palette
   hovered: string | null
+  mode: ViewMode
+  /** Interactable the player is standing next to (explore mode). */
+  nearby: string | null
+  setMode: (mode: ViewMode) => void
+  setNearby: (id: string | null) => void
   focusOn: (
     focus: HotspotId,
     panel?: PanelId | null,
@@ -44,6 +51,11 @@ export const useStage = createStore<StageState>(
     tier: "medium",
     palette: "synthwave",
     hovered: null,
+    mode: "explore",
+    nearby: null,
+    setMode: (mode) =>
+      set({ mode, focus: "overview", panel: null }, false, `mode/${mode}`),
+    setNearby: (nearby) => set({ nearby }, false, "setNearby"),
     focusOn: (focus, panel = null, projectSlug = null) =>
       set({ focus, panel, projectSlug }, false, `focus/${focus}`),
     back: () => {

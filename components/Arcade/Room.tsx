@@ -27,7 +27,15 @@ import {
   Stools,
   VendingMachine,
 } from "./Furniture"
-import { GAME_WALL_X, gameZ, PROJECT_ROW_Z, projectX } from "./hotspots"
+import {
+  GAME_WALL_X,
+  gameZ,
+  PROJECT_ROW_Z,
+  projectX,
+  RIGHT_GAMES,
+  RIGHT_WALL_X,
+  rightGameZ,
+} from "./hotspots"
 import Mascot from "./Mascot"
 import { usePalette } from "./palette"
 import {
@@ -66,6 +74,9 @@ export default function Room({ data }: { data: ArcadeData }) {
     "bug-blaster": palette.purple,
     "neon-drive": palette.pink,
     "friday-night": palette.yellow,
+    "neon-snake": "#5dff9d",
+    "brick-breaker": "#ff8a3d",
+    "pixel-pong": palette.yellow,
   }
 
   return (
@@ -205,6 +216,19 @@ export default function Room({ data }: { data: ArcadeData }) {
           onActivate={() => launchGame("friday-night")}
         />
       )}
+
+      {/* Right wall: the newer cabinets. */}
+      {(RIGHT_GAMES as GameId[]).map((game, i) => (
+        <Cabinet
+          key={game}
+          id={`game:${game}`}
+          label={dict.games.list[game].name}
+          color={gameColors[game]}
+          position={[RIGHT_WALL_X, 0, rightGameZ(i)]}
+          rotation={-Math.PI / 2}
+          onActivate={() => launchGame(game)}
+        />
+      ))}
 
       {ROOM_GAMES.map((game, i) => (
         <SpinningCoin

@@ -1,6 +1,11 @@
 "use client"
 
-import { Monitor, Terminal as TerminalIcon } from "lucide-react"
+import {
+  Footprints,
+  Monitor,
+  Terminal as TerminalIcon,
+  Video,
+} from "lucide-react"
 import { useEffect } from "react"
 import { go, type NavTarget } from "@/components/Arcade/actions"
 import { useDictionary } from "@/components/DictionaryProvider"
@@ -11,6 +16,7 @@ import { sfx } from "@/lib/audio/sfx"
 import { cn } from "@/lib/funcs/cn"
 import { usePrefs } from "@/lib/store/prefs"
 import { useStage } from "@/lib/store/stage"
+import WorldHud from "@/components/World/WorldHud"
 import SoundToggle from "./SoundToggle"
 
 const NAV: NavTarget[] = [
@@ -36,6 +42,7 @@ export default function Hud() {
   const { dict } = useDictionary()
   const focus = useStage((s) => s.focus)
   const game = useStage((s) => s.game)
+  const mode = useStage((s) => s.mode)
 
   // Esc steps back (game > terminal > panel > focus). Radix dialogs handle their own Esc.
   useEffect(() => {
@@ -84,6 +91,36 @@ export default function Hud() {
           <p className="text-sm text-neon-cyan">{dict.site.role}</p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
+          <div
+            role="group"
+            aria-label={dict.world.explore}
+            className="flex rounded-md border border-white/10 bg-background/60 p-0.5"
+          >
+            {(["explore", "tour"] as const).map((m) => (
+              <button
+                key={m}
+                type="button"
+                aria-pressed={mode === m}
+                onClick={() => {
+                  sfx.select()
+                  useStage.getState().setMode(m)
+                }}
+                className={cn(
+                  "inline-flex h-10 items-center gap-2 rounded px-3 text-sm",
+                  mode === m
+                    ? "bg-neon-cyan/15 text-neon-cyan"
+                    : "text-foreground/80 hover:bg-white/10"
+                )}
+              >
+                {m === "explore" ? (
+                  <Footprints className="size-4" aria-hidden />
+                ) : (
+                  <Video className="size-4" aria-hidden />
+                )}
+                {dict.world[m]}
+              </button>
+            ))}
+          </div>
           <QuestTracker className="bg-background/60" />
           <button
             type="button"
@@ -110,35 +147,42 @@ export default function Hud() {
         </div>
       </header>
 
-      <footer className="pointer-events-auto flex flex-col items-center gap-2 bg-linear-to-t from-background/85 to-transparent p-4">
-        <nav aria-label={dict.hud.menu} className="max-w-full overflow-x-auto">
-          <ul className="flex items-center gap-1">
-            {NAV.map((target) => (
-              <li key={target}>
-                <button
-                  type="button"
-                  aria-current={isActive(target, focus) ? "true" : undefined}
-                  onClick={() => {
-                    sfx.select()
-                    go(target)
-                  }}
-                  className={cn(
-                    button,
-                    "whitespace-nowrap text-foreground/90 aria-[current]:bg-neon-pink/15 aria-[current]:text-neon-pink"
-                  )}
-                >
-                  {labels[target]}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </nav>
-        <p className="text-xs text-muted-foreground">
-          {dict.hub.clickHint} · <Kbd>Esc</Kbd>{" "}
-          {dict.hub.escHint.replace(/^Esc\s*/, "")} · <Kbd>`</Kbd>{" "}
-          {dict.nav.terminal}
-        </p>
-      </footer>
+      {mode === "explore" ? (
+        <WorldHud />
+      ) : (
+        <footer className="pointer-events-auto flex flex-col items-center gap-2 bg-linear-to-t from-background/85 to-transparent p-4">
+          <nav
+            aria-label={dict.hud.menu}
+            className="max-w-full overflow-x-auto"
+          >
+            <ul className="flex items-center gap-1">
+              {NAV.map((target) => (
+                <li key={target}>
+                  <button
+                    type="button"
+                    aria-current={isActive(target, focus) ? "true" : undefined}
+                    onClick={() => {
+                      sfx.select()
+                      go(target)
+                    }}
+                    className={cn(
+                      button,
+                      "whitespace-nowrap text-foreground/90 aria-[current]:bg-neon-pink/15 aria-[current]:text-neon-pink"
+                    )}
+                  >
+                    {labels[target]}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <p className="text-xs text-muted-foreground">
+            {dict.hub.clickHint} · <Kbd>Esc</Kbd>{" "}
+            {dict.hub.escHint.replace(/^Esc\s*/, "")} · <Kbd>`</Kbd>{" "}
+            {dict.nav.terminal}
+          </p>
+        </footer>
+      )}
     </div>
   )
 }

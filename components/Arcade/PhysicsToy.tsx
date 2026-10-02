@@ -172,19 +172,37 @@ export default function PhysicsToy() {
     return () => window.removeEventListener("keydown", onKey)
   }, [focused])
 
-  const fire = (e: ThreeEvent<PointerEvent>) => {
-    if (!focused) return
-    e.stopPropagation()
-    const dir = e.point.clone().sub(camera.position).normalize()
-    const from = camera.position.clone().add(dir.clone().multiplyScalar(0.6))
-    const v = dir.multiplyScalar(16)
+  const launch = (from: THREE.Vector3, to: THREE.Vector3, speed: number) => {
+    const dir = to.clone().sub(from).normalize()
+    const start = from.clone().add(dir.clone().multiplyScalar(0.6))
     sfx.shoot()
     const id = nextId.current++
     setBalls((list) => [
       ...list.slice(-(MAX_BALLS - 1)),
-      { id, position: from.toArray(), velocity: v.toArray() },
+      {
+        id,
+        position: start.toArray(),
+        velocity: dir.multiplyScalar(speed).toArray(),
+      },
     ])
   }
+
+  const fire = (e: ThreeEvent<PointerEvent>) => {
+    if (!focused) return
+    e.stopPropagation()
+    launch(camera.position, e.point, 16)
+  }
+
+  // Explore mode: the player lobs a ball at the tower from where they stand.
+  useEffect(() => {
+    const onFire = (e: Event) => {
+      const from = (e as CustomEvent<{ from: THREE.Vector3 }>).detail.from
+      const tower = new THREE.Vector3(ORIGIN.x, TABLE_Y + 0.5, ORIGIN.z)
+      launch(from, tower, 11)
+    }
+    window.addEventListener("arcade:fire", onFire)
+    return () => window.removeEventListener("arcade:fire", onFire)
+  })
 
   return (
     <group>

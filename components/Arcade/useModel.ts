@@ -67,7 +67,7 @@ export function useModel(url: string, { hoverId, trim, body, slots }: Options) {
 
   useFrame((_, dt) => {
     hover.current += ((hovered ? 1 : 0) - hover.current) * Math.min(1, dt * 8)
-    own.trim.color.copy(trimColor).multiplyScalar(2 + hover.current * 2.5)
+    own.trim.color.copy(trimColor).multiplyScalar(1.4 + hover.current * 1.8)
   })
 
   return { model, hover }

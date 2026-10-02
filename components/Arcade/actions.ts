@@ -49,7 +49,9 @@ const reducedMotion = () =>
 /** Dolly into the cabinet screen, then crossfade into the game. */
 export function launchGame(game: GameId) {
   const stage = useStage.getState()
-  stage.focusOn(`game:${game}`)
   sfx.coin()
+  // Walking around there's no camera dolly to wait for.
+  if (stage.mode === "explore") return stage.setGame(game)
+  stage.focusOn(`game:${game}`)
   setTimeout(() => useStage.getState().setGame(game), reducedMotion() ? 0 : 750)
 }

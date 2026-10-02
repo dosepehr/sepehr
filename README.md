@@ -10,6 +10,16 @@ npm run dev        # http://localhost:3000 → redirects to /en or /fa
 npm run typecheck && npm run lint && npm run build
 ```
 
+## Explore mode
+
+The 3D view opens in **Explore**: you walk a robot around the arcade and the neon world outside it
+(WASD / arrows, Shift to run, Space to jump, E to use, B to dance, drag to look, scroll to zoom,
+click the ground to walk). Anything clickable in the room can also be used with E when you stand
+next to it. Outside there are 30 coins, 6 hidden relics (finding all of them turns your robot
+gold), kickable balls, teleport pads and the Neon Drive truck. **Tour** switches back to the
+hotspot camera. Code lives in `components/World` (layout and colliders in `layout.ts`); progress
+is stored in `lib/store/world.ts`. Sound effects are synthesized in `lib/audio/sfx.ts`.
+
 ## Editing content
 
 | What | Where |
@@ -40,7 +50,7 @@ shader), so a replacement GLB only needs the same material names. See `component
 
 ## Component lab
 
-`/en/lab` (or `/fa/lab`) is a numbered gallery of 40 candidate sections for the 2D portfolio
+Classic view (and `/en/lab`, `/fa/lab`) is a numbered gallery of 40 candidate sections for the 2D portfolio
 (heroes, about, skills, projects, experience, blog, contact), all fed by the real content. Three of
 them use [React Flow](https://reactflow.dev). Pick favourites in the page and copy the list. The
 sections live in `components/Lab`, registered in `components/Lab/registry.ts`; the Lite hub

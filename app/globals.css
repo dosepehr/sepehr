@@ -80,15 +80,15 @@
  */
 :root,
 .dark {
-    --neon-pink: oklch(0.72 0.27 350);
-    --neon-cyan: oklch(0.86 0.15 200);
-    --neon-purple: oklch(0.62 0.25 300);
-    --neon-yellow: oklch(0.9 0.17 95);
-    --neon-orange: oklch(0.76 0.19 50);
+    --neon-pink: oklch(0.74 0.21 352);
+    --neon-cyan: oklch(0.85 0.12 205);
+    --neon-purple: oklch(0.7 0.18 300);
+    --neon-yellow: oklch(0.89 0.14 92);
+    --neon-orange: oklch(0.78 0.15 55);
 
-    --background: oklch(0.14 0.045 285);
+    --background: oklch(0.15 0.03 285);
     --foreground: oklch(0.96 0.02 300);
-    --card: oklch(0.19 0.06 290);
+    --card: oklch(0.2 0.035 288);
     --card-foreground: oklch(0.96 0.02 300);
     --popover: oklch(0.17 0.055 288);
     --popover-foreground: oklch(0.96 0.02 300);
@@ -98,7 +98,7 @@
     --secondary: oklch(0.25 0.07 290);
     --secondary-foreground: oklch(0.96 0.02 300);
     --muted: oklch(0.23 0.06 290);
-    --muted-foreground: oklch(0.76 0.05 290);
+    --muted-foreground: oklch(0.8 0.03 290);
     --accent: oklch(0.27 0.08 230);
     --accent-foreground: var(--neon-cyan);
     --destructive: oklch(0.7 0.2 22);
@@ -175,17 +175,13 @@
 /* ---------- Synthwave helpers ---------- */
 
 @utility text-glow {
-    text-shadow:
-        0 0 4px color-mix(in oklch, currentColor 70%, transparent),
-        0 0 16px color-mix(in oklch, currentColor 45%, transparent);
+    text-shadow: 0 0 12px color-mix(in oklch, currentColor 30%, transparent);
 }
 
 @utility neon-border {
     border: 1px solid color-mix(in oklch, currentColor 70%, transparent);
     box-shadow:
-        0 0 0 1px color-mix(in oklch, currentColor 20%, transparent),
-        0 0 12px color-mix(in oklch, currentColor 35%, transparent),
-        inset 0 0 12px color-mix(in oklch, currentColor 15%, transparent);
+        0 0 10px color-mix(in oklch, currentColor 18%, transparent);
 }
 
 @utility scanlines {
@@ -210,7 +206,7 @@
     background-image:
         radial-gradient(
             ellipse 80% 50% at 50% 0%,
-            color-mix(in oklch, var(--neon-purple) 35%, transparent),
+            color-mix(in oklch, var(--neon-purple) 20%, transparent),
             transparent 70%
         ),
         linear-gradient(
@@ -219,12 +215,12 @@
             color-mix(in oklch, var(--neon-pink) 12%, transparent)
         ),
         linear-gradient(
-            color-mix(in oklch, var(--neon-pink) 22%, transparent) 1px,
+            color-mix(in oklch, var(--neon-pink) 10%, transparent) 1px,
             transparent 1px
         ),
         linear-gradient(
             90deg,
-            color-mix(in oklch, var(--neon-pink) 22%, transparent) 1px,
+            color-mix(in oklch, var(--neon-pink) 10%, transparent) 1px,
             transparent 1px
         );
     background-size:
@@ -259,8 +255,8 @@ html[lang='fa'] .font-display {
 /* Perspective floor grid that races toward the viewer. */
 @utility synth-floor {
     background-image:
-        linear-gradient(color-mix(in oklch, var(--neon-pink) 80%, transparent) 2px, transparent 2px),
-        linear-gradient(90deg, color-mix(in oklch, var(--neon-pink) 80%, transparent) 2px, transparent 2px);
+        linear-gradient(color-mix(in oklch, var(--neon-pink) 55%, transparent) 2px, transparent 2px),
+        linear-gradient(90deg, color-mix(in oklch, var(--neon-pink) 55%, transparent) 2px, transparent 2px);
     background-size: 60px 60px;
     transform: perspective(300px) rotateX(62deg);
     transform-origin: top center;
@@ -289,7 +285,7 @@ html[lang='fa'] .font-display {
         transparent 78% 84%,
         black 84% 100%
     );
-    box-shadow: 0 0 80px color-mix(in oklch, var(--neon-pink) 60%, transparent);
+    box-shadow: 0 0 60px color-mix(in oklch, var(--neon-pink) 35%, transparent);
 }
 
 @keyframes marquee-x {

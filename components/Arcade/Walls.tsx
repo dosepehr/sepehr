@@ -181,14 +181,14 @@ function NeonPalm({
     <group position={position} scale={scale}>
       <mesh geometry={trunk}>
         <meshBasicMaterial
-          color={new THREE.Color(palette.pink).multiplyScalar(2.6)}
+          color={new THREE.Color(palette.pink).multiplyScalar(1.7)}
           toneMapped={false}
         />
       </mesh>
       {fronds.map((g, i) => (
         <mesh key={i} geometry={g}>
           <meshBasicMaterial
-            color={new THREE.Color(palette.cyan).multiplyScalar(2.6)}
+            color={new THREE.Color(palette.cyan).multiplyScalar(1.7)}
             toneMapped={false}
           />
         </mesh>
@@ -341,7 +341,7 @@ export default function Walls() {
             position={position}
             rotation={rotation}
             scale={[length, 1, 1]}
-            color={new THREE.Color(palette[color]).multiplyScalar(3)}
+            color={new THREE.Color(palette[color]).multiplyScalar(2)}
           />
         ))}
       </Instances>
@@ -359,13 +359,6 @@ export default function Walls() {
         b={palette.cyan}
       />
       <Poster
-        position={[SIDE_X - 0.05, 3.4, 4.6]}
-        rotation={-Math.PI / 2}
-        variant={1}
-        a={palette.cyan}
-        b={palette.purple}
-      />
-      <Poster
         position={[-SIDE_X + 0.05, 3.6, 6.3]}
         rotation={Math.PI / 2}
         variant={2}
@@ -377,7 +370,7 @@ export default function Walls() {
       <Label
         text={dict.games.title.toUpperCase()}
         size={[3.6, 0.8]}
-        intensity={2.6}
+        intensity={1.6}
         position={[-SIDE_X + 0.1, 4.6, -1.5]}
         rotation-y={Math.PI / 2}
         options={{
@@ -392,7 +385,7 @@ export default function Walls() {
       <Label
         text="INSERT COIN"
         size={[3.2, 0.5]}
-        intensity={2.4}
+        intensity={1.5}
         position={[SIDE_X - 0.27, 5.3, 2.8]}
         rotation-y={-Math.PI / 2}
         options={{
@@ -408,7 +401,7 @@ export default function Walls() {
         <Label
           text={dict.site.name.toUpperCase()}
           size={[7, 1.3]}
-          intensity={2.2}
+          intensity={1.5}
           position={[0, 5.4, BACK_Z + 0.1]}
           options={{
             fontSize: 96,

@@ -1,7 +1,10 @@
 import type { GameId } from "@/lib/store/scores"
+import BrickBreaker from "./BrickBreaker"
 import BugBlaster from "./BugBlaster"
 import type { BaseState, GameDef, GameOptions } from "./engine/types"
 import NeonDrive from "./NeonDrive"
+import NeonSnake from "./NeonSnake"
+import PixelPong from "./PixelPong"
 import TechCatcher from "./TechCatcher"
 
 export type GameEntry = {
@@ -25,6 +28,18 @@ export const GAMES: Record<GameId, GameEntry> = {
     def: NeonDrive as unknown as GameDef<BaseState>,
     is3d: true,
     color: "#ff2d95",
+  },
+  "neon-snake": {
+    def: NeonSnake as unknown as GameDef<BaseState>,
+    color: "#5dff9d",
+  },
+  "brick-breaker": {
+    def: BrickBreaker as unknown as GameDef<BaseState>,
+    color: "#ff8a3d",
+  },
+  "pixel-pong": {
+    def: PixelPong as unknown as GameDef<BaseState>,
+    color: "#ffe14d",
   },
   "friday-night": {
     def: BugBlaster as unknown as GameDef<BaseState>,

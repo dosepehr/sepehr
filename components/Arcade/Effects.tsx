@@ -17,16 +17,16 @@ import { useStage } from "@/lib/store/stage"
 export default function Effects() {
   const tier = useStage((s) => s.tier)
   const reduced = usePrefersReducedMotion()
-  const offset = useMemo(() => new THREE.Vector2(0.0007, 0.0005), [])
+  const offset = useMemo(() => new THREE.Vector2(0.0004, 0.0003), [])
   if (tier === "low") return null
   const high = tier === "high"
   return (
     <EffectComposer multisampling={high ? 4 : 0}>
       <Bloom
         mipmapBlur
-        luminanceThreshold={1}
+        luminanceThreshold={1.15}
         luminanceSmoothing={0.2}
-        intensity={reduced ? 0.6 : high ? 1.1 : 0.85}
+        intensity={reduced ? 0.4 : high ? 0.7 : 0.55}
         levels={high ? 8 : 6}
       />
       {/* A touch of CRT: lens fringing toward the edges and film grain. */}
@@ -36,7 +36,7 @@ export default function Effects() {
         modulationOffset={0.35}
       />
       <Noise
-        opacity={high ? 0.06 : 0.04}
+        opacity={high ? 0.035 : 0.025}
         premultiply
         blendFunction={BlendFunction.SCREEN}
       />

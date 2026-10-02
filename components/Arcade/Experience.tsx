@@ -23,8 +23,7 @@ const Scene = dynamic(() => import("./Scene"), {
 })
 
 function liteNavigate(target: NavTarget) {
-  const id =
-    target === "resume" ? "contact" : target === "skills" ? "about" : target
+  const id = target === "resume" ? "contact" : target
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
   useStage.getState().setTerminal(false)
 }

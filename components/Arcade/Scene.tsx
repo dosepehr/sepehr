@@ -2,7 +2,11 @@
 
 import { PerformanceMonitor, useProgress } from "@react-three/drei"
 import { Canvas } from "@react-three/fiber"
-import { Suspense, useState } from "react"
+import { Suspense, useMemo, useState } from "react"
+import Collectibles from "@/components/World/Collectibles"
+import { buildColliders } from "@/components/World/layout"
+import Outdoors from "@/components/World/Outdoors"
+import Player from "@/components/World/Player"
 import { useDictionary } from "@/components/DictionaryProvider"
 import { GAMES } from "@/components/Games/registry"
 import { useStage, type PerfTier } from "@/lib/store/stage"
@@ -50,6 +54,12 @@ export default function Scene({
   const tier = useStage((s) => s.tier)
   const game = useStage((s) => s.game)
   const [projectSlugs] = useState(() => data.projects.map((p) => p.slug))
+  const mode = useStage((s) => s.mode)
+  const explore = mode === "explore"
+  const colliders = useMemo(
+    () => buildColliders(data.projects.length),
+    [data.projects.length]
+  )
   const driving = game === "neon-drive"
   // A 2D game covers the canvas: stop rendering entirely.
   const covered = !!game && !GAMES[game].is3d
@@ -86,7 +96,10 @@ export default function Scene({
         {!driving && (
           <>
             <color attach="background" args={[palette.bg]} />
-            <fog attach="fog" args={[palette.bg, 22, 42]} />
+            <fog
+              attach="fog"
+              args={explore ? [palette.bg, 30, 95] : [palette.bg, 22, 42]}
+            />
           </>
         )}
         <Suspense fallback={null}>
@@ -95,7 +108,16 @@ export default function Scene({
           ) : (
             <>
               <Room data={data} />
-              <CameraRig projectSlugs={projectSlugs} gameSlots={WALL_SLOTS} />
+              {/* The world outside stays visible in tour mode too; only explore lets you walk it. */}
+              <Outdoors />
+              {explore ? (
+                <>
+                  <Player colliders={colliders} />
+                  <Collectibles colliders={colliders} />
+                </>
+              ) : (
+                <CameraRig projectSlugs={projectSlugs} gameSlots={WALL_SLOTS} />
+              )}
             </>
           )}
           <Effects />

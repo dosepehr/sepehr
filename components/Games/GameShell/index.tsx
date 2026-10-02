@@ -1,8 +1,10 @@
 "use client"
 
 import {
+  ArrowDown,
   ArrowLeft,
   ArrowRight,
+  ArrowUp,
   Crosshair,
   Pause,
   Play,
@@ -127,7 +129,7 @@ export default function GameShell({
       for (const event of state.events) {
         if (event.type === "catch") {
           sfx.catch()
-          useScores.getState().unlockSkill(event.label)
+          if (event.label) useScores.getState().unlockSkill(event.label)
         } else if (event.type === "shoot") sfx.shoot()
         else if (event.type === "hit") sfx.hit()
         else if (event.type === "explode") sfx.explode()
@@ -340,6 +342,26 @@ export default function GameShell({
         dir="ltr"
       >
         <div className="flex gap-3">
+          {game === "neon-snake" && (
+            <>
+              <button
+                type="button"
+                aria-label="Up"
+                className="size-16 touch-none rounded-full text-neon-cyan neon-border select-none"
+                {...press("up")}
+              >
+                <ArrowUp className="mx-auto size-7" />
+              </button>
+              <button
+                type="button"
+                aria-label="Down"
+                className="size-16 touch-none rounded-full text-neon-cyan neon-border select-none"
+                {...press("down")}
+              >
+                <ArrowDown className="mx-auto size-7" />
+              </button>
+            </>
+          )}
           <button
             type="button"
             aria-label="Left"
@@ -357,7 +379,9 @@ export default function GameShell({
             <ArrowRight className="mx-auto size-7" />
           </button>
         </div>
-        {game !== "tech-catcher" && game !== "neon-drive" && (
+        {(game === "bug-blaster" ||
+          game === "friday-night" ||
+          game === "brick-breaker") && (
           <button
             type="button"
             aria-label="Fire"

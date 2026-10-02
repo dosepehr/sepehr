@@ -1,7 +1,13 @@
 import { createPersistedStore } from "./createPersistedStore"
 
 export type GameId =
-  "tech-catcher" | "bug-blaster" | "neon-drive" | "friday-night"
+  | "tech-catcher"
+  | "bug-blaster"
+  | "neon-drive"
+  | "neon-snake"
+  | "brick-breaker"
+  | "pixel-pong"
+  | "friday-night"
 
 type ScoreState = {
   best: Partial<Record<GameId, number>>
