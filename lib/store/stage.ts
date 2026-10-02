@@ -5,6 +5,8 @@ import { createStore } from "./createStore"
 export type PerfTier = "high" | "medium" | "low"
 /** Explore: walk the robot around. Tour: the hotspot camera. */
 export type ViewMode = "explore" | "tour"
+/** Which 3D world is loaded: the mushroom kingdom (default) or the neon arcade. */
+export type WorldId = "mario" | "arcade"
 export type Palette = "synthwave" | "vaporwave"
 export type PanelId =
   "project" | "blog" | "about" | "skills" | "contact" | "resume" | "games"
@@ -23,6 +25,8 @@ type StageState = {
   palette: Palette
   hovered: string | null
   mode: ViewMode
+  world: WorldId
+  setWorld: (world: WorldId) => void
   /** Interactable the player is standing next to (explore mode). */
   nearby: string | null
   setMode: (mode: ViewMode) => void
@@ -52,6 +56,19 @@ export const useStage = createStore<StageState>(
     palette: "synthwave",
     hovered: null,
     mode: "explore",
+    world: "mario",
+    setWorld: (world) =>
+      set(
+        {
+          world,
+          mode: "explore",
+          focus: "overview",
+          panel: null,
+          nearby: null,
+        },
+        false,
+        `world/${world}`
+      ),
     nearby: null,
     setMode: (mode) =>
       set({ mode, focus: "overview", panel: null }, false, `mode/${mode}`),

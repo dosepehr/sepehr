@@ -11,6 +11,7 @@ import PanelHost from "@/components/Panels/PanelHost"
 import ErrorBoundary from "@/components/ui/ErrorBoundary"
 import { useCapable } from "@/lib/hooks/useCapable"
 import { useExperience } from "@/lib/hooks/useExperience"
+import { cn } from "@/lib/funcs/cn"
 import { useStage } from "@/lib/store/stage"
 import { go, type NavTarget } from "./actions"
 import type { ArcadeData } from "./arcade.types"
@@ -49,6 +50,7 @@ function TerminalHost({
 
 function Arcade3D({ data }: { data: ArcadeData }) {
   const [ready, setReady] = useState(false)
+  const world = useStage((s) => s.world)
   useEffect(() => {
     void import("./Scene").then((m) =>
       useStage.getState().setTier(m.initialTier())
@@ -58,7 +60,12 @@ function Arcade3D({ data }: { data: ArcadeData }) {
     }
   }, [])
   return (
-    <div className="fixed inset-0 bg-background">
+    <div
+      className={cn(
+        "fixed inset-0 bg-background",
+        world === "arcade" && "theme-night"
+      )}
+    >
       <Scene data={data} onReady={() => setReady(true)} />
       {ready && <Hud />}
       <PanelHost data={data} />

@@ -11,7 +11,14 @@ export type LabData = {
 }
 
 export type LabCategory =
-  "hero" | "about" | "skills" | "projects" | "experience" | "blog" | "contact"
+  | "hero"
+  | "about"
+  | "skills"
+  | "projects"
+  | "experience"
+  | "blog"
+  | "contact"
+  | "mario"
 
 export type Candidate = {
   id: string

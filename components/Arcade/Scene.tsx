@@ -7,6 +7,7 @@ import Collectibles from "@/components/World/Collectibles"
 import { buildColliders } from "@/components/World/layout"
 import Outdoors from "@/components/World/Outdoors"
 import Player from "@/components/World/Player"
+import MarioWorld from "@/components/Mario3D/MarioWorld"
 import { useDictionary } from "@/components/DictionaryProvider"
 import { GAMES } from "@/components/Games/registry"
 import { useStage, type PerfTier } from "@/lib/store/stage"
@@ -55,6 +56,8 @@ export default function Scene({
   const game = useStage((s) => s.game)
   const [projectSlugs] = useState(() => data.projects.map((p) => p.slug))
   const mode = useStage((s) => s.mode)
+  const world = useStage((s) => s.world)
+  const mario = world === "mario"
   const explore = mode === "explore"
   const colliders = useMemo(
     () => buildColliders(data.projects.length),
@@ -78,11 +81,12 @@ export default function Scene({
         dpr={DPR[tier]}
         frameloop={covered ? "never" : "always"}
         gl={{ antialias: tier !== "low", powerPreference: "high-performance" }}
+        shadows={mario && tier !== "low"}
         camera={{
           position: INTRO_POSITION,
           fov: 50,
           near: 0.1,
-          far: 140,
+          far: 220,
         }}
         onCreated={() => onReady?.()}
         aria-hidden
@@ -93,7 +97,7 @@ export default function Scene({
           flipflops={3}
           onFallback={() => !pinned && useStage.getState().setTier("low")}
         />
-        {!driving && (
+        {!driving && !mario && (
           <>
             <color attach="background" args={[palette.bg]} />
             <fog
@@ -105,6 +109,8 @@ export default function Scene({
         <Suspense fallback={null}>
           {driving ? (
             <NeonDriveScene />
+          ) : mario ? (
+            <MarioWorld data={data} />
           ) : (
             <>
               <Room data={data} />
@@ -120,7 +126,8 @@ export default function Scene({
               )}
             </>
           )}
-          <Effects />
+          {/* Post effects are part of the neon look; the daylight world stays crisp. */}
+          {(driving || !mario) && <Effects />}
         </Suspense>
       </Canvas>
       <ModelProgress />

@@ -19,7 +19,7 @@ export default function SecretContent() {
   if (!allQuestsFound(found)) {
     return (
       <div className="flex flex-col items-start gap-4">
-        <p className="flex items-center gap-2 text-neon-yellow">
+        <p className="flex items-center gap-2 text-warning-text">
           <Lock className="size-5" aria-hidden />
           {dict.secret.locked}
         </p>
@@ -51,7 +51,7 @@ export default function SecretContent() {
       <section aria-labelledby="hof">
         <h2
           id="hof"
-          className="mb-3 flex items-center gap-2 font-display text-xl text-neon-yellow"
+          className="mb-3 flex items-center gap-2 font-display text-xl text-warning-text"
         >
           <Trophy className="size-5" aria-hidden />
           {dict.secret.hallOfFame}
@@ -68,7 +68,7 @@ export default function SecretContent() {
                   className="flex justify-between rounded-md bg-card/70 px-3 py-2"
                 >
                   <span>{dict.games.list[game].name}</span>
-                  <span className="text-neon-yellow" dir="ltr">
+                  <span className="text-warning-text" dir="ltr">
                     {score.toString().padStart(6, "0")}
                   </span>
                 </li>

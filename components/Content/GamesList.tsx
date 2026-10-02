@@ -36,8 +36,12 @@ export default function GamesList({ include3d }: { include3d: boolean }) {
               style={{ color: GAMES[id].color }}
               className="flex h-full w-full flex-col items-start gap-1 rounded-lg bg-card/70 p-4 text-start neon-border transition-colors hover:bg-white/5"
             >
-              <span className="flex items-center gap-2 font-display text-sm tracking-wide text-glow">
-                <Gamepad2 className="size-4" aria-hidden />
+              <span className="flex items-center gap-2 font-display text-sm tracking-wide text-foreground">
+                <Gamepad2
+                  className="size-4"
+                  style={{ color: GAMES[id].color }}
+                  aria-hidden
+                />
                 {info.name}
               </span>
               <span className="text-sm text-card-foreground/90">

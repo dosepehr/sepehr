@@ -5,7 +5,7 @@ import { useAudio } from "@/lib/store/audio"
 // Procedural chiptune SFX on WebAudio. No asset files.
 let ctx: AudioContext | null = null
 
-function audio() {
+export function audio() {
   if (typeof window === "undefined") return null
   if (useAudio.getState().muted) return null
   ctx ??= new AudioContext()
@@ -13,7 +13,7 @@ function audio() {
   return ctx
 }
 
-type Note = {
+export type Note = {
   f: number
   d: number
   type?: OscillatorType
@@ -21,7 +21,7 @@ type Note = {
   v?: number
 }
 
-function play(notes: Note[], gap = 0) {
+export function play(notes: Note[], gap = 0) {
   const ac = audio()
   if (!ac) return
   let t = ac.currentTime
@@ -40,7 +40,7 @@ function play(notes: Note[], gap = 0) {
   }
 }
 
-function noise(
+export function noise(
   duration: number,
   volume = 0.08,
   filter?: { type: BiquadFilterType; f: number }

@@ -1,4 +1,4 @@
-# Sepehr · Synthwave Arcade
+# Sepehr · Portfolio World
 
 Portfolio built as a 3D arcade room (Next.js 16, React Three Fiber, Rapier, GLB models), with a 2D
 "Lite" hub and classic pages for phones, crawlers and anyone who prefers plain HTML.
@@ -10,7 +10,23 @@ npm run dev        # http://localhost:3000 → redirects to /en or /fa
 npm run typecheck && npm run lint && npm run build
 ```
 
-## Explore mode
+## Mushroom world (default 3D)
+
+The 3D view opens in a platformer world built around the two Mario GLBs in `public/models`
+(they aren't rigged, so walking, jumping and landing are animated procedurally). Islands run left
+to right like a level: ? blocks (About, Resume, Skills, Blog), skill bricks, a pipe per project
+(stand on it and press ↓ to warp into the case study), the experience staircase, a flagpole and the
+contact castle. There are 40+ coins, 6 hidden power-ups (an invisible block, a secret pipe to a bonus
+room, a cloud past the staircase…), enemies to stomp, original chiptune music and sound effects.
+Code: `components/Mario3D` (level layout in `level.ts`, physics in `physics.ts`); progress in
+`lib/store/mario.ts`; audio in `lib/audio/mario.ts`. The HUD's "Neon arcade" button switches to the
+previous synthwave world, which is still described below.
+
+The 2D site (Classic view, phones) uses the same theme: `components/Mario2D`. The global palette is
+in `app/globals.css`; `.theme-night` restores the synthwave tokens for the arcade games, the
+terminal and the neon candidates in the component lab.
+
+## Explore mode (neon arcade)
 
 The 3D view opens in **Explore**: you walk a robot around the arcade and the neon world outside it
 (WASD / arrows, Shift to run, Space to jump, E to use, B to dance, drag to look, scroll to zoom,

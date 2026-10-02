@@ -1,5 +1,11 @@
 import type { Metadata, Viewport } from "next"
-import { Geist, JetBrains_Mono, Orbitron, Vazirmatn } from "next/font/google"
+import {
+  Geist,
+  JetBrains_Mono,
+  Orbitron,
+  Press_Start_2P,
+  Vazirmatn,
+} from "next/font/google"
 import { notFound } from "next/navigation"
 import type { ReactNode } from "react"
 
@@ -19,7 +25,13 @@ const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" })
 const display = Orbitron({
   subsets: ["latin"],
   weight: ["500", "700", "900"],
-  variable: "--font-display",
+  variable: "--font-orbitron",
+})
+// Pixel display face for the mushroom-kingdom theme (Latin only; Persian falls back to Vazirmatn).
+const pixel = Press_Start_2P({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-pixel",
 })
 const fa = Vazirmatn({ subsets: ["arabic", "latin"], variable: "--font-fa" })
 
@@ -29,7 +41,7 @@ export function generateStaticParams() {
   return locales.map((lang) => ({ lang }))
 }
 
-export const viewport: Viewport = { themeColor: "#140f2a", colorScheme: "dark" }
+export const viewport: Viewport = { themeColor: "#5c94fc", colorScheme: "light" }
 
 export async function generateMetadata({
   params,
@@ -70,6 +82,7 @@ export default async function LangLayout({ children, params }: Props) {
         sans.variable,
         mono.variable,
         display.variable,
+        pixel.variable,
         fa.variable
       )}
     >

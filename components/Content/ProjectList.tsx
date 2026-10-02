@@ -18,9 +18,9 @@ export default function ProjectList({
         <li key={project.slug}>
           <article
             style={{ color: project.color }}
-            className="scanlines flex h-full flex-col rounded-lg bg-card/80 p-5 neon-border"
+            className="flex h-full flex-col rounded-lg bg-card/80 p-5 neon-border"
           >
-            <h3 className="font-display text-lg tracking-wide text-glow">
+            <h3 className="font-display text-lg tracking-wide text-card-foreground">
               {project.title}
             </h3>
             <p className="mt-2 flex-1 text-sm text-card-foreground/90">
@@ -42,7 +42,7 @@ export default function ProjectList({
             </ul>
             <Link
               href={`/${lang}/projects/${project.slug}`}
-              className="relative z-10 mt-4 inline-flex min-h-11 items-center text-sm font-medium underline underline-offset-4"
+              className="relative z-10 mt-4 inline-flex min-h-11 items-center text-sm font-medium text-primary-text underline underline-offset-4"
             >
               {dict.projects.readCase}
               <span className="sr-only">: {project.title}</span>

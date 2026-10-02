@@ -25,13 +25,13 @@ export default function SkillsBoard({
             key={skill.name}
             className="flex items-center gap-3 rounded-md bg-card/70 px-3 py-2"
           >
-            <span className="w-6 text-neon-yellow">
+            <span className="w-6 text-warning-text">
               {String(i + 1).padStart(2, "0")}
             </span>
             <span className="flex-1 text-foreground">{skill.name}</span>
             {caught && (
               <Star
-                className="size-4 fill-neon-yellow text-neon-yellow"
+                className="size-4 fill-warning text-warning-text"
                 aria-label={dict.about.unlocked}
               />
             )}

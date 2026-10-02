@@ -74,12 +74,85 @@
 }
 
 /*
- * Synthwave arcade palette. The site is dark-only (forcedTheme="dark"), so
- * :root and .dark share one set of tokens. Neon tokens drive glows; the
- * vaporwave palette (Konami code) overrides them via [data-palette].
+ * Mushroom-kingdom palette (the default): sky blue page, cream "message
+ * block" cards, brick red, pipe green and coin gold. The legacy token names
+ * (--neon-*) are kept so every component picks the palette up.
+ *
+ * .theme-night restores the original synthwave tokens. It wraps the arcade
+ * games, the terminal and the component-lab previews, which were designed dark.
  */
 :root,
 .dark {
+    --mario-sky: #5c94fc;
+    --mario-sky-deep: #3c6fe0;
+    --mario-red: #e52521;
+    --mario-blue: #049cd8;
+    --mario-green: #43b047;
+    --mario-green-dark: #1e7a2e;
+    --mario-coin: #fbd000;
+    --mario-brick: #c84c0c;
+    --mario-brick-dark: #8a2a00;
+    --mario-cream: #fff4d6;
+    --mario-ink: #1a1410;
+
+    --neon-pink: var(--mario-red);
+    /* A deeper blue than the overalls so links and labels stay readable on cream. */
+    --neon-cyan: #0277b8;
+    --neon-purple: var(--mario-green);
+    --neon-yellow: var(--mario-coin);
+    --neon-orange: var(--mario-brick);
+    --font-display: var(--font-pixel);
+
+    --background: var(--mario-sky);
+    --foreground: var(--mario-ink);
+    --card: var(--mario-cream);
+    --card-foreground: var(--mario-ink);
+    --popover: var(--mario-cream);
+    --popover-foreground: var(--mario-ink);
+    --primary: var(--mario-red);
+    --primary-foreground: #ffffff;
+    --primary-text: #c4161c;
+    --secondary: #ffe08a;
+    --secondary-foreground: var(--mario-ink);
+    --muted: #f3e2b5;
+    --muted-foreground: #5b4630;
+    --accent: #d4ecff;
+    --accent-foreground: #0a4f8a;
+    --destructive: #d0021b;
+    --destructive-text: #b00018;
+    --success: #2e9d3a;
+    --success-foreground: #ffffff;
+    --success-text: #1d7a2a;
+    --warning: var(--mario-coin);
+    --warning-foreground: var(--mario-ink);
+    --warning-text: #8a5a00;
+    --info: var(--mario-blue);
+    --info-foreground: #ffffff;
+    --info-text: #0a6aa0;
+    --border: rgb(26 20 16 / 0.35);
+    --input: rgb(26 20 16 / 0.45);
+    --ring: var(--mario-blue);
+    --chart-1: var(--mario-red);
+    --chart-2: var(--mario-blue);
+    --chart-3: var(--mario-green);
+    --chart-4: var(--mario-coin);
+    --chart-5: var(--mario-brick);
+    --radius: 0.375rem;
+    --sidebar: var(--mario-cream);
+    --sidebar-foreground: var(--mario-ink);
+    --sidebar-primary: var(--mario-red);
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #ffe08a;
+    --sidebar-accent-foreground: var(--mario-ink);
+    --sidebar-border: rgb(26 20 16 / 0.35);
+    --sidebar-ring: var(--mario-blue);
+    color-scheme: light;
+}
+
+/* The original synthwave tokens, for dark islands inside the light site. */
+.theme-night {
+    --font-display: var(--font-orbitron);
+    color: var(--foreground);
     --neon-pink: oklch(0.74 0.21 352);
     --neon-cyan: oklch(0.85 0.12 205);
     --neon-purple: oklch(0.7 0.18 300);
@@ -132,7 +205,7 @@
     color-scheme: dark;
 }
 
-[data-palette='vaporwave'] {
+[data-palette='vaporwave'] .theme-night {
     --neon-pink: oklch(0.8 0.17 10);
     --neon-cyan: oklch(0.85 0.12 175);
     --neon-purple: oklch(0.72 0.18 320);
@@ -200,35 +273,83 @@
     }
 }
 
-/* CSS-only neon grid backdrop: shown while the 3D scene is pending and on 2D pages. */
+/* Page backdrop: daytime sky with soft clouds (the name is kept from the neon theme). */
 @utility neon-grid {
-    background-color: var(--background);
+    background-color: var(--mario-sky);
     background-image:
-        radial-gradient(
-            ellipse 80% 50% at 50% 0%,
-            color-mix(in oklch, var(--neon-purple) 20%, transparent),
-            transparent 70%
-        ),
-        linear-gradient(
-            to bottom,
-            transparent 55%,
-            color-mix(in oklch, var(--neon-pink) 12%, transparent)
-        ),
-        linear-gradient(
-            color-mix(in oklch, var(--neon-pink) 10%, transparent) 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            90deg,
-            color-mix(in oklch, var(--neon-pink) 10%, transparent) 1px,
-            transparent 1px
-        );
-    background-size:
-        100% 100%,
-        100% 100%,
-        48px 48px,
-        48px 48px;
+        radial-gradient(ellipse 120px 34px at 12% 18%, rgb(255 255 255 / 0.9) 60%, transparent 62%),
+        radial-gradient(ellipse 70px 30px at 16% 14%, rgb(255 255 255 / 0.9) 60%, transparent 62%),
+        radial-gradient(ellipse 150px 40px at 78% 9%, rgb(255 255 255 / 0.85) 60%, transparent 62%),
+        radial-gradient(ellipse 80px 34px at 82% 5%, rgb(255 255 255 / 0.85) 60%, transparent 62%),
+        linear-gradient(to bottom, var(--mario-sky-deep), var(--mario-sky) 40%);
     background-attachment: fixed;
+}
+
+/* Chunky game-UI frame: black outline and a hard drop shadow. */
+@utility pixel-border {
+    border: 3px solid var(--mario-ink);
+    box-shadow: 4px 4px 0 var(--mario-ink);
+}
+@utility pixel-border-sm {
+    border: 2px solid var(--mario-ink);
+    box-shadow: 2px 2px 0 var(--mario-ink);
+}
+
+/* White title text with a black pixel outline, readable on the sky. */
+@utility text-outline {
+    color: #ffffff;
+    text-shadow:
+        2px 0 0 var(--mario-ink), -2px 0 0 var(--mario-ink), 0 2px 0 var(--mario-ink),
+        0 -2px 0 var(--mario-ink), 3px 3px 0 var(--mario-ink);
+}
+
+/* Brick wall and ground tiles, drawn with gradients. */
+@utility bricks {
+    background-color: var(--mario-brick);
+    background-image:
+        linear-gradient(var(--mario-brick-dark) 2px, transparent 2px),
+        linear-gradient(90deg, var(--mario-brick-dark) 2px, transparent 2px),
+        linear-gradient(90deg, var(--mario-brick-dark) 2px, transparent 2px);
+    background-size: 32px 16px, 32px 32px, 32px 32px;
+    background-position: 0 0, 0 0, 16px 16px;
+}
+@utility ground {
+    background-color: var(--mario-brick);
+    background-image:
+        linear-gradient(135deg, rgb(255 255 255 / 0.18) 25%, transparent 25%),
+        linear-gradient(var(--mario-brick-dark) 2px, transparent 2px),
+        linear-gradient(90deg, var(--mario-brick-dark) 2px, transparent 2px);
+    background-size: 32px 32px;
+}
+@utility grass-top {
+    box-shadow: inset 0 10px 0 var(--mario-green), inset 0 14px 0 var(--mario-green-dark);
+}
+
+@keyframes bump {
+    0%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+}
+@utility animate-bump {
+    animation: bump 0.25s ease-out;
+}
+@keyframes float-cloud {
+    from { transform: translateX(-20vw); }
+    to { transform: translateX(120vw); }
+}
+@utility animate-cloud {
+    animation: float-cloud var(--cloud-duration, 60s) linear infinite;
+    animation-delay: var(--cloud-delay, 0s);
+    @media (prefers-reduced-motion: reduce) {
+        animation: none;
+    }
+}
+@keyframes coin-pop {
+    0% { transform: translateY(0) scaleX(1); opacity: 1; }
+    50% { transform: translateY(-48px) scaleX(0.2); }
+    100% { transform: translateY(-64px) scaleX(1); opacity: 0; }
+}
+@utility animate-coin-pop {
+    animation: coin-pop 0.6s ease-out forwards;
 }
 
 @keyframes flicker {

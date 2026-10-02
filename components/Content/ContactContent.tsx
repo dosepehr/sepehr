@@ -52,7 +52,7 @@ export default function ContactContent({
             <a
               href={`/resume/${lang}.pdf`}
               download
-              className="inline-flex min-h-11 items-center gap-2 rounded-md px-3 text-sm text-neon-yellow neon-border hover:bg-neon-yellow/10"
+              className="inline-flex min-h-11 items-center gap-2 rounded-md px-3 text-sm text-warning-text neon-border hover:bg-warning/15"
             >
               <Download className="size-4" aria-hidden />
               {dict.contact.resume}

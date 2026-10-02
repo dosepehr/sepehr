@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Sepehr · Synthwave Arcade",
-    "description": "Frontend and fullstack developer. Step into a neon arcade of projects, games and secrets."
+    "title": "Sepehr · Portfolio World",
+    "description": "Frontend and fullstack developer. Run, jump and hit ? blocks through a 3D platformer world of projects, experience and secrets."
   },
   "site": {
     "name": "Sepehr",
@@ -285,5 +285,69 @@
     "blog": "Blog",
     "contact": "Contact",
     "intro": "Classic view is showing all 40 candidate sections so you can choose. Hit Pick on the ones you like and copy the list at the bottom."
+  },
+  "mario": {
+    "status": "Status",
+    "coins": "COINS",
+    "world": "WORLD",
+    "costume": "Change costume (C)",
+    "toArcade": "Neon arcade",
+    "toMario": "Mushroom world",
+    "courseClear": "COURSE CLEAR!",
+    "found": "Power-up found",
+    "allFound": "All six power-ups found. You know every corner of this world.",
+    "experience": "Experience",
+    "castle": "Contact",
+    "gameHouse": "GAME HOUSE",
+    "blogHint": "Notes & articles inside",
+    "howTo1": "WASD move · SHIFT run",
+    "howTo2": "SPACE jump · hit ? blocks",
+    "howTo3": "E use · ↓ enter pipes",
+    "controls": "WASD / arrows move · Shift run · Space jump (hold = higher) · hit ? blocks from below · ↓ on a pipe to enter · E use · C costume · drag to look · scroll to zoom",
+    "zones": {
+      "start": "START",
+      "skills": "SKILLS",
+      "projects": "PROJECTS",
+      "experience": "EXPERIENCE",
+      "contact": "CASTLE · CONTACT",
+      "bonus": "BONUS ROOM"
+    },
+    "powerUps": {
+      "mystery-mushroom": {
+        "name": "Mystery mushroom",
+        "note": "It was in a block you couldn't see. Good instincts.",
+        "hint": "Some blocks are invisible until you hit them. Try left of the start."
+      },
+      "one-up": {
+        "name": "1-UP mushroom",
+        "note": "Hidden behind the big welcome sign.",
+        "hint": "Look behind the welcome sign."
+      },
+      "fire-flower": {
+        "name": "Fire flower",
+        "note": "Sitting on top of the tallest pipe.",
+        "hint": "Climb the tallest project pipe."
+      },
+      "super-star": {
+        "name": "Super star",
+        "note": "10 seconds of invincibility. Go stomp something.",
+        "hint": "There's a pipe near the start that isn't a project…"
+      },
+      "cloud-coin": {
+        "name": "Cloud coin",
+        "note": "Up on the cloud past the staircase.",
+        "hint": "From the top of the staircase, jump right."
+      },
+      "golden-key": {
+        "name": "Golden key",
+        "note": "Behind the castle. It opens nothing; it's just shiny.",
+        "hint": "Walk around the castle."
+      }
+    },
+    "flagHint": "Tap the flag to finish the level",
+    "thanks": "THANKS FOR PLAYING · SEE YOU IN WORLD 2",
+    "lab": "Component lab",
+    "games": "GAMES",
+    "enter3d": "Play in 3D"
   }
 }

@@ -25,7 +25,7 @@ export default function QuestTracker({ className }: { className?: string }) {
         <button
           type="button"
           className={cn(
-            "inline-flex h-11 items-center gap-2 rounded-md px-3 font-mono text-sm text-neon-yellow neon-border hover:bg-neon-yellow/10",
+            "inline-flex h-11 items-center gap-2 rounded-md px-3 font-mono text-sm text-warning-text neon-border hover:bg-warning/15",
             className
           )}
         >
@@ -34,7 +34,7 @@ export default function QuestTracker({ className }: { className?: string }) {
         </button>
       </PopoverTrigger>
       <PopoverContent className="w-72 border-border bg-popover/95 p-4">
-        <p className="mb-2 font-display text-sm text-neon-yellow">
+        <p className="mb-2 font-display text-sm text-warning-text">
           {dict.quests.title}
         </p>
         <ul className="flex flex-col gap-1.5 text-sm">

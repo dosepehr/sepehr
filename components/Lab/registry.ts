@@ -5,6 +5,7 @@ import * as flows from "./flows"
 import * as heroes from "./heroes"
 import * as projects from "./projects"
 import * as skills from "./skills"
+import MarioCandidates from "@/components/Mario2D/candidates"
 import type { Candidate } from "./types"
 
 /** The 40 candidate sections for the 2D portfolio, numbered for picking. */
@@ -292,4 +293,5 @@ export const CANDIDATES: Candidate[] = [
     note: "Footer with a sunset behind a lit pixel city.",
     Component: contact.SkylineFooter,
   },
+  ...MarioCandidates,
 ]

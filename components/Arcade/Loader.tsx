@@ -22,15 +22,15 @@ export default function Loader() {
       role="status"
       className="fixed inset-0 z-30 flex flex-col items-center justify-center gap-5 neon-grid"
     >
-      <p className="animate-flicker font-display text-3xl tracking-[0.3em] text-neon-pink uppercase text-glow">
+      <p className="animate-flicker font-display text-2xl tracking-[0.2em] text-outline uppercase">
         {dict.site.name}
       </p>
       <Progress
         value={value}
-        className="h-1.5 w-64 bg-neon-pink/20"
+        className="h-3 w-64 bg-card pixel-border-sm"
         aria-label={dict.hub.loading}
       />
-      <p className="font-mono text-sm text-neon-cyan">{dict.hub.loading}</p>
+      <p className="font-display text-xs text-outline">{dict.hub.loading}</p>
     </div>
   )
 }

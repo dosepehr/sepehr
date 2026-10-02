@@ -16,6 +16,7 @@ import { sfx } from "@/lib/audio/sfx"
 import { cn } from "@/lib/funcs/cn"
 import { usePrefs } from "@/lib/store/prefs"
 import { useStage } from "@/lib/store/stage"
+import MarioHud from "@/components/Mario3D/MarioHud"
 import WorldHud from "@/components/World/WorldHud"
 import SoundToggle from "./SoundToggle"
 
@@ -43,6 +44,7 @@ export default function Hud() {
   const focus = useStage((s) => s.focus)
   const game = useStage((s) => s.game)
   const mode = useStage((s) => s.mode)
+  const world = useStage((s) => s.world)
 
   // Esc steps back (game > terminal > panel > focus). Radix dialogs handle their own Esc.
   useEffect(() => {
@@ -64,6 +66,7 @@ export default function Hud() {
   }, [])
 
   if (game === "neon-drive") return null
+  if (world === "mario") return <MarioHud />
 
   const labels: Record<NavTarget, string> = {
     overview: dict.nav.overview,
@@ -82,7 +85,7 @@ export default function Hud() {
     "inline-flex h-11 items-center justify-center rounded-md px-3 text-sm hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-ring"
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-20 flex flex-col justify-between">
+    <div className="theme-night pointer-events-none fixed inset-0 z-20 flex flex-col justify-between">
       <header className="pointer-events-auto flex flex-wrap items-start justify-between gap-3 bg-linear-to-b from-background/80 to-transparent p-4">
         <div>
           <h1 className="font-display text-xl tracking-[0.25em] text-neon-pink uppercase text-glow">
@@ -121,6 +124,13 @@ export default function Hud() {
               </button>
             ))}
           </div>
+          <button
+            type="button"
+            className={cn(button, "bg-background/60 text-neon-yellow")}
+            onClick={() => useStage.getState().setWorld("mario")}
+          >
+            {dict.mario.toMario}
+          </button>
           <QuestTracker className="bg-background/60" />
           <button
             type="button"

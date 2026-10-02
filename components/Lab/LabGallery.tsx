@@ -13,15 +13,15 @@ export default function LabGallery({ data }: { data: LabData }) {
   const [cat, setCat] = useState<"all" | LabCategory>("all")
   return (
     <div className="min-h-svh neon-grid">
-      <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
+      <header className="sticky top-0 z-40 border-b-[3px] border-[#1a1410] bg-[#1a1410]/85 text-white backdrop-blur">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-4 py-3">
           <Link
             href={`/${data.lang}`}
-            className="font-display tracking-widest text-neon-pink uppercase"
+            className="font-display text-sm tracking-widest text-white uppercase"
           >
             {dict.site.name}
           </Link>
-          <span className="font-mono text-xs text-muted-foreground">
+          <span className="font-mono text-xs text-white/70">
             / lab · {CANDIDATES.length} candidates
           </span>
           <nav
@@ -35,7 +35,7 @@ export default function LabGallery({ data }: { data: LabData }) {
                     type="button"
                     onClick={() => setCat(c)}
                     aria-pressed={cat === c}
-                    className={`min-h-9 rounded-full px-3 text-sm capitalize transition-colors ${cat === c ? "bg-neon-cyan text-background" : "text-muted-foreground hover:bg-white/10 hover:text-foreground"}`}
+                    className={`min-h-9 rounded-full px-3 text-sm capitalize transition-colors ${cat === c ? "bg-neon-cyan text-background" : "text-white/80 hover:bg-white/10 hover:text-white"}`}
                   >
                     {c}
                   </button>
@@ -50,13 +50,14 @@ export default function LabGallery({ data }: { data: LabData }) {
         className="mx-auto flex max-w-6xl flex-col gap-16 px-4 py-12"
       >
         <div className="max-w-2xl">
-          <h1 className="font-display text-4xl font-black tracking-wide text-neon-pink">
+          <h1 className="font-display text-2xl text-outline sm:text-3xl">
             Component lab
           </h1>
-          <p className="mt-3 text-muted-foreground">
-            Forty candidate sections for the 2D portfolio, all fed by the real
-            content. Pick the ones you like; the tray at the bottom collects
-            their numbers so you can paste your shortlist back.
+          <p className="mt-4 font-medium text-white [text-shadow:1px_1px_0_#1a1410]">
+            Every candidate section for the 2D portfolio (40 neon ones on dark
+            islands, plus the platformer set), all fed by the real content. Pick
+            the ones you like; the tray at the bottom collects their numbers so
+            you can paste your shortlist back.
           </p>
         </div>
         <CandidateBoard data={data} only={cat === "all" ? undefined : cat} />

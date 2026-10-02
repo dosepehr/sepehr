@@ -49,8 +49,8 @@ export function nearestInteractable(
       it.stamp = now
     }
     if (it.box.isEmpty()) continue
-    // Out of reach overhead (drone, roof cat, the ? block).
-    if (it.box.min.y > 1.9) continue
+    // Out of reach overhead (drone, roof cat, the ? block) or far below.
+    if (it.box.min.y > point.y + 1.9 || it.box.max.y < point.y - 0.5) continue
     tmp.set(
       THREE.MathUtils.clamp(point.x, it.box.min.x, it.box.max.x),
       0,

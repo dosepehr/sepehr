@@ -20,6 +20,7 @@ import { useStage, type PanelId } from "@/lib/store/stage"
 export default function PanelHost({ data }: { data: ArcadeData }) {
   const { dict, lang } = useDictionary()
   const panel = useStage((s) => s.panel)
+  const arcade = useStage((s) => s.world === "arcade")
   const slug = useStage((s) => s.projectSlug)
   const project = data.projects.find((p) => p.slug === slug)
 
@@ -91,12 +92,20 @@ export default function PanelHost({ data }: { data: ArcadeData }) {
         <DialogContent
           aria-describedby={undefined}
           style={{ color: active.color }}
-          className="scanlines max-w-3xl bg-popover/95 text-popover-foreground neon-border sm:max-w-3xl"
+          className={
+            arcade
+              ? "theme-night scanlines max-w-3xl bg-popover/95 text-popover-foreground neon-border sm:max-w-3xl"
+              : "max-w-3xl bg-popover text-popover-foreground pixel-border sm:max-w-3xl"
+          }
         >
-          <DialogHeader className="bg-popover/95">
+          <DialogHeader className={arcade ? "bg-popover/95" : "bricks"}>
             <DialogTitle
-              className="font-display tracking-wide text-glow"
-              style={{ color: active.color }}
+              className={
+                arcade
+                  ? "font-display tracking-wide text-glow"
+                  : "font-display text-base tracking-wide text-outline"
+              }
+              style={arcade ? { color: active.color } : undefined}
             >
               {active.title}
             </DialogTitle>

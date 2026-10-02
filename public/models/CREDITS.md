@@ -12,3 +12,8 @@ All files here are meshopt-compressed GLBs. Rebuild them with `npm run models`.
 | `trophy.glb` | [Kenney](https://kenney.nl) Mini Arena, from [Starter Kit Basic Scene](https://github.com/KenneyNL/Starter-Kit-Basic-Scene) | CC0 1.0 |
 | `drone.glb` | [Kenney](https://kenney.nl), "enemy-flying" from [Starter Kit FPS](https://github.com/KenneyNL/Starter-Kit-FPS) | CC0 1.0 |
 | `truck.glb` | [Kenney](https://kenney.nl), "vehicle-truck-purple" from [Starter Kit Racing](https://github.com/KenneyNL/Starter-Kit-Racing) | CC0 1.0 |
+| `mario-8bit.glb` | "Super Mario" by Crillings, via [Poly Pizza](https://poly.pizza/m/9F626rbfYOH), added by the site owner | See source page (Poly Pizza models are CC0 or CC-BY 3.0) |
+| `mario-3d.glb` | "Super Mario" by Nathaniel de Jong, via [Poly Pizza](https://poly.pizza/m/dAtRBfhrKbP), added by the site owner | See source page (Poly Pizza models are CC0 or CC-BY 3.0) |
+
+The Mario character is a Nintendo trademark. These fan models are used for a personal portfolio;
+check the source licenses and Nintendo's IP guidelines before publishing commercially.

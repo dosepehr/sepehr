@@ -211,7 +211,8 @@ export default function GameShell({
       aria-modal="true"
       aria-label={info.name}
       className={cn(
-        "fixed inset-0 z-50 flex flex-col outline-none",
+        // The arcade games keep their neon look inside the daylight site.
+        "theme-night fixed inset-0 z-50 flex flex-col outline-none",
         entry.is3d ? "bg-transparent" : "bg-background/95 backdrop-blur-sm"
       )}
     >

@@ -64,12 +64,16 @@ export default async function Home({ params }: Props) {
       id="main"
       className="flex min-h-svh flex-col items-center justify-center gap-4 neon-grid px-4 text-center"
     >
-      <h1 className="animate-flicker font-display text-5xl tracking-[0.25em] text-neon-pink uppercase text-glow sm:text-7xl">
+      <h1 className="font-display text-4xl tracking-[0.2em] text-outline uppercase sm:text-6xl">
         {dict.site.name}
       </h1>
-      <p className="text-lg text-neon-cyan">{dict.site.role}</p>
-      <p className="max-w-md text-foreground/90">{dict.site.tagline}</p>
-      <p className="font-mono text-sm text-muted-foreground">
+      <p className="rounded-md bg-card px-4 py-2 font-display text-xs pixel-border-sm">
+        {dict.site.role}
+      </p>
+      <p className="max-w-md font-medium text-white [text-shadow:1px_1px_0_#1a1410]">
+        {dict.site.tagline}
+      </p>
+      <p className="font-display text-[10px] text-outline">
         {dict.hub.loading}
       </p>
     </main>

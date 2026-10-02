@@ -149,7 +149,7 @@ export default function Terminal({
       aria-label={t.title}
       dir="ltr"
       lang={lang}
-      className="scanlines fixed inset-x-4 bottom-4 z-40 mx-auto flex max-h-[60svh] max-w-2xl flex-col overflow-hidden rounded-lg bg-[#04120b]/95 font-mono text-sm text-[#5dff9d] shadow-[0_0_40px_rgba(93,255,157,0.25)] neon-border"
+      className="theme-night scanlines fixed inset-x-4 bottom-4 z-40 mx-auto flex max-h-[60svh] max-w-2xl flex-col overflow-hidden rounded-lg bg-[#04120b]/95 font-mono text-sm text-[#5dff9d] shadow-[0_0_40px_rgba(93,255,157,0.25)] neon-border"
     >
       <header className="relative z-10 flex items-center justify-between border-b border-[#5dff9d]/30 px-3 py-1.5">
         <span className="text-glow">{t.title}</span>

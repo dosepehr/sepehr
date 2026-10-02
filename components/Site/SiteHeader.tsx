@@ -17,30 +17,30 @@ export default function SiteHeader({
     { href: `/${lang}/contact`, label: dict.nav.contact },
   ]
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b-[3px] border-[#1a1410] bg-[#1a1410]/85 backdrop-blur">
       <nav
         aria-label="Main"
         className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-4 py-3"
       >
         <Link
           href={`/${lang}`}
-          className="font-display text-lg tracking-widest text-neon-pink uppercase text-glow"
+          className="font-display text-sm tracking-widest text-white uppercase"
         >
           {dict.site.name}
         </Link>
-        <ul className="flex flex-wrap items-center gap-1 text-sm">
+        <ul className="flex flex-wrap items-center gap-2 text-sm">
           {links.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
-                className="inline-flex h-9 items-center rounded-md px-3 text-foreground/90 hover:bg-muted hover:text-neon-cyan"
+                className="inline-flex h-9 items-center rounded-md bg-card px-3 font-display text-[10px] text-foreground pixel-border-sm hover:bg-secondary"
               >
                 {link.label}
               </Link>
             </li>
           ))}
           <li>
-            <LocaleSwitch />
+            <LocaleSwitch className="bg-card text-foreground pixel-border-sm" />
           </li>
         </ul>
       </nav>

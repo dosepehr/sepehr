@@ -6,6 +6,7 @@ import { CANDIDATES } from "./registry"
 import type { LabCategory, LabData } from "./types"
 
 export const CATEGORY_ORDER: LabCategory[] = [
+  "mario",
   "hero",
   "about",
   "skills",
@@ -24,6 +25,7 @@ export const CATEGORY_ANCHOR: Record<LabCategory, string> = {
   experience: "experience",
   blog: "blog",
   contact: "contact",
+  mario: "mario",
 }
 
 const NUMBERED = CANDIDATES.map((c, i) => ({ ...c, n: i + 1 }))
@@ -66,7 +68,7 @@ export default function CandidateBoard({
         >
           {titles?.[cat] && (
             <div className="flex items-center gap-4">
-              <h2 className="font-display text-2xl font-bold tracking-wide sm:text-3xl">
+              <h2 className="rounded-md bricks px-4 py-3 font-display text-lg text-outline pixel-border sm:text-xl">
                 {titles[cat]}
               </h2>
               <span
@@ -84,7 +86,7 @@ export default function CandidateBoard({
                   aria-labelledby={`${c.id}-title`}
                   className="scroll-mt-24"
                 >
-                  <div className="mb-4 flex flex-wrap items-center gap-3 border-b border-white/10 pb-3">
+                  <div className="mb-4 flex flex-wrap items-center gap-3 rounded-md bg-card px-4 py-3 text-card-foreground pixel-border-sm">
                     <span
                       className="font-display text-3xl font-black text-white/25"
                       dir="ltr"
@@ -97,7 +99,7 @@ export default function CandidateBoard({
                         className="flex flex-wrap items-center gap-2 font-semibold"
                       >
                         {c.name}
-                        <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] tracking-wider text-muted-foreground uppercase">
+                        <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] tracking-wider text-muted-foreground uppercase">
                           {c.category}
                         </span>
                         {c.flow && (
@@ -113,13 +115,20 @@ export default function CandidateBoard({
                       type="button"
                       onClick={() => toggle(c.id)}
                       aria-pressed={on}
-                      className={`inline-flex min-h-10 items-center gap-2 rounded-full px-4 text-sm transition-colors ${on ? "bg-neon-pink text-background" : "border border-white/15 hover:bg-white/10"}`}
+                      className={`inline-flex min-h-10 items-center gap-2 rounded-full px-4 text-sm transition-colors ${on ? "bg-neon-pink text-background" : "border-2 border-[#1a1410] hover:bg-secondary"}`}
                     >
                       <Check className="size-4" aria-hidden />{" "}
                       {on ? "Picked" : "Pick"}
                     </button>
                   </div>
-                  <c.Component data={data} />
+                  {/* The neon candidates were designed dark: keep them on a night island. */}
+                  {c.category === "mario" ? (
+                    <c.Component data={data} />
+                  ) : (
+                    <div className="theme-night rounded-xl bg-background p-3 text-foreground sm:p-5">
+                      <c.Component data={data} />
+                    </div>
+                  )}
                 </article>
               </Fragment>
             )
