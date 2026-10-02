@@ -19,6 +19,14 @@ import type { ArcadeData } from "./arcade.types"
 import Cabinet from "./Cabinet"
 import { Drone, PowerBlock, SpinningCoin } from "./Decor"
 import Floor from "./Floor"
+import {
+  AirHockey,
+  Ceiling,
+  ClawMachine,
+  GlowPool,
+  Stools,
+  VendingMachine,
+} from "./Furniture"
 import { GAME_WALL_X, gameZ, PROJECT_ROW_Z, projectX } from "./hotspots"
 import Mascot from "./Mascot"
 import { usePalette } from "./palette"
@@ -123,6 +131,26 @@ export default function Room({ data }: { data: ArcadeData }) {
 
       <Floor />
       <Walls />
+      <Ceiling />
+
+      {/* Set dressing: the room should feel like a real, busy arcade. */}
+      <ClawMachine position={[8.2, 0, 2.6]} rotation={-Math.PI / 2} />
+      <VendingMachine position={[-7.45, 0, -6.75]} />
+      <AirHockey position={[-1.7, 0, 2.6]} rotation={0.12} />
+      <Stools position={[-1.7, 0, 3.75]} />
+      <Stools position={[7.4, 0, -6.6]} />
+      <GlowPool
+        position={[0, 0.006, -3.2]}
+        color={palette.pink}
+        size={9}
+        strength={0.22}
+      />
+      <GlowPool
+        position={[3.3, 0.006, 2.4]}
+        color={palette.cyan}
+        size={2.4}
+        strength={0.45}
+      />
 
       {/* Center: one cabinet per project. Adding an MDX file adds a cabinet. */}
       {data.projects.map((project, i) => (

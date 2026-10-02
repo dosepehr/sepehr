@@ -38,6 +38,14 @@ npm run models     # build + download + meshopt-compress everything into public/
 Components re-skin models by material name (e.g. `Trim` gets the neon color, `Screen` gets a
 shader), so a replacement GLB only needs the same material names. See `components/Arcade/useModel.ts`.
 
+## Component lab
+
+`/en/lab` (or `/fa/lab`) is a numbered gallery of 40 candidate sections for the 2D portfolio
+(heroes, about, skills, projects, experience, blog, contact), all fed by the real content. Three of
+them use [React Flow](https://reactflow.dev). Pick favourites in the page and copy the list. The
+sections live in `components/Lab`, registered in `components/Lab/registry.ts`; the Lite hub
+(`components/Lite/LiteHub.tsx`) is composed from a few of them, so swapping one in is an import.
+
 ## Environment
 
 All optional. Without the Resend vars the contact form shows an error and the direct links still work.

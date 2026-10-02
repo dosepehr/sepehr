@@ -38,6 +38,7 @@ export default async function Home({ params }: Props) {
     projects,
     posts,
     skills: profile.skills,
+    profile,
     projectBodies: Object.fromEntries(bodies),
     panels: {
       projects: <ProjectList projects={projects} lang={lang} dict={dict} />,

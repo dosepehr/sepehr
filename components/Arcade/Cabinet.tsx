@@ -5,6 +5,7 @@ import { useFrame } from "@react-three/fiber"
 import { useLayoutEffect, useMemo } from "react"
 import * as THREE from "three"
 import { useDictionary } from "@/components/DictionaryProvider"
+import { GlowPool } from "./Furniture"
 import Hotspot from "./Hotspot"
 import Label from "./Label"
 import { MODELS } from "./models"
@@ -129,6 +130,13 @@ export default function Cabinet({
     <Hotspot id={id} onActivate={onActivate}>
       <group position={position} rotation-y={rotation}>
         <primitive object={model} />
+        {/* Light spilling from the screen onto the carpet. */}
+        <GlowPool
+          position={[0, 0.008, 0.85]}
+          color={broken ? "#3a2050" : color}
+          size={1.9}
+          strength={broken ? 0.2 : 0.55}
+        />
         {/* One cheap box for pointer hits instead of ~50 meshes. */}
         <mesh position={[0, 1.15, 0.05]} visible={false}>
           <boxGeometry args={[1.15, 2.3, 1.05]} />
